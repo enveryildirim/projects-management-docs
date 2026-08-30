@@ -1,55 +1,55 @@
-# CI/CD ve Dağıtım (Deployment) Stratejisi
+# Sürekli Entegrasyon, Sürekli Dağıtım (CI/CD) ve Dağıtım Stratejisi
 
-> **Bu doküman ne işe yarar?**
-> Yazılan kodun, geliştiricinin bilgisayarından çıkıp hastane sunucularına güvenle, otomatik ve kesintisiz şekilde ulaşmasını sağlayan boru hattının (pipeline) kurallarını tanımlar.
+> **Bu dokümanın amacı nedir?**
+> Bu belge, geliştirilen kaynak kodun mühendis ortamından üretim (production) sunucularına güvenli, otomatik ve kesintisiz bir biçimde aktarılmasını sağlayan ardışık düzen (pipeline) kurallarını tanımlamaktadır.
 
 ---
 
-**Amacımız:** "Cuma günü canlıya çıkılmaz" korkusunu bitirmek. İnsan hatasını ortadan kaldırarak kodun üretim (production) ortamına aktarımını tamamen otomatize etmek ve acil durumlarda tek tuşla güvenli geri alma (rollback) sağlamak.
+**Temel Hedefimiz:** Kurumumuzda gelenekselleşmiş olan dağıtım risklerini minimize ederek, insan faktöründen kaynaklanabilecek hataları ortadan kaldırmak; kodun üretim ortamına aktarımını tam otomatik hale getirmek ve kritik durumlarda güvenli bir şekilde eski sürüme dönüş (rollback) kabiliyetini sağlamaktır.
 
-## 1. Versiyon Kontrol ve İzole Önizleme (Preview) Akışı
+## 1. Versiyon Kontrolü ve İzole Önizleme (Preview) Akışı
 
-Projemizde "Staging" darboğazını ve karmaşık GitFlow'u tamamen reddeden **Gerçek Trunk-Based Development** modelini kullanıyoruz.
+Projelerimizde süreç darboğazlarına ve karmaşık GitFlow yapılarına mahal vermemek adına **Gerçek Trunk-Based Development** modeli benimsenmiştir.
 
-| Branch Adı | Amacı | Kurallar |
+| Dal (Branch) Adı | Kullanım Amacı | Kurallar |
 | --- | --- | --- |
-| `main` | Canlı Ortam (Production) | Doğrudan commit atılamaz. Sadece doğrulanmış PR'lar merge edilebilir. `main` dalı her zaman **canlıya çıkılabilir (deployable)** durumdadır. |
-| `feat/x`, `fix/y` | Geliştirme ve Önizleme | Geliştirici kendi işi için açar. PR açıldığı an bu dala özel **Geçici Önizleme Ortamı (Preview Deployment)** otomatik ayağa kalkar. |
+| `main` | Üretim Ortamı (Production) | Doğrudan kod taahhüdü (commit) yapılamaz. Yalnızca doğrulanmış ve onaylanmış Değişiklik Talepleri (Pull Request - PR) birleştirilebilir (merge). `main` dalı her daim **dağıtıma hazır (deployable)** statüsünde olmalıdır. |
+| `feat/x`, `fix/y` | Geliştirme ve Önizleme | Geliştiriciler tarafından spesifik görevler için oluşturulur. PR oluşturulduğu anda ilgili dala özgü **Geçici Önizleme Ortamı (Preview Deployment)** otomatik olarak başlatılır. |
 
-*(Not: Ortak ve statik bir `staging` dalı **yoktur**. Manuel QA testleri doğrudan PR'ın Preview URL'si üzerinden yapılır.)*
+*(Not: Organizasyonumuzda statik bir `staging` dalı **bulunmamaktadır**. Manuel Kalite Güvence (QA) testleri doğrudan ilgili PR'a ait Preview URL'si üzerinden gerçekleştirilir.)*
 
 ## 2. Sürekli Entegrasyon ve Güvenlik (CI - Continuous Integration)
 
-Bir PR açıldığı an, GitHub Actions botu devreye girer. Aşağıdaki adımlardan biri bile başarısız olursa PR bloke edilir:
+Bir PR oluşturulduğunda, GitHub Actions otomasyonu derhal tetiklenir. Aşağıda belirtilen adımlardan herhangi birinin başarısız olması durumunda PR süreci bloke edilir:
 
-* [ ] **DLP ve Sır Taraması (Shift-Left Security):** TruffleHog/GitGuardian çalışır. Koda sızmış bir API anahtarı, `faker.js` ile üretilmemiş gerçek hasta verisi veya TC Kimlik numarası varsa PR derhal reddedilir (Bkz: `ai-manifesto.md`).
-* [ ] **Linter ve Ölü Kod Kontrolü:** AI'ın ürettiği kullanılmayan fonksiyonlar, ESLint ve Prettier uyarıları taranır.
-* [ ] **Birim ve Entegrasyon Testleri:** İş mantığını ve Yatay Yetki Yükseltme (IDOR) güvenliğini doğrulayan testler (Bkz: `test-qa-strategy.md`) çalıştırılır.
-* [ ] **Derleme (Build) Kontrolü:** `pnpm build` komutuyla TypeScript hataları denetlenir.
+* [ ] **Veri Sızıntısı Önleme (DLP) ve Sır Taraması (Shift-Left Security):** TruffleHog/GitGuardian entegrasyonu çalıştırılır. Koda kazara eklenmiş API anahtarları, maskelenmemiş gerçek hasta/kullanıcı verileri veya kimlik numaraları tespit edilirse PR reddedilir (Bkz: `ai-manifesto.md`).
+* [ ] **Linter ve Atıl Kod Analizi:** Yapay zeka araçları tarafından üretilmiş olabilecek kullanılmayan fonksiyonlar ile ESLint ve Prettier standart uyumsuzlukları taranır.
+* [ ] **Birim (Unit) ve Entegrasyon Testleri:** İş mantığını ve Yatay Yetki Yükseltme (IDOR) gibi kritik güvenlik zafiyetlerini doğrulayan otomatik testler icra edilir (Bkz: `test-qa-strategy.md`).
+* [ ] **Derleme (Build) Doğrulaması:** `pnpm build` komutu aracılığıyla TypeScript derleme süreçleri ve tip güvenliği denetlenir.
 
-## 3. Veritabanı Göçleri ve "Expand-Contract" (Geriye Uyumluluk) Püterni
+## 3. Veritabanı Göçleri (Migrations) ve "Expand-Contract" Örüntüsü
 
-Rollback (geri alma) işleminin çalışabilmesi için veritabanı her zaman bir önceki kod versiyonuyla **uyumlu olmak zorundadır**.
+Eski sürüme güvenli dönüş (rollback) operasyonlarının başarıyla yürütülebilmesi için, veritabanı şemasının daima bir önceki uygulama versiyonuyla **geriye dönük uyumlu (backward compatible)** olması zorunludur.
 
-* CI/CD sürecinde canlı veritabanına otomatik migration (`db:migrate`) uygulanır.
-* 🚨 **Yıkıcı Değişiklik Yasağı:** Tek bir PR içinde tablo silmek (DROP) veya kolon adı değiştirmek (RENAME) YASAKTIR.
-* **Expand-Contract Püterni Uygulanır:** Bir kolon değiştirilecekse; önce yeni kolon eklenir (Expand), kod hem yeniye hem eskiye yazar. Sonraki deployment'ta veriler yeni kolona taşınır. En son deployment'ta eski kolon silinir (Contract). Bu sayede acil durumlarda kod rollback edildiğinde sistem eski kolonu bulup çalışmaya devam edebilir.
+* CI/CD süreçleri kapsamında üretim veritabanına otomatik göç (`db:migrate`) işlemleri uygulanır.
+* 🚨 **Yıkıcı Değişiklik Kısıtlaması:** Tek bir PR kapsamında tablo silme (DROP) veya kolon ismi değiştirme (RENAME) operasyonları kesinlikle YASAKTIR.
+* **Expand-Contract Örüntüsü:** Bir veri kolonunda değişiklik yapılması gerektiğinde; ilk aşamada yeni kolon sisteme eklenir (Expand) ve uygulama hem eski hem de yeni kolona veri yazacak şekilde güncellenir. Sonraki dağıtımlarda mevcut veriler yeni kolona taşınır. Nihai aşamada ise artık kullanılmayan eski kolon sistemden kaldırılır (Contract). Bu strateji, acil durumlarda kodun geri alınması gerektiğinde sistemin veri kaybı veya çökme yaşamadan işleyişini sürdürmesini sağlar.
 
-## 4. Sürekli Dağıtım (CD) ve Zero-Downtime
+## 4. Sürekli Dağıtım (CD) ve Kesintisiz Geçiş (Zero-Downtime)
 
-Kod incelenip PR onaylandıktan ve "Preview" ortamında QA testinden geçtikten sonra dağıtım süreci otomatiktir.
+Kod inceleme süreçleri tamamlanıp PR onaylandıktan ve "Preview" ortamında QA testlerinden başarıyla geçtikten sonra, dağıtım süreci tam otomatik olarak ilerler.
 
-* **Production (Canlı) Ortamına Çıkış:** PR `main` dalına merge edildiği an, sistem otomatik olarak yeni bir "Release Tag" (Örn: `v1.2.0`) oluşturur ve canlı sunuculara aktarır.
-* **Kesintisiz Geçiş (Zero-Downtime):** Docker konteynerleri sayesinde yeni versiyon arka planda ayağa kalkar. Konteynerin `healthcheck` sinyali başarılı dönene kadar trafik eski versiyonda kalır. Sistem tam hazır olduğunda yük dengeleyici (Load Balancer) trafiği yeni versiyona geçirir.
+* **Üretim (Production) Ortamına Dağıtım:** PR `main` dalına birleştirildiği (merge) an, sistem otomatik olarak yeni bir "Release Tag" (Örn: `v1.2.0`) oluşturur ve güncel versiyonu üretim sunucularına aktarır.
+* **Kesintisiz Geçiş (Zero-Downtime Deployment):** Docker konteynerizasyon teknolojisi sayesinde yeni uygulama versiyonu arka planda başlatılır. Konteynerin `healthcheck` sinyali başarılı dönene dek tüm ağ trafiği eski versiyon üzerinden akmaya devam eder. Yeni sistem tam operasyonel hale geldiğinde, Yük Dengeleyici (Load Balancer) trafiği güvenli bir şekilde yeni versiyona yönlendirir.
 
-## 5. Acil Durum ve Geri Alma (Rollback)
+## 5. Acil Durum Yönetimi ve Sürüm Geri Alma (Rollback)
 
-Eğer canlıya çıkan kodda kritik bir hata tespit edilirse:
+Üretim ortamına aktarılan kodda kritik bir zafiyet veya hata tespit edilmesi durumunda uygulanacak prosedür:
 
-1. **Manuel Müdahale (SSH/Hotfix) Yasaktır:** Kriz anında canlı sunucuya bağlanıp kod değiştirmek kesinlikle yasaktır.
-2. **Otomatik Rollback:** Pipeline üzerinden tek tuşla bir önceki stabil Release Tag'ine (Örn: `v1.1.9`) dönülür. (Veritabanı *Expand-Contract* püterni ile geriye uyumlu olduğu için çökme yaşanmaz).
-3. **Kök Neden Analizi:** Sistem saniyeler içinde eski versiyona döner. Hatanın kök nedeni lokalde çözülüp Post-Mortem yapılarak (Bkz: `iletisim-ve-toplanti.md`) yeni bir PR ile sisteme dahil edilir.
+1. **Manuel Müdahale Yasağı:** Kriz anlarında üretim sunucularına doğrudan bağlanarak (SSH üzerinden vs.) kod düzenlemesi yapmak kesinlikle yasaktır (No hotfixing in production).
+2. **Otomatik Sürüm Geri Alma (Rollback):** CI/CD ardışık düzeni üzerinden tek bir komut ile onaylanmış en son stabil sürüme (Örn: `v1.1.9`) dönülür. Veritabanı yönetiminde *Expand-Contract* örüntüsü uygulandığı için sistem herhangi bir veri tutarsızlığı yaşamadan operasyonlarına devam eder.
+3. **Kök Neden Analizi (Root Cause Analysis):** Sistem hızlıca stabil duruma getirildikten sonra, hatanın kök nedeni yerel geliştirme ortamında tespit edilir. Gerekli Olay Sonrası İnceleme (Post-Mortem) toplantısı gerçekleştirilerek (Bkz: `communication-and-meetings.md`), çözüm yeni bir PR süreci ile sisteme dâhil edilir.
 
 ---
 
-*Son güncelleme: 2026-08-29 — Versiyon 2.0 — Sahibi: DevOps / Tech Lead*
+*Son Güncelleme: 2026-08-30 — Versiyon 2.0 — Doküman Sahibi: DevOps / Tech Lead*

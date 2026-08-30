@@ -1,65 +1,61 @@
-# ai-manifesto.md
-
 # Yapay Zeka (AI) Kodlama ve Kullanım Manifestosu
 
-> **Bu doküman ne işe yarar?**
-> Bilişsel yükü azaltmak, tekrarlayan görevleri otomatize etmek ve geliştirici deneyimini en üst düzeye çıkarmak için AI araçlarının projede nasıl güvenli, sistematik ve verimli kullanılacağını tanımlar.
+> **Bu dokümanın amacı nedir?**
+> Bilişsel yükü en aza indirmek, tekrarlayan görevleri otomatize etmek ve geliştirici deneyimini en üst düzeye çıkarmak amacıyla yapay zeka araçlarının projelerimizde nasıl güvenli, sistematik ve verimli bir şekilde kullanılacağını standartlaştırmaktır.
 
 ---
 
-## 1. Mülkiyet ve Sorumluluk (Pilot Sensin)
+## 1. Mülkiyet ve Sorumluluk
 
-Yapay zeka araçları hızımızı artıran harika yardımcı pilotlardır, ancak sistemin ana sorumluluğu ve karar alma yetkisi insandadır.
+Yapay zeka araçları geliştirme süreçlerimizi hızlandıran değerli yardımcı pilotlar olsalar da, sistemin nihai sorumluluğu ve karar alma yetkisi tamamen mühendislik ekiplerimize aittir.
 
-* **Son Onay İnsandadır:** Yapay zekanın ürettiği kodun projedeki tüm sorumluluğu (güvenlik, performans, standartlara uygunluk), o kodu ana projeye ekleyen geliştiriciye aittir. AI bir danışmandır, kodun nihai sahipliği size aittir.
-* **Karar Verme Devredilemez (Feraset):** AI size seçenekler sunabilir ve hesaplamalar (predict) yapabilir; ancak mimari tercihleri, iş mantığındaki ödünleşimleri (trade-off) ve "neyin geliştirileceğini" seçmek tamamen sizin mühendislik ferasetinize kalmıştır.
-* **"Kötü Kodu Hızlandırma" Tuzağı:** AI, iyi yönetilmezse sadece kötü kodu (spagetti) daha hızlı üretmenize sebep olur. AI, doğru mimari prensiplerle dizginlenmeli (harnessing) ve sıkı bir şekilde yönlendirilmelidir.
+* **Nihai Onay Mühendise Aittir:** Yapay zeka tarafından üretilen kodun (güvenlik, performans, standartlara uygunluk gibi) tüm sorumluluğu, ilgili kodu ana projeye entegre eden geliştiriciye aittir. Yapay zeka bir danışman statüsündedir; kodun nihai mülkiyeti ekibimizdedir.
+* **Karar Verme Süreçleri Devredilemez:** Yapay zeka çeşitli seçenekler sunabilir ve tahminsel hesaplamalar yapabilir; ancak mimari tercihlerin belirlenmesi, iş mantığındaki ödünleşimlerin (trade-off) yönetilmesi ve geliştirilecek unsurların seçimi tamamen mühendislik ferasetimize tabidir.
+* **Kalitesiz Kodun Hızlandırılması Riski:** Yapay zeka sistemleri doğru yönetilmediği takdirde, mimari açıdan zayıf (spagetti) kodların daha hızlı üretilmesine yol açabilir. Bu nedenle, yapay zeka araçları sağlam mimari prensiplerle çerçevelenmeli ve titizlikle yönlendirilmelidir.
 
-## 2. Güvenlik, Uyum ve DLP (Kırmızı Çizgilerimiz)
+## 2. Güvenlik, Uyumluluk ve Veri Kaybını Önleme (DLP)
 
-Sağlık verisi (KVKK/HIPAA) işleyen bir sistemde güvenlik, "geliştiricinin hata yapmamasına" emanet edilemez. Davranışsal kurallar yerine sistemsel bariyerler kullanıyoruz.
+Hassas verilerin işlendiği sistemlerde güvenlik, yalnızca bireysel dikkate bırakılamaz. Süreçlerimizi davranışsal kurallar yerine sistemsel kısıtlamalarla güvence altına alıyoruz.
 
-* **Lisans ve Telemetri (Zero-Data Retention):** Projelerimizde sadece veri tutmama (Zero-Data Retention) garantisi veren, Enterprise veya Business lisanslı AI araçları kullanılabilir. Bireysel lisansların modeli eğiten (training opt-in) ve telemetri toplayan özellikleri **kesinlikle kapalı** tutulmalıdır.
-* **DLP (Data Loss Prevention) Otomasyonu:** API anahtarları, `.env` dosyaları veya canlı hasta verilerinin AI'a sızmasını önlemek için lokal ortamlarda `TruffleHog` veya `git-secrets` tabanlı pre-commit hook'ları zorunludur. Yanlışlıkla gerçek bir TC kimlik no veya API Key koda/prompta gömüldüğünde sistem commit'i reddeder.
-* **Anonim Veri Kuralı:** Test ve prompt süreçlerinde her zaman algoritmik olarak üretilmiş sahte (faker) veriler kullanılır.
+* **Lisanslama ve Telemetri (Sıfır Veri Tutma):** Projelerimizde yalnızca veri tutmama (Zero-Data Retention) garantisi sunan, Kurumsal (Enterprise/Business) lisanslı yapay zeka araçlarının kullanımına izin verilmektedir. Bireysel lisanslara ait olan ve modelleri eğiten (training opt-in) ile telemetri toplayan özelliklerin **kesinlikle devre dışı** bırakılması zorunludur.
+* **DLP (Veri Kaybını Önleme) Otomasyonu:** API anahtarlarının, `.env` dosyalarının veya canlı verilerin yapay zekaya sızmasını önlemek amacıyla yerel ortamlarda `TruffleHog` veya `git-secrets` tabanlı pre-commit hook'larının kullanımı zorunludur. Yanlışlıkla gerçek bir hassas verinin koda veya komuta (prompt) eklenmesi durumunda sistem ilgili commit işlemini reddedecektir.
+* **Anonim Veri Kullanımı:** Test ve komut (prompt) süreçlerinde istisnasız olarak algoritmik olarak üretilmiş sahte (mock/faker) veriler kullanılmalıdır.
 
-## 3. Bağlam Optimizasyonu ve AI Destekli Üretim
+## 3. Bağlam Optimizasyonu ve Yapay Zeka Destekli Üretim
 
-Yapay zeka, bağlamsız kaldığında veya aşırı bilgiye maruz bırakıldığında halüsinasyon üretir.
+Yapay zeka sistemleri, bağlamsız bırakıldığında veya aşırı bilgi yüklemesine maruz kaldığında hatalı çıktılar (halüsinasyon) üretebilmektedir.
 
-* **Sistematik Bağlam (Otomasyon):** Her yeni projede reponun kök dizininde bir `.cursorrules` (veya `.github/copilot-instructions.md`) dosyası bulunmalıdır. Mimari yığın, isimlendirme standartları ve klasör yapısı buraya yazılır. Geliştirici her promptta mimariyi hatırlatmakla uğraşmaz, sistem bunu AI'a otomatik enjekte eder (Hidden System Prompt).
-* **Bağlam Daraltma (Token Economy):** AI'a bağlam verirken implementasyon dosyalarını (`.ts`, `.tsx`) değil, **sadece arayüzleri (Interface) ve tipleri (`.d.ts`, `schema.ts`)** verin. AI'ı detaylarda boğmak yerine sözleşmelere (contracts) göre kod yazmaya zorlayın.
-* **AI Destekli TDD (Test-Driven Development):** Kodu yazmadan önce testler istenir. Kabul Kriterleri (DoD) prompt olarak verilir ve AI'ın önce başarısız (red) testleri yazması sağlanır. Testler onaylandıktan sonra, AI'dan bu testleri geçecek (green) implementasyonu yazması istenir.
+* **Sistematik Bağlam (Otomasyon):** Her yeni projenin kök dizininde bir `.cursorrules` (veya `.github/copilot-instructions.md`) dosyası bulundurulması zorunludur. Mimari yığın, isimlendirme standartları ve klasör yapısı bu dosyada tanımlanır. Bu sayede, sistem ilgili mimari bağlamı yapay zekaya otomatik olarak entegre eder (Hidden System Prompt).
+* **Bağlam Daraltma (Token Optimizasyonu):** Yapay zekaya bağlam sağlanırken implementasyon dosyaları (`.ts`, `.tsx`) yerine, **yalnızca arayüzler (Interface) ve veri tipleri (`.d.ts`, `schema.ts`)** sunulmalıdır. Yapay zeka, detaylara boğulmak yerine sözleşmelere (contracts) dayalı kod üretimine yönlendirilmelidir.
+* **Yapay Zeka Destekli TDD (Test Odaklı Geliştirme):** Kodlama aşamasından önce testlerin oluşturulması esastır. Kabul Kriterleri (Definition of Done - DoD) girdi olarak sunulur ve yapay zekanın öncelikle başarısız (red) testleri yazması sağlanır. Testler onaylandıktan sonra, bu testleri başarıyla geçecek (green) implementasyonun üretilmesi talep edilir.
 
-## 4. Kod İnceleme (Code Review) Beklentileri
+## 4. Kod İnceleme (Code Review) Standartları
 
-AI desteğiyle yazılmış bir kod, manuel yazılmış bir koda göre farklı zafiyetler barındırır. Pull Request (PR) süreçlerindeki kurallarımız:
+Yapay zeka desteğiyle üretilen kodlar, manuel olarak yazılan kodlara kıyasla farklı potansiyel riskler barındırabilmektedir. Pull Request (PR) süreçlerindeki kurallarımız aşağıda belirtilmiştir:
 
-* **"Şüpheli Varsayılan" (Suspicious by Default) Kültürü:** AI ile üretilen kodlar sentaktik olarak kusursuz görünse de, iş mantığı açısından **potansiyel hatalı** kabul edilmelidir. İnceleyici (Reviewer); boşluklara veya değişken isimlerine değil, doğrudan **veri akışına (data flow) ve uç durumlara (edge cases)** odaklanmalıdır.
-* **Tautolojik Test Tuzağından Kaçınma:** AI'ın mevcut implementasyona bakarak yazdığı testler, genellikle kodun mevcut (ve muhtemelen hatalı) durumunu doğrulayan "yalancı yeşil" testlerdir. Testler, kodun ne yaptığına değil, iş kurallarının (business logic) ne beklemesi gerektiğine göre değerlendirilmelidir.
-* **"Kod Olarak Prompt" (Prompt-as-Code) Mikro-ADR:** AI kullanılarak üretilen kompleks mimari veya iş mantığı PR'larında, **kullanılan ana prompt** PR açıklama şablonuna yapıştırılmalıdır. Bu, inceleyicinin "Geliştirici ne istedi, AI ne anladı?" denklemini kurmasını sağlar.
-* **Halüsinasyon ve Bağımlılık Kontrolü:** AI'ın sırf kolayına geldiği için projeye eklediği gereksiz kütüphaneler (örn. basit bir tarih işlemi için `moment.js`) ve kullanılmayan ölü fonksiyonlar tespit edilip reddedilmelidir.
+* **Sorgulayıcı Yaklaşım (Suspicious by Default):** Yapay zeka tarafından üretilen kodlar sözdizimsel olarak kusursuz görünse dahi, iş mantığı açısından **potansiyel olarak hatalı** varsayılmalıdır. İnceleyici (Reviewer), kodun biçimsel özelliklerinden ziyade doğrudan **veri akışına (data flow) ve uç durumlara (edge cases)** odaklanmalıdır.
+* **Totolojik Test Riskinden Kaçınma:** Yapay zekanın mevcut implementasyona dayanarak oluşturduğu testler, genellikle kodun mevcut (ve muhtemel hatalı) durumunu doğrulayan yanıltıcı testlerdir. Testler, kodun mevcut işleyişine göre değil, iş kurallarının (business logic) gereksinimlerine göre değerlendirilmelidir.
+* **"Kod Olarak Komut" (Prompt-as-Code) Mikro-ADR:** Yapay zeka kullanılarak üretilen karmaşık mimari veya iş mantığı PR'larında, **kullanılan ana komut (prompt)** PR açıklama şablonuna eklenmelidir. Bu uygulama, inceleyicinin beklenti ve çıktı arasındaki ilişkiyi daha iyi analiz etmesini sağlar.
+* **Halüsinasyon ve Bağımlılık Denetimi:** Yapay zekanın projeye eklediği gereksiz kütüphaneler (örneğin basit bir tarih işlemi için `moment.js` kullanımı) ve kullanılmayan atıl fonksiyonlar tespit edilerek PR süreci reddedilmelidir.
 
-## 5. Uygulama ve Kurulum Adımları (Aksiyon Listesi)
+## 5. Uygulama ve Kurulum Prosedürleri
 
-Bu manifestonun kurallarını projenizde aktif hale getirmek için aşağıdaki adımları tamamlayın.
+Bu manifestoda belirtilen standartların projenizde aktif hale getirilmesi için aşağıdaki adımların tamamlanması gerekmektedir.
 
-### A. Proje/Repo Kurulumu (Tek Seferlik - Tech Lead/DevOps)
+### A. Proje/Depo Kurulumu (Tek Seferlik - Teknik Lider / DevOps Sorumluluğunda)
 
-* [ ] **Sistem Promtunun Eklenmesi:** Proje kök dizininde `.cursorrules` veya `.github/copilot-instructions.md` dosyasını oluşturun. İçine mimari yığını (Next.js, Tailwind vb.), klasör yapısı kurallarını ve isimlendirme standartlarını yazın.
-* [ ] **PR Şablonunun Güncellenmesi:** `.github/pull_request_template.md` dosyasını oluşturun/güncelleyin. Şablona şu iki maddeyi ekleyin:
-* *"Bu PR'da karmaşık mantıklar AI ile üretildiyse ana prompt: [Buraya Yazın]"*
-* *"Ölü kod ve halüsinasyon bağımlılık kontrolü yapıldı mı? [ ]"*
+* [ ] **Sistem Komutunun Eklenmesi:** Proje kök dizininde `.cursorrules` veya `.github/copilot-instructions.md` dosyasını oluşturunuz. İlgili mimari yığını (Next.js, Tailwind vb.), klasör yapısı kurallarını ve isimlendirme standartlarını bu dosyada tanımlayınız.
+* [ ] **PR Şablonunun Güncellenmesi:** `.github/pull_request_template.md` dosyasını oluşturunuz veya güncelleyiniz. Şablona aşağıdaki iki maddenin eklenmesi zorunludur:
+  * *"Bu PR'da karmaşık iş mantıkları yapay zeka ile üretildiyse kullanılan ana komut (prompt): [Buraya Yazınız]"*
+  * *"Atıl kod ve halüsinasyon bağımlılık kontrolü gerçekleştirildi mi? [ ]"*
+* [ ] **DLP Güvenlik Kancası (Pre-commit):** Projeye `husky` ve (tercihen) `trufflehog` veya `git-secrets` entegre ediniz. Hassas verilerin commit edilmesini engelleyecek kancayı (hook) yapılandırınız.
+* [ ] **Sahte Veri (Mock) Altyapısı:** Yapay zeka komutlarında kullanılmak üzere projeye `faker.js` veya muadili bir sahte veri üretim kütüphanesi kurunuz ve örnek bir mock veri klasörü (`/mocks`) oluşturunuz.
 
+### B. Geliştirici Aksiyonları (Oryantasyon ve Günlük Kullanım)
 
-* [ ] **DLP Güvenlik Kancası (Pre-commit):** Projeye `husky` ve (tercihen) `trufflehog` veya `git-secrets` entegre edin. API anahtarlarının commit edilmesini engelleyecek kancayı (hook) yapılandırın.
-* [ ] **Sahte Veri (Mock) Altyapısı:** AI promptlarında kullanılmak üzere projeye `faker.js` veya benzeri bir sahte veri üretim kütüphanesi kurun ve bir örnek mock veri klasörü (`/mocks`) oluşturun.
-
-### B. Geliştirici Aksiyonları (Onboarding ve Günlük Kullanım)
-
-* [ ] **Lisans ve Telemetri Kontrolü:** Kullandığınız yapay zeka aracının (Cursor, Copilot, ChatGPT) ayarlarından "Telemetry" ve "Use my data to train models" (Verilerimi model eğitimi için kullan) seçeneklerini **kapatın** veya şirketinizin sağladığı Enterprise hesabına giriş yapın.
-* [ ] **Bağlam Yönetimi Pratiği:** IDE üzerinde AI kullanırken tüm dosyaları bağlama dahil etme alışkanlığını bırakın. Sadece `.d.ts`, `types.ts` veya `schema.ts` dosyalarını etiketleyerek (örn. `@schema.ts`) soru sormayı pratik edin.
-* [ ] **AI-TDD Denemesi:** Bir sonraki küçük taskınızda, kodu yazdırmadan önce AI'a DoD (Bitti Kriterleri) listesini verip başarısız testleri (red phase) yazdırmayı deneyin.
+* [ ] **Lisans ve Telemetri Kontrolü:** Kullandığınız yapay zeka aracının (Cursor, Copilot, ChatGPT vb.) ayarlarından telemetri ve model eğitimi için veri paylaşımı (Telemetry / Use my data to train models) seçeneklerini **devre dışı bırakınız** veya şirketimizin sağladığı Kurumsal (Enterprise) hesap ile giriş yapınız.
+* [ ] **Bağlam Yönetimi Pratiği:** IDE üzerinde yapay zeka kullanırken tüm dosyaları bağlama dahil etme uygulamasından kaçınınız. Yalnızca `.d.ts`, `types.ts` veya `schema.ts` gibi sözleşme dosyalarını etiketleyerek komut oluşturmayı standart hale getiriniz.
+* [ ] **AI-TDD Uygulaması:** Bir sonraki geliştirme görevinizde, kod üretimine geçmeden önce yapay zekaya Bitti Kriterleri (DoD) listesini sunarak başarısız testlerin (red phase) oluşturulmasını sağlayınız.
 
 # Kaynaklar
 
@@ -67,8 +63,4 @@ Bu manifestonun kurallarını projenizde aktif hale getirmek için aşağıdaki 
 
 ---
 
-*Son güncelleme: 2026-08-29 — Versiyon 2.0 — Sahibi: Tech Lead / Engineering Manager*
-
-
-
-
+*Son güncelleme: 2026-08-30 — Versiyon 2.0 — Sahibi: Teknik Lider (Tech Lead) / Mühendislik Yöneticisi (Engineering Manager)*

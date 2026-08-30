@@ -1,36 +1,36 @@
-# Mühendislik Metrikleri ve Telemetri
+# Mühendislik Metrikleri ve Telemetri Standartları
 
-> **Bu doküman ne işe yarar?**
-> Playbook'taki kuralların (AI Manifesto, DoR/DoD, CI/CD) takıma sağladığı faydayı objektif olarak ölçmek için takip ettiğimiz "Kuzey Yıldızı" metriklerini tanımlar.
+> **Bu dokümanın amacı nedir?**
+> Bu belge, kurumsal prensiplerimizin (AI Manifesto, DoR/DoD, CI/CD) yazılım geliştirme ekiplerimize sağladığı verimliliği objektif olarak ölçmek amacıyla takip ettiğimiz temel performans göstergelerini ("Kuzey Yıldızı" metrikleri) tanımlamaktadır.
 
-## 1. DORA Metrikleri (Sistem Hızı ve Stabilitesi)
+## 1. DORA Metrikleri (Sistem Hızı ve Kararlılığı)
 
-Google DevOps Araştırmaları'na (DORA) dayanan bu 4 metrik, ekibin performansını ölçen ana pusulamızdır. Otomatik olarak CI/CD pipeline'ından toplanır.
+Google DevOps Araştırmaları'na (DORA) dayanan bu dört temel metrik, mühendislik ekiplerimizin performansını ölçümlediğimiz ana göstergelerdir. Bu veriler CI/CD süreçlerinden otomatik olarak derlenmektedir.
 
-| Metrik | Tanım | Hedef (Elite Seviye) | Bize Ne Söyler? |
+| Metrik | Tanım | Hedeflenen Performans (Elit Seviye) | Ölçümlediği Boyut |
 | --- | --- | --- | --- |
-| **Değişiklik Teslim Süresi (Lead Time)** | İlk commit'ten kodun canlıya (production) çıkmasına kadar geçen süre. | 1 Günden Az | DoR ve Code Review süreçlerinde (PR bekleme süresi) darboğaz olup olmadığını. |
-| **Dağıtım Sıklığı (Deploy Freq.)** | Canlı ortama ne sıklıkla kod gönderildiği. | Günde Birden Fazla | CI/CD otomasyonunun ve trunk-based development'ın çalışıp çalışmadığını. |
-| **Değişiklik Hata Oranı (CFR)** | Canlıya çıkan kodların yüzde kaçının hata (rollback/hotfix) yarattığı. | %0 - %15 Arası | DoD kriterleri ve test (QA) stratejimizin ne kadar sağlam olduğunu. |
-| **Hizmeti Geri Yükleme (MTTR)** | Canlı ortam çöktüğünde sistemi tekrar ayağa kaldırma süresi. | 1 Saatten Az | Geri alma (Rollback) otomasyonu ve Post-Mortem kültürümüzün kalitesini. |
+| **Değişiklik Teslim Süresi (Lead Time for Changes)** | Bir kod taahhüdünün (commit) üretim ortamına (production) ulaşmasına kadar geçen toplam süre. | < 1 Gün | DoR (Definition of Ready) ve Kod İnceleme (Code Review) süreçlerindeki olası darboğazlar. |
+| **Dağıtım Sıklığı (Deployment Frequency)** | Üretim ortamına gerçekleştirilen başarılı dağıtım sıklığı. | Günde Birden Fazla | CI/CD otomasyon verimliliği ve trunk-based development pratiklerinin etkinliği. |
+| **Değişiklik Başarısızlık Oranı (Change Failure Rate - CFR)** | Üretim ortamına aktarılan güncellemelerin hata (rollback/hotfix gerektiren) yaratma oranı. | %0 - %15 Arası | DoD (Definition of Done) kriterleri ve QA stratejimizin güvenilirliği. |
+| **Hizmet Kurtarma Süresi (Mean Time to Restore - MTTR)** | Üretim ortamında yaşanan bir kesintinin ardından sistemin yeniden tam operasyonel hale gelme süresi. | < 1 Saat | Sürüm geri alma (Rollback) otomasyonunun ve Post-Mortem kültürümüzün kalitesi. |
 
-## 2. Playbook Sağlık (Operasyonel) Metrikleri
+## 2. Operasyonel Sağlık Metrikleri
 
-DORA metriklerini destekleyen, iç süreçlerimizin verimliliğini gösteren tamamlayıcı metrikler:
+DORA metriklerini destekleyen ve iç süreçlerimizin operasyonel verimliliğini yansıtan tamamlayıcı performans göstergelerimiz şunlardır:
 
-* **Triage Red Oranı (Drop Rate):** Triage toplantısında reddedilen veya Icebox'a atılan müşteri talebi oranı. (Bu oran çok düşükse, 'Hayır Deme Kültürü' işlemiyor demektir).
-* **PR Gözden Geçirme Süresi (Review Cycle Time):** Bir PR'ın açılması ile onaylanması arasında geçen süre. SLA hedefimiz: **Maksimum 24 Saat**. Uzarsa, iletişim matrisindeki "24 Saat Otorite Fallback" kuralı ihlal ediliyor demektir.
-* **AI Kaynaklı Hata Oranı (AI Defect Rate):** Canlıda tespit edilen hataların ne kadarının AI tarafından üretilen (Prompt-as-Code) kompleks mantıklardan kaynaklandığı. (AI Manifestosunun çalışıp çalışmadığını ölçer).
-* **Teknik Borç Kapasitesi:** Her sprint'in %20'sinin refactor ve teknik borç ödemeye ayrılıp ayrılmadığının Jira/Linear üzerinden (Issue Types) takibi.
+* **Triage İptal Oranı (Drop Rate):** Triage toplantıları neticesinde reddedilen veya bekleme listesine (Icebox) alınan taleplerin oranı. Bu oranın çok düşük olması, organizasyonun odaklanma ve önceliklendirme stratejilerinde zafiyet olduğuna işaret eder.
+* **PR İnceleme Süresi (Review Cycle Time):** Bir PR'ın oluşturulması ile nihai onay alması arasında geçen süre. SLA hedefimiz: **Maksimum 24 Saat**. Bu sürenin aşılması, yetki ve karar alma mekanizmalarında tanımlanan eskalasyon kurallarının ihlal edildiğini gösterir.
+* **Yapay Zeka Kaynaklı Hata Oranı (AI Defect Rate):** Üretim ortamında tespit edilen hataların ne kadarının AI asistanları (Prompt-as-Code vs.) tarafından üretilen karmaşık mantıklardan kaynaklandığının oranı. Bu metrik, yapay zeka entegrasyon kurallarımızın (AI Manifesto) etkinliğini ölçer.
+* **Teknik Borç Yönetim Kapasitesi:** Her sprint döngüsünün %20'lik diliminin kod iyileştirmelerine (refactoring) ve teknik borç ödemelerine ayrılıp ayrılmadığının proje yönetim araçları (Jira/Linear vb.) üzerinden takibi.
 
-## 3. Anti-Metrikler (Kesinlikle Ölçülmeyecekler)
+## 3. İzlenmemesi Gereken Metrikler (Anti-Metrikler)
 
-Takım kültürünü (ortak mülkiyeti) zehirleyen ve Goodhart Yasası'nı tetikleyen aşağıdaki metriklerin ölçülmesi ve performans değerlendirmesinde kullanılması **kesinlikle yasaktır**:
+Takım kültürüne zarar veren, ortak mülkiyet (collective ownership) bilincini zedeleyen ve Goodhart Yasası'nı tetikleme riski barındıran aşağıdaki metriklerin ölçülmesi ve bireysel performans değerlendirmelerinde kullanılması **kesinlikle yasaktır**:
 
-* **Kişisel Hız (Individual Velocity):** Story Point'ler takımın kapasite planlaması içindir, bireyleri birbiriyle yarıştırmak (Ali 10 puan yaptı, Ayşe 5) için kullanılamaz. Bu durum Pair Programming'i öldürür.
-* **Yazılan Satır Sayısı (LoC):** Kod yazmak değil, problem çözmek değerlidir (Ürün Felsefesi Bölüm 1). Gerekirse 1000 satır kodu silip yerine 10 satır yazan geliştirici en yüksek değeri üretmiştir.
-* **Commit Sayısı:** Bilişsel eforu yansıtmaz, sistemi yapay commit'lerle (Örn: `fix typo`) şişirmeye yol açar.
+* **Bireysel Hız (Individual Velocity):** Story Point'ler efor ve takımın genel kapasite planlaması için kullanılmalıdır. Bireysel karşılaştırmalar yapmak amacıyla kullanılması Eşli Programlama (Pair Programming) dinamiklerine zarar verir.
+* **Yazılan Satır Sayısı (Lines of Code - LoC):** Organizasyonumuzda değer, yazılan kod satırıyla değil, çözülen problemin niteliğiyle ölçülür. Gerektiğinde karmaşık yapıları sadeleştirerek kod tabanını küçülten mühendislik yaklaşımları en yüksek değeri temsil eder.
+* **Taahhüt (Commit) Sayısı:** Bilişsel eforu yansıtmayan bir metriktir. Geliştiricileri sistemi yapay commit'lerle (Örn: basit yazım düzeltmeleri) şişirmeye teşvik edebilir.
 
 ---
 
-*Son güncelleme: 2026-08-29 — Versiyon 1.0 — Sahibi: Engineering Manager*
+*Son Güncelleme: 2026-08-30 — Versiyon 1.1 — Doküman Sahibi: Engineering Manager*

@@ -1,47 +1,49 @@
-# Test ve QA Stratejisi
+# Test ve Kalite Güvence (QA) Stratejisi
 
-> **Bu doküman ne işe yarar?**
-> Ürünün kalitesini güvence altına almak için nelerin test edileceğini, hangi test türlerinin kullanılacağını ve Sürekli Doğrulama (Continuous Verification) süreçlerini tanımlar. Canlı ortamda hasta verilerinin güvenliğini ve sistemin stabilitesini sağlamak tüm geliştiricilerin sorumluluğudur.
+> **Dokümanın Amacı**
+> İşbu doküman, ürün kalitesini güvence altına almak maksadıyla uygulanacak test metodolojilerini, kapsam dahilindeki bileşenleri ve Sürekli Doğrulama (Continuous Verification) süreçlerini regüle etmektedir. Üretim ortamında (production) işlenen hasta verilerinin gizliliğini/güvenliğini korumak ve sistem stabilitesini sürdürülebilir kılmak, tüm mühendislik ekibinin asli sorumluluğudur.
 
-## 1. Test Piramidi ve Kapsam
+## 1. Test Piramidi ve Kapsam Yönetimi
 
-Projemizde test piramidi prensibini uyguluyoruz. Testlerin çoğunluğu hızlı çalışan birim testlerinden, daha azı maliyetli uçtan uca (E2E) testlerden oluşur.
+Organizasyonumuzda genel geçer test piramidi prensipleri benimsenmektedir. Test otomasyon süreçlerinin ağırlıklı bölümü yüksek performanslı birim testlerine (Unit Testing), daha sınırlı ve stratejik bölümü ise kaynak maliyeti yüksek olan uçtan uca (E2E) testlere ayrılmıştır.
 
-| Test Türü | Araç | Odak Noktası | Zorunluluk |
+| Test Kategorisi | Kullanılan Araçlar | Odak Noktası | Zorunluluk Durumu |
 | --- | --- | --- | --- |
-| **Birim (Unit) Testleri** | Vitest / Jest | İş mantığı (Business logic), utils fonksiyonları, bağımsız UI bileşenleri. | Her yeni iş mantığı için **ZORUNLU**. |
-| **Entegrasyon Testleri** | React Testing Library | Bileşenlerin birbiriyle iletişimi, veritabanı sorguları (Drizzle), API route'ları. | Kritik yollar (örn: Hasta Kayıt) için **ZORUNLU**. |
-| **Uçtan Uca (E2E) Testler** | Playwright / Cypress | Gerçek tarayıcı üzerinde kullanıcı senaryoları (Login, form doldurma). | Yalnızca P1 (Çok Kritik) akışlar için. |
+| **Birim (Unit) Testleri** | Vitest / Jest | İş mantığı (Business logic), yardımcı (utility) fonksiyonlar, bağımsız arayüz (UI) bileşenleri. | Yeni eklenen her iş mantığı için **ZORUNLUDUR**. |
+| **Entegrasyon Testleri** | React Testing Library | Bileşenler arası etkileşim, veritabanı sorguları (Drizzle), API yönlendirmeleri (routes). | Kritik operasyonel süreçler (Örn: Hasta Kayıt işlemleri) için **ZORUNLUDUR**. |
+| **Uçtan Uca (E2E) Testler** | Playwright / Cypress | Gerçek tarayıcı ortamında uçtan uca kullanıcı senaryoları (Sisteme giriş, form doldurma işlemleri). | Yalnızca P1 (Çok Kritik) süreç akışlarında uygulanır. |
 
-## 2. Ne Test Edilir, Ne Test Edilmez?
+## 2. Test Edilmesi Gereken ve Kapsam Dışı Bırakılan Unsurlar
 
-**Test Edilmesi Gerekenler:**
+**Kapsama Dahil Edilmesi Zorunlu Hususlar:**
 
-* **Yatay Yetki Yükseltme (IDOR) Kontrolleri:** Sistemde sağlık verisi işlendiği için, bir kullanıcının kendisine ait olmayan bir kaynağa (Örn: `GET /api/patients/123`) erişmeye çalıştığında `403 Forbidden` veya `404 Not Found` aldığını doğrulayan entegrasyon testleri **ZORUNLUDUR**. Bu testler olmadan veri çeken hiçbir uç (endpoint) canlıya alınamaz.
-* Karmaşık hesaplamalar yapan fonksiyonlar (Örn: İndirim hesaplama, randevu çakışma kontrolü).
-* Kullanıcı giriş doğrulama (Validation) kuralları.
-* Bileşenin durum (state) değişimlerine doğru tepki vermesi (Happy Path ve Error Path).
+* **Yatay Yetki Yükseltme (IDOR) Güvenlik Kontrolleri:** Sistem altyapısında hassas sağlık verileri işlendiğinden dolayı; bir kullanıcının yetki alanı dışındaki bir kaynağa (Örn: `GET /api/patients/123`) erişim girişiminin `403 Forbidden` veya `404 Not Found` yanıtlarıyla engellendiğini doğrulayan entegrasyon testlerinin yazılması **ZORUNLUDUR**. Bu güvenlik testlerini içermeyen hiçbir veri erişim ucu (endpoint) canlı ortama taşınamaz.
+* Karmaşık iş mantığı barındıran algoritmik hesaplamalar (Örn: İndirim tahsisleri, randevu çakışma validasyonları).
+* Kullanıcı girdilerinin doğrulanmasına (Validation) yönelik kurallar.
+* Bileşenlerin, durum (state) değişikliklerine karşı beklenen tepkileri (İdeal Senaryo/Happy Path ve Hata Senaryosu/Error Path).
 
-**Test Edilmemesi Gerekenler:**
+**Kapsam Dışı Bırakılan Hususlar:**
 
-* Üçüncü parti kütüphanelerin kendi iç mantıkları (Onlar zaten test edilmiştir).
-* Sadece renk, padding, margin değiştiren görsel (CSS) güncellemeler.
-* Hiçbir iş mantığı içermeyen, sadece UI render eden basit statik bileşenler.
+* Üçüncü parti kütüphanelerin (third-party) kendi iç mekanizmaları (İlgili paketlerin halihazırda test edildiği varsayılmaktadır).
+* Yalnızca renk, boşluk (padding/margin) gibi görsel düzenlemeleri barındıran (CSS) güncellemeler.
+* İş mantığı içermeyen, salt arayüz (UI) render işlemi gerçekleştiren basit ve statik bileşenler.
 
-## 3. Yapay Zeka (AI), Test ve Mocking Kuralları
+## 3. Yapay Zeka (AI) Destekli Test ve Sahte Veri (Mocking) Protokolleri
 
-* **AI-TDD ve Davranış Odaklı Test (BDD):** Kapsam (Coverage) yüzdeleri hedef metrik değildir (Vanity Metric); hedef, iş mantığı davranışını (Behavior) doğrulamaktır (Bkz: `ai-manifesto.md`). Geliştirici, AI'dan test yazmasını isterken kodun kendisini değil, Kabul Kriterlerini (DoR) prompt olarak verir. AI'ın yazdığı testin 'başarısız (red)' olduğu görülmeden implementasyona geçilmez.
-* **Dış Servisler Mocklanır:** Testler çalışırken asla gerçek bir dış API'ye (Örn: SMS Sağlayıcı, Ödeme Geçidi) istek atılmaz. MSW (Mock Service Worker) veya test framework'ünün mock özellikleri kullanılır.
-* **Gerçek Veri Yasaktır:** Testlerde gerçek hasta verisi kullanılmaz. `faker.js` gibi kütüphanelerle algoritmik sahte veriler üretilir.
+* **AI Destekli TDD (Test-Driven Development) ve BDD (Behavior-Driven Development):** Test kapsam (Coverage) oranları kurumumuzda birincil hedef metrik (Vanity Metric) olarak değerlendirilmez; asıl amaç iş mantığının (Behavior) doğrulanmasıdır (Bkz: `ai-manifesto.md`). Mühendisler, yapay zeka araçlarından test kodlaması talep ederken referans olarak kodun kendisini değil, Kabul Kriterlerini (DoR) sağlamalıdır. Üretilen testin "başarısız (red)" durumu gözlemlenmeden uygulama (implementation) aşamasına geçilmesi kural ihlali sayılır.
+* **Dış Servislerin Simüle Edilmesi (Mocking):** Test süreçlerinde hiçbir gerçek dış API servisine (Örn: SMS entegratörleri, Ödeme geçitleri) istek gönderilemez. MSW (Mock Service Worker) araçları veya ilgili test framework'ünün mock yapıları kullanılmalıdır.
+* **Gerçek Veri Kullanımının Yasaklanması:** Test ortamlarında gerçek hasta/kullanıcı verilerinin kullanılması kesinlikle yasaktır. `faker.js` ve benzeri kütüphaneler aracılığıyla algoritmik sahte veriler üretilmelidir.
 
-## 4. QA ve Geçici Önizleme Ortamları (Preview Environments)
+## 4. Kalite Güvence (QA) ve İzole Önizleme Ortamları (Preview Environments)
 
-* **Staging Darboğazı Yoktur:** Manuel QA süreçleri `main` dalını bloklayamaz. Geleneksel ve paylaşılan "Staging" ortamında sıra beklemek yerine, her Pull Request (PR) açıldığında o dal (branch) için izole bir **Önizleme Ortamı (Preview Deployment)** otomatik olarak ayağa kalkar (Örn: Vercel/Railway PR linkleri).
-* **Asenkron Doğrulama:** QA uzmanı veya Ürün Yöneticisi (PM), manuel testlerini doğrudan bu PR linki üzerinden yapar.
-* **Canlıya Çıkış (Deployment):** Kendi kodunu otomatik testlerle doğrulayan (DoD) ve QA onayını alan PR `main` dalına merge edildiğinde, doğrudan Canlı (Production) ortama çıkmaya hazırdır.
+* **Staging Darboğazlarının Giderilmesi:** Manuel kalite güvence (QA) test süreçlerinin `main` dalını (branch) bloklamasına müsaade edilmez. Geleneksel, paylaşımlı "Staging" ortamlarındaki bekleme sürelerini ortadan kaldırmak maksadıyla, açılan her Pull Request (PR) için o geliştirme dalına özel izole bir **Önizleme Ortamı (Preview Deployment)** otomatik olarak oluşturulur (Örn: Vercel/Railway PR ortamları).
+* **Asenkron Doğrulama Süreci:** QA uzmanları veya Ürün Yöneticileri (PM), manuel doğrulama işlemlerini doğrudan ilgili PR için oluşturulan önizleme bağlantısı üzerinden yürütür.
+* **Üretime Sevk (Deployment):** Kod standartlarını karşılayan (DoD), otomatik testleri geçen ve QA onayını tamamlayan her PR `main` dalına birleştirildiğinde, doğrudan üretim ortamına (Production) çıkmaya hazır kabul edilir.
 
-## 5. Lokal ve Önizleme (Preview) Veritabanı Bariyeri:
-Geliştirici ortamlarına ve PR Preview ortamlarına hiçbir koşulda canlı veritabanı yedeği (dump) doğrudan indirilemez. Tüm geliştirme ve test verileri faker.js ile sentetik olarak üretilmeli veya canlı veri kullanılacaksa CI/CD pipeline'ı üzerinde çalışan bir Data Masking/Anonymization (Örn: pgcrypto ile TC kimlik/isim karartma) betiğinden geçirilerek anonimleştirilmelidir. Bu kuralın ihlali doğrudan bir Sev-1 güvenlik olayı (Incident) olarak değerlendirilir.
+## 5. Yerel ve Önizleme (Preview) Veritabanı Güvenlik Bariyeri
+
+Geliştirici bilgisayarlarına veya PR Preview ortamlarına hiçbir surette üretim (production) veritabanı yedeği (dump) doğrudan kopyalanamaz/indirilemez. Tüm geliştirme ve test verileri, ya `faker.js` gibi araçlarla tamamen sentetik olarak üretilmeli ya da canlı verinin kullanılması zorunlu olduğu hallerde CI/CD boru hattı (pipeline) üzerinde koşan bir Veri Maskeleme/Anonimleştirme betiğinden (Örn: pgcrypto yardımıyla kimlik ve isim karartma işlemleri) geçirilerek anonim hale getirilmelidir. Bu protokolün ihlali, kurum güvenlik politikaları gereği doğrudan en yüksek kritiklik seviyesinde (Sev-1 Incident) bir güvenlik vakası olarak işleme alınır.
+
 ---
 
-*Son güncelleme: 2026-08-29 — Versiyon 2.0 — Sahibi: QA Lead / Tech Lead*
+*Son güncelleme: 2026-08-29 — Versiyon 2.0 — Sorumlu: QA Lead / Tech Lead*

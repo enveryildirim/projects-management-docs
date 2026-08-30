@@ -1,24 +1,24 @@
-# Definition of Ready (DoR) - Geliştirmeye Hazır Kriterleri
+# Geliştirmeye Hazır Kriterleri (Definition of Ready - DoR)
 
-> **Bu doküman ne işe yarar?**
-> Bir görevin yazılım ekibine iletilmeden ve kodlanmaya başlanmadan önce sağlaması gereken asgari şartları tanımlar. Bu kurallar, eksik analizle geliştirme yapmanın (ve sonradan kodu çöpe atmanın) önüne geçmek için tasarlanmıştır.
+> **Bu dokümanın amacı nedir?**
+> Herhangi bir yazılım geliştirme görevinin mühendislik ekibine atanmadan ve kodlanmaya başlanmadan önce sağlaması gereken asgari kurumsal şartları tanımlamaktır. Bu standartlar, eksik analizle geliştirme süreçlerine başlanmasının ve kaynak israfının önüne geçmek amacıyla tasarlanmıştır.
 
-> 💡 **Sistemik Kural:** Aşağıdaki *tüm* şartlar sağlanmamışsa, geliştirici görevi "Halt on Ambiguity" (Belirsizlikte Dur) prensibi gereği reddetmekle ve Ürün Yöneticisine (PM) iade etmekle yükümlüdür.
+> 💡 **Kurumsal Sistem Kuralı:** Aşağıda listelenen şartların *tamamı* sağlanmadığı takdirde, geliştirici "Belirsizlikte Dur (Halt on Ambiguity)" prensibi gereğince görevi reddetmek ve gerekli iyileştirmelerin yapılması için Ürün Yöneticisine (PM) iade etmekle yükümlüdür.
 
-## 1. 🎯 Ürün, Kapsam ve Hipotez (Ürün Felsefesi Uyumlu)
+## 1. 🎯 Ürün, Kapsam ve Stratejik Uyum (Ürün Felsefesi Entegrasyonu)
 
-- [ ] **Kök Neden ve Hipotez Belli:** "Kullanıcı bunu neden istiyor?" (5 Neden) cevaplandı. Görevin başarı metriği (Örn: "Dönüşüm oranı %2 artacak") açıkça tanımlandı.
-- [ ] **Kabul Kriterleri (Acceptance Criteria):** İşin nasıl test edileceği Given-When-Then formatında net bir şekilde yazıldı.
-- [ ] **Görev Boyutu Uygun:** Görev, bir geliştiricinin maksimum 3 gününde bitirebileceği (kapsamı sınırlandırılmış - scope bounded) alt parçalara bölündü.
+- [ ] **Kök Neden ve İş Hipotezi Doğrulanmıştır:** "Kullanıcı bu fonksiyona neden ihtiyaç duymaktadır?" sorusu (5 Neden analizi ile) yanıtlanmıştır. İlgili görevin başarı metrikleri (Örneğin: "Dönüşüm oranında %2 artış sağlanması") açıkça tanımlanmış ve belgelenmiştir.
+- [ ] **Kabul Kriterleri (Acceptance Criteria) Belirlenmiştir:** Geliştirilecek modülün test senaryoları "Given-When-Then" (Koşul-Eylem-Sonuç) formatında net bir şekilde ifade edilmiştir.
+- [ ] **Görev Kapsamı (Scope) Optimize Edilmiştir:** Görev, bir yazılım mühendisinin en fazla 3 iş günü içerisinde tamamlayabileceği, sınırları net olarak çizilmiş (scope-bounded) alt parçalara ayrıştırılmıştır.
 
-## 2. 🎨 Tasarım ve Arayüz (Frontend İşleri İçin)
+## 2. 🎨 Arayüz Tasarımı ve Kullanıcı Deneyimi (Frontend Geliştirmeleri İçin)
 
-- [ ] **Tasarım Linki Ekli:** Tasarım dosyaları (Figma vb.) karta bağlandı.
-- [ ] **Uç Durumlar (Edge Cases) Çizilmiş:** Sadece Happy Path değil; "Boş (Empty)", "Yükleniyor (Loading)" ve "Hata (Error)" durumları tanımlandı.
-- [ ] **Tasarım Sistemi Uyumu:** Arayüz, projedeki "Altın Yol" (Golden Path) UI bileşenlerine uygun tasarlandı. (Yeni bileşen icadı gerekiyorsa önceden belirtildi).
+- [ ] **Tasarım Varlıkları Bağlanmıştır:** İlgili tüm arayüz tasarım dosyaları (Figma vb.) görev kartına (ticket) entegre edilmiştir.
+- [ ] **Uç Durumlar (Edge Cases) Tanımlanmıştır:** Yalnızca ideal akış (Happy Path) değil; veri bulunmama (Empty), işlem devam etme (Loading) ve sistem hatası (Error) durumlarına ait arayüz ve senaryolar tasarlanmıştır.
+- [ ] **Tasarım Sistemi Uyumu Sağlanmıştır:** Arayüz tasarımları, kurumun mevcut standart UI bileşen setlerine uygun olarak hazırlanmıştır. Eğer yeni bir UI bileşeni tasarlanması gerekiyorsa, bu durum ayrıca belgelenmiştir.
 
-## 3. ⚙️ Teknik, AI ve Bağımlılıklar
+## 3. ⚙️ Teknik Altyapı, Yapay Zeka ve Sistem Bağımlılıkları
 
-- [ ] **API/Veritabanı Hazır:** Frontend çalışacaksa API uçları (endpoint) dokümante edildi veya mock datalar (/mocks) sağlandı.
-- [ ] **Sistem Mimarisi ve Dış Bağımlılıklar:** Mimari etki veya 3. parti API kullanımı varsa karta not edildi. Başka bir ekibin/kişinin işini bitirmesi beklenmiyor.
-- [ ] **Güvenlik ve Veri Sınıflandırması:** Sağlık verisi (KVKK/HIPAA) işlenecekse veya dışarıya veri çıkacaksa, anonimleştirme kuralları belirtildi.
+- [ ] **API ve Veritabanı Servisleri Hazırdır:** Frontend (Önyüz) geliştirme süreçleri başlayacaksa, gerekli API uç noktaları (endpoints) dokümante edilmiş veya geliştirme ortamı için mock (sahte) veriler sağlanmıştır.
+- [ ] **Sistem Mimarisi ve Dış Bağımlılıklar Netleştirilmiştir:** Geliştirmenin genel mimariye etkileri veya üçüncü parti API bağımlılıkları görev kartında detaylandırılmıştır. Geliştirme süreci, başka bir ekibin operasyonunu tamamlamasına bağlı değildir.
+- [ ] **Veri Güvenliği ve Regülasyon Uyumu (KVKK/HIPAA vb.):** Hassas kişisel veya sağlık verilerinin işlenmesi, aktarılması veya saklanması durumlarında veri anonimleştirme ve güvenlik kuralları katı bir şekilde tanımlanmıştır.

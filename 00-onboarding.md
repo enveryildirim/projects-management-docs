@@ -1,36 +1,35 @@
-# Geliştirici Oryantasyon (Onboarding) Çizelgesi
+# Geliştirici Oryantasyon (Onboarding) Süreci
 
-> **Bu doküman ne işe yarar?**
-> Ekibe yeni katılan bir geliştiricinin 1. gün, 1. hafta ve 1. ay içinde neleri başarması gerektiğini tanımlar. Amacımız, yeni ekip üyesinin sisteme en hızlı, güvenli ve stressiz şekilde entegre olmasını sağlamaktır.
+> **Dokümanın Amacı**
+> Bu doküman, ekibimize yeni katılan yazılım mühendislerinin 1. gün, 1. hafta ve 1. ay periyotlarındaki hedeflerini ve beklenen kazanımlarını tanımlamaktadır. Temel gayemiz, yeni ekip üyelerimizin sistemimize en hızlı, güvenli ve verimli şekilde entegrasyonunu sağlamaktır.
 
 ---
 
 ## 1. Gün: "Sisteme Giriş ve İlk Kurulum"
 
-İlk günün amacı, kod yazmak değil ortamı hazırlamak ve ekiple tanışmaktır.
+İlk günün odak noktası, kod geliştirmekten ziyade çalışma ortamının eksiksiz hazırlanması ve ekip içi iletişimin başlatılmasıdır.
 
-- [ ] **Erişimler:** GitHub, Slack, Jira, Figma ve 1Password (veya AWS/Cloud) davetlerini kabul et.
-- [ ] **Lokal Kurulum:** `local-setup.md` dokümanını takip ederek projeyi lokalinde hatasız ayağa kaldır. (Takıldığın yerde doğrudan Uzman/Otorite kişiye sor - bkz. Yetkinlik Matrisi).
-- [ ] **Kültür Okuması:** `urun-felsefesi.md` ve `iletisim-ve-toplanti.md` dokümanlarını oku.
-- [ ] **Tanışma:** Slack `#general` kanalında kendini tanıtan kısa bir mesaj at.
+- [ ] **Erişim Yetkileri:** GitHub, Slack, Jira, Figma ve 1Password (veya ilgili AWS/Cloud servisleri) davetlerini onaylayınız.
+- [ ] **Yerel (Local) Kurulum:** `local-setup.md` dokümanındaki yönergeleri izleyerek projeyi yerel ortamınızda eksiksiz bir şekilde çalışır duruma getiriniz. (Destek gerektiren durumlarda ilgili Uzman/Otorite ile iletişime geçiniz - bkz. Yetkinlik Matrisi).
+- [ ] **Kurum Kültürü Okumaları:** `product-philosophy.md` ve `communication-and-meetings.md` dokümanlarını inceleyiniz.
+- [ ] **Ekip Tanışması:** Kurumsal Slack `#general` kanalında kendinizi tanıtan kısa bir bilgilendirme mesajı paylaşınız.
 
-## 1. Hafta: "İlk Commit ve Süreçleri Anlama"
+## 1. Hafta: "İlk Commit ve Operasyonel Süreçlerin Kavranması"
 
-İlk haftanın hedefi, projeye ufak da olsa bir değer katmak ve kodu canlıya almaktır.
+İlk haftanın temel hedefi, projeye değer katan ilk geliştirmenin yapılması ve kodun canlı ortama taşınma süreçlerinin deneyimlenmesidir.
 
-- [ ] **Süreçleri Öğrenme:** `dod.md`, `dor.md` ve `karar-verme-yetkisi.md` dokümanlarını oku.
-- [ ] **İlk Görev (Good First Issue):** Jira'dan "Good First Issue" etiketli, teknik riski düşük (örn. buton rengi değişimi, basit bir metin düzeltmesi) bir görev al.
-- [ ] **Kod İncelemesi (PR):** Görevini tamamla, PR aç ve takım arkadaşından Code Review talep et.
-- [ ] **Canlıya Alma:** Kendi yazdığın kodun CI/CD boru hattından (pipeline) geçip `staging` ortamına çıkışını izle.
+- [ ] **Süreç Adaptasyonu:** `dod.md`, `dor.md` ve `decision-making-authority.md` dokümanlarını dikkatlice okuyunuz.
+- [ ] **İlk Görevlendirme (Good First Issue):** Jira platformu üzerinden "Good First Issue" olarak etiketlenmiş, teknik riski düşük (örn. UI güncellemeleri, metin revizyonları) bir görev üstleniniz.
+- [ ] **Kod İnceleme Süreci (PR):** Geliştirmenizi tamamlayarak Pull Request (PR) oluşturunuz ve ekip üyelerinden kod incelemesi (Code Review) talep ediniz.
+- [ ] **Canlıya Alma (Deployment):** Geliştirdiğiniz kodun CI/CD boru hattı (pipeline) üzerinden başarıyla geçerek `staging` ortamına aktarılışını takip ediniz.
 
-## 1. Ay: "Otonomi ve Sahiplik"
+## 1. Ay: "Otonomi ve Görev Sahipliği"
 
-Birinci ayın sonunda, geliştirici artık bağımsız bir şekilde uçtan uca özellik (feature) geliştirebilir hale gelmelidir.
+Birinci ayın tamamlanmasıyla birlikte, mühendislerimizin uçtan uca özellik (feature) geliştirme süreçlerini bağımsız olarak yürütebilmeleri beklenmektedir.
 
-- [ ] **Mimari Hakimiyet:** Müşteri talep döngüsünü kavra (`musteri-talep-rehberi.md`), projenin klasör yapısına ve Next.js/Drizzle mimarisine tam olarak hakim ol.
-- [ ] **Feature Sahipliği:** Orta/Büyük ölçekli bir epik veya özelliği uçtan uca al, geliştir, testlerini yaz ve canlıya çıkar.
-- [ ] **Geri Bildirim:** 1. ayın sonunda Tech Lead ile 1-on-1 (birebir) toplantı yaparak onboarding sürecini değerlendir. "Neyi daha iyi yapabilirdik?" sorusuna yanıt ver.
+- [ ] **Mimari Hakimiyet:** Müşteri talep döngüsünü (`musteri-talep-rehberi.md`) bütünüyle kavrayınız; projenin dizin yapısına ve Next.js/Drizzle mimarisine tam hakimiyet sağlayınız.
+- [ ] **Özellik (Feature) Sahipliği:** Orta veya büyük ölçekli bir epik/özellik geliştirme sürecini uçtan uca üstleniniz; geliştirme, test yazımı ve canlıya alma aşamalarını başarıyla tamamlayınız.
+- [ ] **Geri Bildirim Süreci:** Birinci ayın sonunda Teknik Lider (Tech Lead) ile birebir (1-on-1) değerlendirme toplantısı gerçekleştirerek oryantasyon sürecini analiz ediniz ve gelişim alanlarına dair geri bildirimlerinizi sununuz.
 
 ---
-*Son güncelleme: 2026-08-29 — Versiyon 1.0 — Sahibi: Engineering Manager / Tech Lead*
-
+*Son güncelleme: 2026-08-29 — Versiyon 1.0 — Sorumlu: Mühendislik Yöneticisi (Engineering Manager) / Teknik Lider (Tech Lead)*

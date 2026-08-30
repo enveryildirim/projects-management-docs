@@ -1,50 +1,50 @@
 # Tasarım Sistemi ve UI Referansı (Golden Path)
 
-> **Bu doküman ne işe yarar?**
-> Projenin arayüzlerinin tutarlı kalmasını sağlar. Bileşenlerin sıfırdan icat edilmesini engeller, Next.js App Router standartlarına uygun render stratejilerini (RSC vs. Client) ve Tailwind tema mimarisini belirler.
+> **Dokümanın Amacı**
+> Bu doküman, proje arayüzlerinin tutarlılığını temin etmeyi amaçlamaktadır. Bileşenlerin mükerrer olarak geliştirilmesini önler; Next.js App Router standartlarına uygun render stratejilerini (RSC ve Client) ve Tailwind tema mimarisini belirler.
 
 ## 1. Araç Seti ve Temel Kurallar
 
 * **CSS Framework:** Tailwind CSS
-* **Bileşen Kütüphanesi:** Shadcn UI (Radix tabanlı erişilebilir bileşenler)
+* **Bileşen Kütüphanesi:** Shadcn UI (Radix tabanlı, erişilebilirlik standartlarına uygun bileşenler)
 * **İkonlar:** Lucide Icons
 * **Stil Birleştirme (Composition):** `cn()` yardımcı fonksiyonu (`clsx` + `tailwind-merge`)
 
-> 💡 **Altın Kural:** Özel (custom) CSS yazmak yasaktır. Koşullu (conditional) veya dışarıdan gelen sınıfları (prop olarak gelen `className`) birleştirirken her zaman `cn()` fonksiyonu kullanılmalıdır. Aksi takdirde Tailwind CSS kaskad çatışmaları yaşanır.
+> 💡 **Temel Prensip:** Özel (custom) CSS yazımı kurum standartlarımızca uygun bulunmamaktadır. Koşullu (conditional) veya dışarıdan sağlanan sınıfların (prop olarak iletilen `className`) birleştirilmesi işlemlerinde istisnasız olarak `cn()` fonksiyonu kullanılmalıdır. Aksi durumlarda Tailwind CSS kaskad çakışmaları meydana gelebilmektedir.
 
 ## 2. Tailwind CSS ve Tema Kuralları
 
-* **Semantik Renk Değişkenleri:** Renk kodlarını (Örn: `text-gray-500` veya `#ff0000`) hardcode yazmak yasaktır. Bunun yerine tema değişkenleri (`text-muted-foreground`, `bg-destructive`) kullanılır. Bu, karanlık mod (Dark Mode) desteğini şartsız sağlar.
-* **Gelişigüzel Değerler (Arbitrary Values) İstisnası:** `w-[325px]` gibi rastgele pikseller ancak sistemin dışından gelen 3. parti bir entegrasyon veya kesin bir marka logosu kısıtlaması varsa kullanılabilir. Bunun dışında sistemin `spacing` skalası dışına çıkılamaz.
-* **Mobil Öncelikli Tasarım:** Varsayılan tasarımlar mobildir. Tablet ve masaüstü için `md:` ve `lg:` breakpoint'leri kullanılır. (Örn: `flex-col md:flex-row`).
+* **Semantik Renk Değişkenleri:** Renk kodlarının (Örn: `text-gray-500` veya `#ff0000`) doğrudan kod içerisine yazılması (hardcoding) uygun değildir. Bunun yerine tema değişkenleri (`text-muted-foreground`, `bg-destructive`) kullanılmalıdır. Bu yaklaşım, karanlık mod (Dark Mode) desteğinin koşulsuz olarak sağlanmasını güvence altına alır.
+* **Gelişigüzel Değerler (Arbitrary Values) İstisnası:** `w-[325px]` gibi spesifik piksel değerleri, yalnızca sistem dışından entegre edilen 3. parti yazılımlar veya kesin marka logosu kısıtlamaları söz konusu olduğunda kullanılabilir. Belirtilen istisnalar haricinde, sistemin tanımlı `spacing` skalasının dışına çıkılmamalıdır.
+* **Mobil Öncelikli Tasarım:** Tasarımlarımız varsayılan olarak mobil odaklıdır. Tablet ve masaüstü görünümleri için `md:` ve `lg:` kesim noktaları (breakpoint) kullanılmalıdır (Örn: `flex-col md:flex-row`).
 
 ## 3. Next.js Bileşen (Component) Mimarisi (App Router)
 
-Bileşenlerimiz geleneksel Smart/Dumb yerine, performans ve güvenlik açısından **Server vs. Client** prensibiyle ikiye ayrılır:
+Bileşen mimarimiz, geleneksel Smart/Dumb ayrımı yerine performans ve güvenlik kriterleri göz önünde bulundurularak **Server ve Client** prensibi doğrultusunda iki ana kategoriye ayrılmaktadır:
 
-### 3.1. Server Components (Varsayılan - Default)
+### 3.1. Server Components (Varsayılan)
 
-* İş mantığı barındırır, doğrudan veritabanına bağlanır veya fetch isteği atar (`async/await` kullanır).
-* Boyutu sıfırdır (JS bundle'a eklenmez), SEO dostudur.
-* **Kısıtlamalar:** `useState`, `useEffect`, `onClick` gibi interaktif hook'ları veya olay dinleyicileri (event listener) KULLANAMAZ.
+* İş mantığını barındırır; doğrudan veritabanı bağlantılarını gerçekleştirir veya veri çekme (fetch) isteklerini yönetir (`async/await` yapısını kullanır).
+* JavaScript paket (bundle) boyutuna etki etmez (sıfır boyutludur) ve SEO standartlarına tam uyumludur.
+* **Kısıtlamalar:** `useState`, `useEffect`, `onClick` gibi interaktif hook'ların veya olay dinleyicilerinin (event listener) KULLANILMASI MÜMKÜN DEĞİLDİR.
 
 ### 3.2. Client Components (`"use client"`)
 
-* Yalnızca kullanıcı etkileşimi (tıklama, form doldurma), animasyon veya tarayıcı API'leri (localStorage vb.) gerektiğinde kullanılır.
-* `src/components/ui/` altındaki Shadcn bileşenleri genellikle Client Component'tir.
-* **Mimari Kural:** İstemci bileşenleri ağacın (tree) mümkün olan en "yaprak" (leaf) noktasına itilmelidir. Koca bir sayfayı `"use client"` yapmak mimari bir hatadır.
+* Yalnızca kullanıcı etkileşimi (tıklama, form doldurma), animasyon süreçleri veya tarayıcı API'lerinin (localStorage vb.) kullanımının zorunlu olduğu durumlarda tercih edilmelidir.
+* `src/components/ui/` dizininde yer alan Shadcn bileşenleri genellikle Client Component yapısındadır.
+* **Mimari Kural:** İstemci bileşenleri, bileşen ağacının (tree) mümkün olan en uç noktalarına (leaf) yerleştirilmelidir. Sayfanın tamamının `"use client"` olarak tanımlanması mimari bir ihlal olarak değerlendirilir.
 
-## 4. Yeni Bir Bileşen Eklerken Karar Ağacı ve AI Kuralları
+## 4. Yeni Bir Bileşen Eklerken İzlenecek Karar Ağacı ve AI Kuralları
 
-Yeni bir arayüz çizerken (veya AI'a kodlatırken) şu hiyerarşi izlenir:
+Yeni bir arayüz bileşeni geliştirilirken (veya AI araçları ile oluşturulurken) aşağıdaki hiyerarşik adımlar izlenmelidir:
 
-1. **Hazır Bileşen:** İhtiyaç duyulan bileşen Shadcn'de var mı? -> Varsa `npx shadcn-ui@latest add [bileşen-adı]` ile projeye dahil et.
-2. **Kompozisyon:** Yoksa, mevcut Shadcn UI bileşenleri birleştirilerek oluşturulabilir mi? -> Varsa öyle yap.
-3. **Özel Üretim ve ADR (Seviye 2 Karar):** Sistemle çözülemiyorsa, `#frontend` kanalında Otorite'den (Bkz: `yetkinlik-ve-etki-alani.md`) onay alınarak inşa edilir.
+1. **Hazır Bileşen Kullanımı:** İhtiyaç duyulan bileşen Shadcn kütüphanesinde mevcut mudur? -> Mevcut ise `npx shadcn-ui@latest add [bileşen-adı]` komutu ile projeye entegre ediniz.
+2. **Kompozisyon (Birleştirme):** Hazır bir bileşen bulunmuyorsa, mevcut Shadcn UI bileşenleri birleştirilerek yeni bir yapı oluşturulabilir mi? -> Mümkünse bu yöntemi tercih ediniz.
+3. **Özel Geliştirme ve ADR (Seviye 2 Karar):** İhtiyaç sistemin mevcut olanaklarıyla çözülemiyorsa, `#frontend` iletişim kanalında yetkili birimden (Bkz: `competency-and-raci.md`) onay alınarak geliştirme sürecine başlanmalıdır.
 
-🚨 **AI ve Geliştirici İçin Zorunlu Kontroller:**
-Sıfırdan üretilen (Özel Üretim) her UI bileşeni şu standartları sağlamak zorundadır:
+🚨 **AI ve Geliştirici İçin Zorunlu Kontrol Listesi:**
+Sıfırdan tasarlanan (Özel Üretim) her UI bileşeni, aşağıdaki kalite standartlarını sağlamakla yükümlüdür:
 
-* [ ] Klavye navigasyonunu (Tab ile gezilebilirliği) desteklemelidir.
-* [ ] Gerekli `aria-` etiketlerini barındırmalıdır (Erişilebilirlik).
-* [ ] Dışarıdan `className` prop'u kabul etmeli ve bunu `cn(defaultClasses, className)` şeklinde işlemelidir.
+* [ ] Klavye navigasyonunu (Tab tuşu ile erişilebilirliği) tam olarak desteklemelidir.
+* [ ] Gerekli `aria-` etiketlerini içermelidir (Erişilebilirlik standartları).
+* [ ] Dışarıdan `className` özelliğini (prop) kabul etmeli ve bu parametreyi `cn(defaultClasses, className)` formatında işleyebilmelidir.

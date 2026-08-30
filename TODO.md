@@ -9,11 +9,8 @@ Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanl
 - [ ] **Önyargı Yönetimi (HIPPO):** En yüksek maaşlı kişinin fikrinin (Highest Paid Person's Opinion) teknik kararları ezmesini engelleyecek kültür prensiplerini netleştirmek.
 
 ## 2. Eksik Süreçler ve Yeni Doküman İhtiyaçları
-- [ ] **Güvenlik ve Uyum (DevSecOps):** Veri gizliliği, sızma testi pratikleri ve güvenlik standartları (Örn: [TruffleHog](https://github.com/trufflesecurity/trufflehog) ile secret sızıntılarını engelleme).
-- [ ] **Olay Yönetimi (Incident Management):** Canlı ortamda (prod) sistem çöktüğünde kimin aranacağı ve "Suçlamasız Post-Mortem" (Kök Neden Analizi) süreçlerinin tanımlanması.
-- [ ] **Mimari Karar Kayıtları (ADR):** Backend, veritabanı veya sistem mimarisi kararlarının nasıl alınacağı ve belgeleneceği için standart bir ADR şablonu oluşturmak.
-- [ ] **Önceliklendirme Çerçevesi (Prioritization):** Taleplerin önceliğini (P0, P1, P2) belirlerken kullanılacak metriklerin (Örn: RICE skoru, Fırsat Maliyeti / Cost of Delay) tanımlanması.
-- [ ] **Kaos Yönetimi:** Cynefin Framework (Matrisi) kullanılarak kriz, karmaşıklık ve rutin durumların nasıl yönetileceğinin dokümante edilmesi.
+- [x] **Güvenlik ve Uyum (DevSecOps):** Veri gizliliği, sızma testi pratikleri ve güvenlik standartları (Örn: [TruffleHog](https://github.com/trufflesecurity/trufflehog) ile secret sızıntılarını engelleme).
+- [x] **Mimari Karar Kayıtları (ADR):** Backend, veritabanı veya sistem mimarisi kararlarının nasıl alınacağı ve belgeleneceği için standart bir ADR şablonu oluşturmak.
 
 ## 3. Geliştirici Deneyimi (DX) ve Otomasyon
 - [ ] **Bariyer Yorgunluğu (Tick-box Fatigue) Çözümü:** DoD ve DoR maddelerini PR şablonlarında manuel "checkbox" olmaktan çıkarıp, otomatikleştirilmiş CI/CD kontrollerine bağlamak.

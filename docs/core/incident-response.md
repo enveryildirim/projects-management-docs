@@ -1,67 +1,67 @@
-# Olay Müdahale ve Post-Mortem Rehberi (Incident Response)
+# Olay Müdahale ve Hata Sonrası İnceleme (Incident Response & Post-Mortem) Prosedürü
 
-> **Bu doküman ne işe yarar?**
-> Canlı sistem (Production) çöktüğünde veya veri ihlali yaşandığında paniği ve koordinasyonsuzluğu engeller. Kriz anındaki rolleri, iletişim kurallarını ve olay çözüldükten sonra yapılacak "Suçlamasız (Blameless) Post-Mortem" şablonunu belirler.
+> **Bu dokümanın amacı nedir?**
+> Canlı sistemlerde (Production) yaşanabilecek kesintiler veya veri ihlalleri durumunda kriz yönetimini standartlaştırmaktır. Bu prosedür, kriz anındaki görev dağılımlarını, iletişim protokollerini ve olay çözümlendikten sonra gerçekleştirilecek "Suçlamasız (Blameless) Post-Mortem" süreçlerini düzenler.
 
 ---
 
 ## 1. Olay Sınıflandırması (Severity Levels)
 
-Her hata kriz değildir. Olayın şiddetine göre aksiyon alınır:
+Her sistem uyarısı bir kriz olarak değerlendirilmez. Meydana gelen olayın şiddetine göre (Bkz: [P0-P4 Önceliklendirme Çerçevesi](p0-p4-prioritization.md)) aşağıdaki aksiyon planları devreye alınır:
 
-* **Sev-1 (Kritik Kesinti / Veri İhlali):** Sistem tamamen çöktü, ana iş akışları (örn: hasta kaydı, ödeme alma) çalışmıyor veya güvenlik/KVKK ihlali var. **Aksiyon:** İlgili herkes anında uyanır/işi bırakır, War Room (Savaş Odası) açılır.
-* **Sev-2 (Kısmi Kesinti):** Sistemin önemli bir parçası çalışmıyor ama geçici bir çözüm (workaround) var veya kullanıcıların sadece küçük bir yüzdesi etkileniyor. **Aksiyon:** Sorumlu ekip aynı gün içinde müdahale eder.
-* **Sev-3 (Minör Hata):** Fonksiyonel olmayan bir hata, yavaşlık veya yanlış UI. **Aksiyon:** Standart backlog'a `bug` olarak eklenir, mevcut sprint'i bölmez.
+* **Sev-1 / P0 (Kritik Kesinti / Veri İhlali):** Sistemin bütünüyle çökmesi, kritik iş akışlarının (örneğin hasta kayıt sistemleri veya tahsilat altyapısı) durması veya güvenlik/KVKK ihlali durumlarıdır. **Aksiyon Planı:** İlgili tüm personel mesai saati gözetmeksizin duruma müdahale eder ve derhal Kriz Masası (War Room) oluşturulur.
+* **Sev-2 / P1 (Kısmi Kesinti):** Sistemin kritik bir modülünün işlevini yitirmesi, ancak alternatif bir sürecin (workaround) bulunması veya kullanıcı tabanının yalnızca belirli bir segmentinin etkilenmesi durumudur. **Aksiyon Planı:** Sorumlu mühendislik ekibi aynı iş günü içerisinde çözüm üretmekle mükelleftir.
+* **Sev-3 / P2 (Minör Hata):** Temel fonksiyonları etkilemeyen performans sorunları, arayüz hataları veya minör pürüzlerdir. **Aksiyon Planı:** Standart ürün birikim listesine (backlog) hata (bug) olarak kaydedilir, aktif sprint döngüsünü kesintiye uğratmaz.
 
-## 2. Kriz Anı Kuralları (Golden Rules of the War Room)
+## 2. Kriz Yönetimi Kuralları (Golden Rules of the War Room)
 
-Sev-1 bir olay patlak verdiğinde (PagerDuty çaldığında) aşağıdaki 3 kural koşulsuz işletilir:
+Bir Sev-1 olayı meydana geldiğinde (uyarı sistemleri tetiklendiğinde), aşağıdaki kurallar tavizsiz olarak uygulanır:
 
-1. **Önce Kanamayı Durdur (Mitigation > Resolution):** Kriz anında kod refactor edilmez, kök neden aranmaz. Öncelik sistemi ayağa kaldırmaktır. Çözüm "önceki versiyona tek tuşla rollback yapmak" ise derhal yapılır (Bkz: `ci-cd-deployment.md`). Kök neden, sistem düzeldikten sonra aranır.
-2. **Kahramanlık Yasaktır (No Solo Operations):** Kimse tek başına sunucuya bağlanıp (SSH) veya veritabanında doğrudan SQL çalıştırıp durumu kurtarmaya çalışamaz. Atılan her komut, War Room (Slack) kanalına yazılmalıdır.
-3. **Koordineli İletişim:** Olay anında "Ne zaman düzelir?", "Ne oldu?" gibi sorularla mühendisleri darlamak yasaktır. İletişimi "Communicator" (İletişim Sorumlusu) yönetir.
+1. **Öncelikli Olarak Sistemin Stabilizasyonu (Mitigation > Resolution):** Kriz anında kod mimarisi iyileştirilmez (refactor) veya kök neden analizi yapılmaz. Birinci öncelik sistemin operasyonel hale getirilmesidir. Eğer çözüm "önceki stabil sürüme geri dönmek (rollback)" ise, bu işlem derhal gerçekleştirilir. Kök neden analizi, sistem stabilizasyonu sağlandıktan sonra icra edilir.
+2. **Bireysel İnisiyatif Kısıtlaması (No Solo Operations):** Hiçbir personel tek başına sunuculara bağlanarak (SSH) veya veritabanı üzerinde doğrudan komut çalıştırarak sisteme müdahale edemez. Uygulanan her işlem ve komut, Kriz Masası (Slack vb.) kanalında şeffaf bir şekilde belgelenmelidir.
+3. **Koordineli İletişim Protokolü:** Olay anında müdahale ekiplerinden sürekli durum güncellemesi talep etmek operasyonu yavaşlatır. Tüm iletişim ve bilgilendirme süreçleri, atanmış olan "İletişim Sorumlusu (Communicator)" tarafından yürütülür.
 
-## 3. Olay Rolleri
+## 3. Olay Müdahale Rolleri
 
-Bir Sev-1 anında Slack kanalında ilk katılanlar hızla şu rolleri paylaşır (Unvanlardan bağımsızdır):
+Bir Sev-1 durumu oluştuğunda, kurumsal unvanlardan bağımsız olarak müdahale ekibi hızlıca aşağıdaki rolleri üstlenir:
 
-* **Incident Commander (Olay Komutanı):** Operasyonu yönetir. Koda dokunmaz, log okumaz. Karar verir, yetkilendirme yapar ve tartışmaları sonlandırır. "Şimdi Rollback yapıyoruz" deme yetkisi ondadır.
-* **Lead Resolver (Çözümcü):** Kodu, logları ve metrikleri inceleyen, terminal başında olan ana mühendistir.
-* **Communicator (İletişim Sorumlusu):** Ürün veya Destek ekibinden biridir. Müşterilere, üst yönetime ve paydaşlara "Şu an sorunun farkındayız, müdahale ediyoruz" şeklinde periyodik güncellemeler (15-30 dakikada bir) geçer.
+* **Olay Komutanı (Incident Commander):** Kriz operasyonunu yönetir. Koda doğrudan müdahale etmez veya log analizi yapmaz. Durum değerlendirmesi yapar, görevlendirmeleri koordine eder ve kararları onaylar (Örneğin sürüm geri alma kararı). Nihai yetki bu roldedir.
+* **Çözüm Yöneticisi (Lead Resolver):** Sistem loglarını, metrikleri ve kod yapısını inceleyen, teknik müdahaleyi gerçekleştiren baş mühendistir.
+* **İletişim Sorumlusu (Communicator):** Genellikle Ürün veya Destek ekiplerinden bir profesyoneldir. Paydaşlara, üst yönetime ve müşterilere periyodik olarak (15-30 dakikada bir) durum güncellemelerini iletmekle yükümlüdür.
 
-## 4. Suçlamasız (Blameless) Post-Mortem Şablonu
+## 4. Suçlamasız İnceleme (Blameless Post-Mortem) Şablonu
 
-Kriz çözülüp kanama durdurulduktan sonra, **maksimum 48 saat içinde** Olay Komutanı aşağıdaki Post-Mortem belgesini oluşturur ve ekiple 30 dakikalık bir toplantı yapar.
+Kriz kontrol altına alınıp sistem stabilize edildikten sonra, **en geç 48 saat içerisinde** Olay Komutanı aşağıdaki Post-Mortem raporunu hazırlar ve ilgili ekiplerle bir değerlendirme toplantısı düzenler.
 
-> 💡 **Kural:** Post-Mortem'lerde isim kullanılmaz (Ali bozdu denmez). Hata yapan kişi değil; testlerin, CI/CD'nin ve mimarinin o hatanın canlıya çıkmasına *nasıl izin verdiği* sorgulanır. "Geliştirici dikkat etmeliydi" bir kök neden değildir; "Linter ve test kalkanı bu vakayı kapsayamadı" bir kök nedendir.
+> 💡 **Kurumsal Prensip:** İnceleme raporlarında kişi isimleri yer almaz. Odak noktası hatalı işlemi yapan birey değil; sistemin, test süreçlerinin veya CI/CD altyapısının bu hatanın canlı ortama geçmesine *nasıl izin verdiğidir*. "Personel daha dikkatli olmalıydı" kabul edilebilir bir kök neden değildir; "Test altyapısı bu senaryoyu kapsamamıştır" geçerli bir kök nedendir.
 
-### 📝 Post-Mortem Formatı
+### 📝 Post-Mortem Rapor Formatı
 
-**1. Özet (Context):**
+**1. Yönetici Özeti (Context):**
 
-* Tarih, Süre, Etkilenen Kullanıcı Oranı ve Finansal/Operasyonel Kayıp.
-* Olay tek cümlede nedir? *(Örn: Veritabanı migration hatası nedeniyle API 45 dakika down oldu).*
+* Olay tarihi, toplam kesinti süresi, etkilenen kullanıcı oranı ve tahmini operasyonel/finansal kayıp.
+* Olayın teknik özeti. *(Örnek: Hatalı veritabanı şema güncellemesi (migration) sebebiyle API servisleri 45 dakika boyunca erişilemez duruma gelmiştir).*
 
-**2. Olayın Zaman Çizelgesi (Timeline):**
+**2. Zaman Çizelgesi (Timeline):**
 
-* `14:00` - Sorun ilk kim/ne (Datadog, Müşteri) tarafından fark edildi?
-* `14:05` - İlk kim müdahale etti?
-* `14:20` - Rollback kararı alındı.
-* `14:25` - Sistem tekrar stabil.
+* `14:00` - Kesinti izleme sistemleri (Örn: Datadog) tarafından tespit edildi.
+* `14:05` - İlk müdahale ekibi Kriz Masasında toplandı.
+* `14:20` - Sürüm geri alma (Rollback) kararı onaylandı ve uygulandı.
+* `14:25` - Sistem metrikleri normale döndü.
 
-**3. Kök Neden Analizi (5 Whys):**
+**3. Kök Neden Analizi (5 Whys Metodolojisi):**
 
-* *Neden sistem çöktü?* -> Hatalı SQL migration'ı canlıya çıktı.
-* *Neden hatalı SQL canlıya çıktı?* -> Review sürecinde kimse o kolonu sildiğimizi fark etmedi.
-* *Neden fark edilmedi?* -> CI/CD pipeline'ında DROP komutlarını engelleyen bir kural yoktu. (Expand-Contract kuralı ihlal edildi).
-* *KÖK NEDEN:* Otomatize edilmiş yıkıcı migration engelleme sistemimizin olmaması.
+* *Sistem neden çöktü?* -> Hatalı SQL migration işlemi canlı ortama uygulandı.
+* *Hatalı SQL neden canlı ortama geçti?* -> Kod inceleme (Review) sürecinde kritik bir kolonun silindiği tespit edilemedi.
+* *Bu durum neden otomasyon tarafından tespit edilmedi?* -> CI/CD süreçlerinde DROP komutlarını engelleyen bir güvenlik kuralı bulunmuyordu.
+* *KÖK NEDEN:* Yıkıcı veritabanı işlemlerini otomatik olarak engelleyecek sistemsel bir bariyerin eksikliği.
 
-**4. Aksiyon Maddeleri (Action Items):**
-(Sadece "dikkat edeceğiz" demek yasaktır, kodu/süreci değiştirecek Jira taskları açılmalıdır).
+**4. Düzeltici ve Önleyici Faaliyetler (Action Items):**
+(Sadece soyut taahhütler kabul edilmez, operasyonel süreçleri iyileştirecek somut görev kayıtları oluşturulmalıdır).
 
-* [ ] CI/CD botuna `DROP` ve `RENAME` tespit edildiğinde PR'ı bloke etme kuralı eklenecek. (Atanan: DevOps Ekibi)
-* [ ] Kapatılan kolonlar için Expand-Contract stratejisi `ci-cd-deployment.md` içine kural olarak yazılacak. (Atanan: Tech Lead)
+* [ ] CI/CD süreçlerine, `DROP` ve `RENAME` tespit edildiğinde süreci durduran güvenlik kuralı eklenecektir. (Sorumlu: DevOps Ekibi)
+* [ ] Veritabanı şema değişiklikleri için "Genişlet-Daralt (Expand-Contract)" stratejisi ilgili dokümantasyonlara kural olarak eklenecektir. (Sorumlu: Teknik Lider)
 
 ---
 
-*Son güncelleme: 2026-08-29 — Sahibi: Engineering Manager / SRE*
+*Son güncelleme: 2026-08-30 — Sahibi: Mühendislik Yöneticisi (Engineering Manager) / SRE*

@@ -1,54 +1,54 @@
-# Müşteri Talebi Toplama ve Değerlendirme (Triage) Rehberi
+# Müşteri Talebi Toplama ve Değerlendirme (Triage) Prosedürü
 
-> **Bu doküman ne işe yarar?**
-> Müşteriden, satış ekibinden veya paydaşlardan gelen bir talebin ekibin önüne düşmeden önce geçeceği "güvenlik duvarını" tanımlar. Amacımız; ürünü "özel yazılım çöplüğüne" dönmekten kurtarmak ve geliştiricinin sadece doğrulanmış problemlere kod yazmasını sağlamaktır.
+> **Bu dokümanın amacı nedir?**
+> Müşterilerden, satış ekiplerinden veya diğer paydaşlardan gelen taleplerin, mühendislik ekibine iletilmeden önce geçmesi gereken değerlendirme ve filtreleme süreçlerini tanımlamaktadır. Temel amacımız, ürünün mimari bütünlüğünü korumak ve mühendislik kaynaklarının yalnızca doğrulanmış problemlere odaklanmasını sağlamaktır.
 
-## 1. Temel Prensip: Çözüm Değil, Problem
+## 1. Temel Prensip: Çözüm Odaklılık Yerine Problem Odaklılık
 
-**Müşteri çözümü değil, problemi tarif eder.**
-Müşteri *"Şu ekrana bir buton ekleyin"* (Çözüm) der. Ancak görevimiz o butonun ardındaki gerçek ihtiyacı bulmaktır. Çözümü üretmek mühendislik ve tasarım ekibinin işidir. *"Müşteri daha hızlı bir at istedi, ona otomobil verdik."*
+**Müşteriden beklenen, çözümü değil problemi tanımlamasıdır.**
+Müşteriler genellikle çözüm önerileri ile (örneğin, "Şu ekrana bir buton ekleyin") gelirler. Ancak ekibimizin temel sorumluluğu, bu çözüm önerisinin ardında yatan gerçek iş ihtiyacını tespit etmektir. Uygun çözümün tasarlanması ve geliştirilmesi tamamen mühendislik ve tasarım ekiplerinin sorumluluğundadır.
 
-## 2. Talep Kabul Şartları (Satış ve Destek Ekipleri İçin)
+## 2. Talep Kabul Kriterleri (Satış ve Destek Ekipleri İçin)
 
-Bir talebin değerlendirme (Triage) sürecine girebilmesi için, aşağıdaki formatın doldurulması zorunludur. *"Müşteriye söz verdik, acil buton ekleyelim"* şeklinde gelen talepler **hiçbir istisna yapılmaksızın (VIP dahil)** reddedilir.
+Bir talebin değerlendirme (Triage) sürecine dahil edilebilmesi için aşağıda belirtilen formatın eksiksiz doldurulması zorunludur. Gerekçelendirilmemiş veya aciliyet öne sürülerek iletilen talepler, **VIP müşteriler dahil olmak üzere hiçbir istisna yapılmaksızın** reddedilecektir.
 
-* **Kullanıcı Sorunu:** Kullanıcı şu anda neyi yapamıyor? (Örn: "Toplu taburcu işlemi yapamıyor")
-* **İş Etkisi (Impact):** Bu sorun çözülmezse ne kaybediyoruz? Zaman mı, para mı, müşteri mi?
-* **Sıklık (Reach):** Bu sorunu kaç kullanıcı, ne sıklıkla yaşıyor?
+* **Kullanıcı Problemi:** Kullanıcının mevcut durumda gerçekleştiremediği işlem nedir? (Örnek: "Toplu taburcu işlemi gerçekleştirilememektedir.")
+* **İş Etkisi (Impact):** Bu problemin çözülmemesi durumunda oluşacak kayıp (zaman, finansal kaynak, müşteri memnuniyeti vb.) nedir?
+* **Erişim ve Sıklık (Reach):** Bu problem kaç kullanıcı tarafından ve ne sıklıkla yaşanmaktadır?
 
-## 3. Müşteri Görüşmesi Taktikleri (XY Problemi Çözümü)
+## 3. Müşteri Görüşmesi Stratejileri (XY Problemi Çözümlemesi)
 
-* **Gemba Yürüyüşü (Gözlem):** Müşteriye "Nasıl yapıyorsunuz?" diye sormak yerine, *"Bana ekranınızı paylaşarak gösterir misiniz?"* deyin.
-* **Sihirli Değnek Sorusu:** *"Süreçteki tek bir engeli yok etme hakkınız olsa bu ne olurdu?"*
-* **Takas (Trade-off) Sunumu:** Mantıksız bir talepte reddetmek yerine maliyeti gösterin: *"Bunu eklersek veri giriş süreniz 3 saniye uzayacak, bu hızı düşürmez mi?"*
-* **YASAKLAR:** Müşteriye UI detayı sorulmaz ("Dropdown mu olsun?"). Teknik implementasyon detayı (React, SQL) tartışılmaz. Efor analizi yapılmadan ASLA tarih sözü verilmez.
+* **Saha Gözlemi (Gemba Yürüyüşü):** Müşteriye süreci nasıl yönettiğini sormak yerine, ekran paylaşımı aracılığıyla mevcut işleyişi bizzat göstermesi talep edilmelidir.
+* **Kök Neden Analizi:** *"Süreçteki en büyük tekil engeli ortadan kaldırma imkanınız olsaydı, bu ne olurdu?"* yaklaşımıyla ana probleme odaklanılmalıdır.
+* **Ödünleşim (Trade-off) Analizi:** Rasyonel olmayan talepleri doğrudan reddetmek yerine operasyonel maliyeti sunulmalıdır: *"Bu özelliğin eklenmesi veri giriş süresini uzatacaktır, bu durum operasyonel hızınızı olumsuz etkilemez mi?"*
+* **Kısıtlamalar:** Müşterilerle arayüz detayları veya teknik implementasyon süreçleri kesinlikle tartışılmamalıdır. Efor ve kapasite analizi tamamlanmadan ASLA teslimat tarihi taahhüt edilmemelidir.
 
-## 4. Triage Toplantısı ve Ampirik Filtreleme
+## 4. Triage Toplantısı ve Analitik Filtreleme Süreci
 
-Haftalık Triage toplantısında (PM, Tech Lead katılımıyla) talepler aşağıdaki skorlamaya ve mimari kurallara göre filtrelenir:
+Haftalık olarak gerçekleştirilen Triage toplantılarında (Ürün Yöneticisi ve Teknik Lider katılımıyla), talepler aşağıdaki skorlama ve mimari standartlara göre filtrelenmektedir:
 
-### 4.1 Matematiksel ve Mimari Filtreler
+### 4.1 Matematiksel ve Mimari Filtreleme Standartları
 
-1. **Sınıflandırma:** (🚨 Kritik Bug, 🐛 Normal Bug, ✨ Yeni Özellik)
-2. **ICE Skorlaması:** Talepler; *Impact* (Etki), *Confidence* (Veriye dayalı güven) ve *Ease* (Geliştirme kolaylığı) parametrelerine göre 1-10 arası puanlanır. Skoru düşük işler elenir.
-3. **B2B SaaS "Özel Geliştirme" (Custom Code) Yasağı:** VIP bir müşteri sadece kendisine özel bir kural isterse, core koda müşteri ID'sine bağlı (Örn: `if (hospitalId === 123)`) şart blokları **eklenemez**. Çözüm genel kullanıma uygun tasarlanmıyorsa veya Webhook/API ile çözülemiyorsa reddedilir. Ürün bir "özel yazılım ajansı" değildir.
+1. **Sınıflandırma:** İletilen talep, [P0-P4 Önceliklendirme Çerçevesi](p0-p4-prioritization.md) kriterlerine göre sınıflandırılır (🚨 Kritik Hata/P0, 🐛 Standart Hata/P1-P2, ✨ Yeni Özellik/P3-P4).
+2. **ICE Skorlama Metodolojisi:** Talepler; *Impact* (Etki), *Confidence* (Veriye dayalı güven) ve *Ease* (Uygulama kolaylığı) parametrelerine göre 1 ile 10 arasında değerlendirilir. Belirlenen barajın altında kalan talepler reddedilir.
+3. **B2B SaaS "Özel Geliştirme" (Custom Code) Kısıtlaması:** Müşteriye özel (Örneğin: `if (hospitalId === 123)` şeklinde) mantıksal koşulların temel koda (core code) eklenmesi **kesinlikle yasaktır**. Çözüm, genel ürün vizyonuna uygun tasarlanamıyorsa veya Webhook/API mimarisiyle çözülemiyorsa reddedilecektir. Ürünümüz bir özel yazılım geliştirme platformu değildir.
 
-### 4.2 Triage Karar Çıktıları (Etiketler)
+### 4.2 Triage Karar Çıktıları ve Statüleri
 
-| Karar | Aksiyon ve Müşteri İletişimi |
+| Karar | Aksiyon ve Müşteri İletişim Prosedürü |
 | --- | --- |
-| ❌ **Reddedildi (Drop)** | Ekibe gitmez. Gerekçeli ret yazılır: *"Ürün vizyonumuz bu süreçleri X ile çözmeyi hedefliyor, talebinizi planlarımıza dahil edemiyoruz."* |
-| 🧊 **Buzdolabı (Icebox)** | **TTL Kuralı Geçerlidir:** Sorun mantıklı ama şu an öncelik değil. *Kural:* 3 ay içinde ICE skoru yükselmeyen veya başka müşterilerden talep almayan Icebox kartları sistemden **otomatik silinir/arşivlenir**. Backlog çöplük değildir. |
-| ✅ **Kabul (To Refinement)** | Kök sorun çözülmeye değerdir. Talebin arayüzü ve teknik analizi yapılıp **Definition of Ready (DoR)** kriterlerine uygun bir karta dönüştürülür. Geliştirici sadece DoR'u karşılayan işi kodlar. |
+| ❌ **Reddedildi (Drop)** | Talep mühendislik ekibine iletilmez. Profesyonel bir ret bildirimi iletilir: *"Ürün vizyonumuz bu süreçleri X metodolojisi ile çözmeyi hedeflemektedir; talebinizi mevcut planlarımıza dahil edemiyoruz."* |
+| 🧊 **Beklemeye Alındı (Icebox)** | **TTL (Time-to-Live) Kuralı Geçerlidir:** Problem geçerlidir ancak mevcut öncelikler arasında yer almamaktadır. *Kural:* 3 ay içerisinde ICE skoru yükselmeyen veya ek talep almayan kartlar sistemden **otomatik olarak arşivlenir**. Backlog, biriktirme alanı olarak kullanılamaz. |
+| ✅ **Kabul Edildi (To Refinement)** | Kök problem çözülmeye değer bulunmuştur. Talebin teknik ve arayüz analizi tamamlanarak **Definition of Ready (DoR)** kriterlerine uygun bir göreve dönüştürülür. Geliştirici yalnızca DoR kriterlerini sağlayan görevler üzerinde çalışır. İlgili görevin hangi metodoloji ile yürütüleceği **[Cynefin Çerçevesi](cynefin.md)** referans alınarak kararlaştırılır. |
 
-## 5. Sık Sorulan Durumlar
+## 5. Sık Karşılaşılan Durumlar ve İstisnai Süreçler
 
-**Satış Ekibi müşteriye özellik sözü vermişse ne olur?**
-Ürün ve mühendislik ekibinin onayı (DoR) olmadan verilen sözler geçersizdir. Ürün yönetimi, bu talebi ICE skorlamasına sokar; eğer ürün vizyonuna uymuyorsa, satış ekibi durumu müşteriye açıklamakla yükümlüdür.
+**Satış ekiplerinin müşteriye özellik taahhüdünde bulunması durumunda süreç nasıl işler?**
+Ürün ve mühendislik ekiplerinin onayı (DoR süreci) olmaksızın verilen taahhütler geçersiz kabul edilir. Ürün yönetimi ilgili talebi ICE skorlamasına tabi tutar; ürün vizyonuyla örtüşmemesi halinde, durumun müşteriye izah edilmesi satış ekibinin sorumluluğundadır.
 
-**Talep reddedildi ama müşteri tekrar getiriyor?**
-Yeni bir veri (daha yüksek Impact/Reach) yoksa önceki karar korunur. Süreç, kimin daha çok ısrar ettiğine göre değil, verilere göre çalışır.
+**Reddedilen bir talebin müşteri tarafından tekrar iletilmesi durumunda süreç nasıl işler?**
+Talep edilen özelliğe ilişkin yeni bir analitik veri (daha yüksek Impact/Reach değerleri) sunulmadığı sürece önceki ret kararı geçerliliğini korur. Süreçlerimiz, taleplerin ısrar derecesine göre değil, veriye dayalı iş modellerine göre işletilmektedir.
 
 ---
 
-*Son güncelleme: 2026-08-29 — Versiyon 2.1 — Sahibi: Product Manager / Tech Lead*
+*Son güncelleme: 2026-08-30 — Versiyon 2.1 — Sahibi: Ürün Yöneticisi (Product Manager) / Teknik Lider (Tech Lead)*

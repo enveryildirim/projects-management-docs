@@ -1,63 +1,62 @@
-# Lokal Geliştirme Rehberi (Local Setup)
+# Yerel Geliştirme Ortamı Kurulum Rehberi (Local Setup)
 
-> **Bu doküman ne işe yarar?**
-> Projeye yeni katılan veya bilgisayarını sıfırlayan bir geliştiricinin, projeyi kendi makinesinde tek komutla ayağa kaldırması için gereken adımları içerir. Tüm mühendislik ekibi için zorunlu başlangıç noktasıdır.
+> **Bu Dokümanın Amacı**
+> Bu doküman, ekibimize yeni katılan veya donanım yenilemesi gerçekleştiren yazılım mühendislerimizin, projeyi kendi yerel makinelerinde standart ve hızlı bir şekilde çalışır duruma getirmeleri için gereken adımları tanımlamaktadır. Tüm mühendislik ekibimiz için uyulması zorunlu bir başlangıç kılavuzudur.
 
 ---
 
-## 1. Ön Koşullar
+## 1. Ön Koşullar ve Gereksinimler
 
-Aşağıdaki araçların sisteminizde kurulu olduğundan emin olun:
-- **Node.js:** v18 veya üzeri (Tercihen `nvm` veya `fnm` ile kurun)
-- **Paket Yöneticisi:** `pnpm` (v8+)
-- **Konteyner Motoru:** Docker Desktop veya OrbStack (Mac için önerilir)
-- **Git:** v2.30+
+Kuruluma başlamadan önce sisteminizde aşağıdaki araçların kurulu ve güncel olduğundan emin olunuz:
+- **Node.js:** v18 veya üzeri (Sürüm yönetimi için `nvm` veya `fnm` kullanılması tavsiye edilmektedir)
+- **Paket Yöneticisi:** `pnpm` (v8 ve üzeri)
+- **Konteyner Motoru:** Docker Desktop veya OrbStack (macOS kullanıcıları için OrbStack önerilmektedir)
+- **Git:** v2.30 veya üzeri
 
 ## 2. İlk Kurulum Adımları
 
-Projeyi ayağa kaldırmak için sırasıyla aşağıdaki adımları uygulayın:
+Projeyi yerel ortamınızda yapılandırmak için sırasıyla aşağıdaki adımları takip ediniz:
 
-- [ ] **1. Depoyu klonlayın:**
+- [ ] **1. Kaynak Kodun Klonlanması:**
   ```bash
   git clone git@github.com:sirket/project-management.git
   cd project-management
   ```
-- [ ] **2. Bağımlılıkları yükleyin:**
+- [ ] **2. Bağımlılıkların Yüklenmesi:**
   ```bash
   pnpm install
   ```
-- [ ] **3. Çevre değişkenlerini ayarlayın:**
+- [ ] **3. Ortam Değişkenlerinin Yapılandırılması:**
   ```bash
   cp .env.example .env
   ```
-  *(Not: Hassas şifreleri ve API key'leri 1Password veya ekip şifre yöneticisinden alıp `.env` dosyasına ekleyin.)*
-- [ ] **4. Veritabanı ve yardımcı servisleri başlatın:**
+  *(Not: Güvenlik politikalarımız gereği, hassas şifreleri ve API anahtarlarını 1Password veya kurum içi şifre yönetim sistemimizden temin ederek `.env` dosyanıza entegre ediniz.)*
+- [ ] **4. Veritabanı ve Yardımcı Servislerin Başlatılması:**
   ```bash
   docker compose up -d
   ```
-- [ ] **5. Veritabanı şemasını oluşturun (Migration):**
+- [ ] **5. Veritabanı Şemasının Oluşturulması (Migration):**
   ```bash
   pnpm db:push
-  # veya CI ortamı simülasyonu için: pnpm db:migrate
+  # veya CI/CD ortamı simülasyonu gerçekleştirmek için: pnpm db:migrate
   ```
 
-## 3. Geliştirme Sunucusunu Başlatma
+## 3. Geliştirme Sunucusunun Başlatılması
 
-Tüm altyapı hazırlandıktan sonra Next.js geliştirme sunucusunu başlatın:
+Tüm altyapı gereksinimleri tamamlandıktan sonra Next.js geliştirme sunucusunu başlatmak için aşağıdaki komutu çalıştırınız:
 
 ```bash
 pnpm dev
 ```
-Tarayıcınızda `http://localhost:3000` adresine giderek sistemin çalıştığını doğrulayın.
+Kurulumun başarıyla tamamlandığını doğrulamak amacıyla, tarayıcınız üzerinden `http://localhost:3000` adresine erişim sağlayınız.
 
-## 4. Sık Karşılaşılan Hatalar (Troubleshooting)
+## 4. Sık Karşılaşılan Sorunlar ve Çözümleri (Troubleshooting)
 
-| Hata / Semptom | Olası Neden | Çözüm |
+| Hata / Belirti | Olası Neden | Çözüm Adımı |
 |---|---|---|
-| `Port 5432 is already in use` | Başka bir PostgreSQL instance'ı çalışıyor. | Lokal makinenizdeki postgres'i durdurun (`brew services stop postgresql`) veya `docker-compose.yml` içinden portu değiştirin. |
-| `Cannot find module 'X'` | Yeni bir paket eklenmiş olabilir. | Terminalde `pnpm install` komutunu tekrar çalıştırın. |
-| `Environment variable missing` | `.env` dosyası eksik veya güncel değil. | `.env.example` dosyasındaki yeni eklenen anahtarları kontrol edin. |
+| `Port 5432 is already in use` | Sistemde halihazırda çalışan başka bir PostgreSQL servisi bulunmaktadır. | Yerel makinenizdeki mevcut PostgreSQL servisini durdurunuz (`brew services stop postgresql`) veya `docker-compose.yml` yapılandırması üzerinden port tanımını değiştiriniz. |
+| `Cannot find module 'X'` | Projeye yeni bir paket bağımlılığı eklenmiş olabilir. | Terminal üzerinden `pnpm install` komutunu yeniden çalıştırarak bağımlılıkları güncelleyiniz. |
+| `Environment variable missing` | `.env` dosyası oluşturulmamış veya güncelliğini yitirmiş olabilir. | `.env.example` dosyasında yer alan yeni değişken anahtarlarını kontrol ederek kendi ortam yapılandırmanızı güncelleyiniz. |
 
 ---
-*Son güncelleme: 2026-08-29 — Versiyon 1.0 — Sahibi: Tech Lead*
-
+*Son güncelleme: 2026-08-29 — Sürüm: 1.0 — Sorumlu Birim: Tech Lead*
