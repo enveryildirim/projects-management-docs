@@ -11,6 +11,7 @@ Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanl
 ## 2. Eksik Süreçler ve Yeni Doküman İhtiyaçları
 - [x] **Güvenlik ve Uyum (DevSecOps):** Veri gizliliği, sızma testi pratikleri ve güvenlik standartları (Örn: [TruffleHog](https://github.com/trufflesecurity/trufflehog) ile secret sızıntılarını engelleme).
 - [x] **Mimari Karar Kayıtları (ADR):** Backend, veritabanı veya sistem mimarisi kararlarının nasıl alınacağı ve belgeleneceği için standart bir ADR şablonu oluşturmak.
+- [ ] **Yedekleme ve Felaket Kurtarma (Backup & Disaster Recovery):** Veritabanı ve sistem yedekleme sıklığı, RPO/RTO hedefleri, otomatik snapshot süreçleri ve periyodik geri dönme (restore) test protokollerinin dokümante edilmesi (Örn: `docs/stacks/backend-db.md` veya bağımsız bir yönerge).
 
 ## 3. Geliştirici Deneyimi (DX) ve Otomasyon
 - [ ] **Bariyer Yorgunluğu (Tick-box Fatigue) Çözümü:** DoD ve DoR maddelerini PR şablonlarında manuel "checkbox" olmaktan çıkarıp, otomatikleştirilmiş CI/CD kontrollerine bağlamak.
