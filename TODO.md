@@ -12,6 +12,19 @@ Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanl
 - [x] **Güvenlik ve Uyum (DevSecOps):** Veri gizliliği, sızma testi pratikleri ve güvenlik standartları (Örn: [TruffleHog](https://github.com/trufflesecurity/trufflehog) ile secret sızıntılarını engelleme).
 - [x] **Mimari Karar Kayıtları (ADR):** Backend, veritabanı veya sistem mimarisi kararlarının nasıl alınacağı ve belgeleneceği için standart bir ADR şablonu oluşturmak.
 - [ ] **Yedekleme ve Felaket Kurtarma (Backup & Disaster Recovery):** Veritabanı ve sistem yedekleme sıklığı, RPO/RTO hedefleri, otomatik snapshot süreçleri ve periyodik geri dönme (restore) test protokollerinin dokümante edilmesi (Örn: `docs/stacks/backend-db.md` veya bağımsız bir yönerge).
+- [ ] **Kesinti Anında Ürün Davranışı ve Müdahale Stratejileri (Outage Mitigation & Runbooks):** Kesinti durumunda sistemin nasıl tepki vereceğini ve mühendislik müdahale hiyerarşisini belirlemek:
+  - **Sürüm Geri Alma (Rollback):** Hangi durumlarda anında geri alma uygulanır, veritabanı migration içeren sürümlerde rollback sınırları nelerdir?
+  - **Özellik Kapatma (Feature Flags / Kill Switch):** Hatanın yeni bir özellikten kaynaklandığı senaryolarda yeni deployment yapmadan özelliği anında devre dışı bırakma altyapısı.
+  - **Kademeli/Kısıtlı Hizmet (Graceful Degradation & Degraded Mode):** Çöken/yavaşlayan modülleri (raporlama, arama, 3. parti entegrasyonlar vb.) izole edip ana akışı (login, ödeme, kritik kayıt) ayakta tutma.
+  - **Devre Kesici (Circuit Breaker) & Fallback:** Harici servisler yanıt vermediğinde tüm uygulamanın kilitlenmesini engelleyen fallback mekanizmaları.
+  - **Yük Kısma / Boşaltma (Load Shedding & Rate Limiting):** Aşırı yük veya trafik patlamalarında arka plan işlerini dondurup ana trafiğe öncelik verme.
+  - **Bakım Modu (Maintenance Mode) & Kullanıcı İletişimi:** Sistem tamamen durduğunda 500 hatası yerine kullanıcıya anlamlı statik durum ve bilgilendirme ekranı sunma yönergeleri.
+- [ ] **Maliyet Yönetimi ve Birim Ekonomi (FinOps & Cost Management):** Mühendislik ve altyapı maliyetlerinin nasıl hesaplanacağı, dokümante edileceği ve optimize edileceği standartlarını oluşturmak:
+  - **Birim Maliyet Modeli (Unit Economics):** İşlem başına, kullanıcı başına (Cost per User / Tenant) veya istek başına maliyet hesaplama yöntemleri.
+  - **Bulut ve Altyapı Maliyet Takibi (Cloud FinOps):** Sunucu, veritabanı, depolama ve veri transferi (egress) harcamalarının ortam/etiket (tagging) bazlı takibi ve bütçe aşım alarmları.
+  - **3. Parti API ve Yapay Zeka (AI/LLM) Maliyetleri:** Harici API çağrıları, SMS/e-posta kotaları ve token kullanım maliyetlerinin izlenmesi ve limitlendirilmesi (Rate/Quota limits).
+  - **Fırsat ve Özellik ROI Analizi:** Yeni bir özelliğin getireceği operasyonel/finansal fayda ile geliştirme + sürekli bakım maliyetinin karşılaştırılması.
+  - **Atıl Kaynak Temizliği (Waste Reduction):** Kullanılmayan test ortamları, sahipsiz disk/snapshot ve fazla provizyonlanmış (over-provisioned) kaynakların periyodik temizlik rutini.
 
 ## 3. Geliştirici Deneyimi (DX) ve Otomasyon
 - [ ] **Bariyer Yorgunluğu (Tick-box Fatigue) Çözümü:** DoD ve DoR maddelerini PR şablonlarında manuel "checkbox" olmaktan çıkarıp, otomatikleştirilmiş CI/CD kontrollerine bağlamak.
