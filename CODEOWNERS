@@ -1,0 +1,44 @@
+# CODEOWNERS — Otomatik inceleme (review) ataması
+#
+# Bu dosya, docs/process/competency-matrix.md içerisindeki Yetkinlik ve Etki Alanı
+# Matrisinin makine tarafından okunabilir karşılığıdır. Amaç, "bu değişikliği kim
+# inceleyebilir?" sorusunu tamamen ortadan kaldırmaktır.
+#
+# KURULUM: Aşağıdaki @rol yer tutucularını gerçek GitHub kullanıcı adları veya
+# ekip tanımlayıcıları (@kurum/ekip) ile değiştirin. Ardından depo ayarlarından
+# Branch Protection → "Require review from Code Owners" seçeneğini aktive edin.
+#
+# FALLBACK KURALI: Otorite (O) 24 saat içinde dönüş yapmazsa onay yetkisi ilgili
+# alanın Uzmanına (U) devredilir. Bkz: docs/process/decision-making-authority.md §4
+
+# ── Varsayılan ────────────────────────────────────────────────────────────────
+*                               @engineering-manager
+
+# ── Çekirdek yönergeler (felsefe, kalite kapıları, kriz) ─────────────────────
+# Bu dokümanlardaki değişiklikler Çekirdek RFC kapsamındadır (48 saat SLA).
+/docs/core/                     @engineering-manager @tech-lead
+/docs/core/profiles.md          @engineering-manager
+/docs/core/ai-manifesto.md      @tech-lead @ai-authority
+/docs/core/triage.md            @product-manager @tech-lead
+/docs/core/vision-board.md      @product-manager
+
+# ── Operasyonel süreçler ─────────────────────────────────────────────────────
+/docs/process/                  @engineering-manager @tech-lead
+/docs/process/ci-cd-deployment.md        @devops-authority @tech-lead
+/docs/process/security-and-compliance.md @security-authority @devops-authority
+/docs/process/telemetry-logging.md       @devops-authority
+/docs/process/test-qa-strategy.md        @qa-lead @tech-lead
+/docs/process/engineering-metrics.md     @engineering-manager
+
+# ── Teknoloji eklentileri ────────────────────────────────────────────────────
+/docs/stacks/web-frontend.md    @frontend-authority
+/docs/stacks/backend-db.md      @backend-authority @devops-authority
+
+# ── Mimari karar arşivi ──────────────────────────────────────────────────────
+/docs/adr/                      @tech-lead
+
+# ── Otomasyon ve politika katmanı ────────────────────────────────────────────
+/scripts/                       @devops-authority
+/Makefile                       @devops-authority
+/.github/                       @devops-authority @tech-lead
+/CODEOWNERS                     @engineering-manager

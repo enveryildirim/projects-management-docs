@@ -1,7 +1,9 @@
 # Yerel Geliştirme Ortamı Kurulum Rehberi (Local Setup)
 
 > **Bu Dokümanın Amacı**
-> Bu doküman, ekibimize yeni katılan veya donanım yenilemesi gerçekleştiren yazılım mühendislerimizin, projeyi kendi yerel makinelerinde standart ve hızlı bir şekilde çalışır duruma getirmeleri için gereken adımları tanımlamaktadır. Tüm mühendislik ekibimiz için uyulması zorunlu bir başlangıç kılavuzudur.
+> Bu doküman, yerel geliştirme ortamının manuel olarak kurulması için gereken komut dizisini ve sık karşılaşılan kurulum hatalarının çözümlerini tanımlamaktadır. Donanım yenileyen mühendisler ile otomasyon betiğinin başarısız olduğu durumlar için referans niteliğindedir.
+
+> ⚠️ **Bu doküman bir ektir, başlangıç noktası değildir.** Oryantasyon sürecinin tek resmî kaynağı [Oryantasyon ve Sistem Kurulum Rehberi](./onboarding-and-setup.md)'dir ve kurulumda **öncelikli yöntem `make setup` otomasyonudur**. Aşağıdaki manuel adımlara yalnızca otomasyon hata verdiğinde başvurulur; bu durum otomasyon betiğinde giderilmesi gereken bir kusur olduğu anlamına gelir ve DevOps Otoritesine bir hata kaydı (issue) ile bildirilmelidir.
 
 ---
 
@@ -13,9 +15,9 @@ Kuruluma başlamadan önce sisteminizde aşağıdaki araçların kurulu ve günc
 - **Konteyner Motoru:** Docker Desktop veya OrbStack (macOS kullanıcıları için OrbStack önerilmektedir)
 - **Git:** v2.30 veya üzeri
 
-## 2. İlk Kurulum Adımları
+## 2. Manuel Kurulum Adımları (Geri Dönüş / Fallback)
 
-Projeyi yerel ortamınızda yapılandırmak için sırasıyla aşağıdaki adımları takip ediniz:
+`make setup` komutunun başarısız olduğu durumlarda, otomasyonun gerçekleştirdiği işlemler sırasıyla aşağıdaki şekilde manuel olarak uygulanır:
 
 - [ ] **1. Kaynak Kodun Klonlanması:**
   ```bash
@@ -59,4 +61,4 @@ Kurulumun başarıyla tamamlandığını doğrulamak amacıyla, tarayıcınız �
 | `Environment variable missing` | `.env` dosyası oluşturulmamış veya güncelliğini yitirmiş olabilir. | `.env.example` dosyasında yer alan yeni değişken anahtarlarını kontrol ederek kendi ortam yapılandırmanızı güncelleyiniz. |
 
 ---
-*Son güncelleme: 2026-08-29 — Sürüm: 1.0 — Sorumlu Birim: Tech Lead*
+*Son Güncelleme: 2026-08-31 — Versiyon 2.0 — Doküman Sahibi: DevOps / Tech Lead*

@@ -11,7 +11,7 @@ Organizasyonumuzda genel geçer test piramidi prensipleri benimsenmektedir. Test
 | --- | --- | --- | --- |
 | **Birim (Unit) Testleri** | Vitest / Jest | İş mantığı (Business logic), yardımcı (utility) fonksiyonlar, bağımsız arayüz (UI) bileşenleri. | Yeni eklenen her iş mantığı için **ZORUNLUDUR**. |
 | **Entegrasyon Testleri** | React Testing Library | Bileşenler arası etkileşim, veritabanı sorguları (Drizzle), API yönlendirmeleri (routes). | Kritik operasyonel süreçler (Örn: Hasta Kayıt işlemleri) için **ZORUNLUDUR**. |
-| **Uçtan Uca (E2E) Testler** | Playwright / Cypress | Gerçek tarayıcı ortamında uçtan uca kullanıcı senaryoları (Sisteme giriş, form doldurma işlemleri). | Yalnızca P1 (Çok Kritik) süreç akışlarında uygulanır. |
+| **Uçtan Uca (E2E) Testler** | Playwright / Cypress | Gerçek tarayıcı ortamında uçtan uca kullanıcı senaryoları (Sisteme giriş, form doldurma işlemleri). | Yalnızca P0/P1 seviyesindeki kritik süreç akışlarında uygulanır (Bkz: [P0-P4](../core/p0-p4-prioritization.md)). |
 
 ## 2. Test Edilmesi Gereken ve Kapsam Dışı Bırakılan Unsurlar
 
@@ -30,7 +30,7 @@ Organizasyonumuzda genel geçer test piramidi prensipleri benimsenmektedir. Test
 
 ## 3. Yapay Zeka (AI) Destekli Test ve Sahte Veri (Mocking) Protokolleri
 
-* **AI Destekli TDD (Test-Driven Development) ve BDD (Behavior-Driven Development):** Test kapsam (Coverage) oranları kurumumuzda birincil hedef metrik (Vanity Metric) olarak değerlendirilmez; asıl amaç iş mantığının (Behavior) doğrulanmasıdır (Bkz: `ai-manifesto.md`). Mühendisler, yapay zeka araçlarından test kodlaması talep ederken referans olarak kodun kendisini değil, Kabul Kriterlerini (DoR) sağlamalıdır. Üretilen testin "başarısız (red)" durumu gözlemlenmeden uygulama (implementation) aşamasına geçilmesi kural ihlali sayılır.
+* **AI Destekli TDD (Test-Driven Development) ve BDD (Behavior-Driven Development):** Test kapsam (Coverage) oranları kurumumuzda birincil hedef metrik (gösteriş metriği / vanity metric) olarak değerlendirilmez; asıl amaç iş mantığının (Behavior) doğrulanmasıdır (Bkz: [AI Manifestosu](../core/ai-manifesto.md)). Mühendisler, yapay zeka araçlarından test kodlaması talep ederken referans olarak kodun kendisini değil, Kabul Kriterlerini (DoR) sağlamalıdır. Üretilen testin "başarısız (red)" durumu gözlemlenmeden uygulama (implementation) aşamasına geçilmesi kural ihlali sayılır.
 * **Dış Servislerin Simüle Edilmesi (Mocking):** Test süreçlerinde hiçbir gerçek dış API servisine (Örn: SMS entegratörleri, Ödeme geçitleri) istek gönderilemez. MSW (Mock Service Worker) araçları veya ilgili test framework'ünün mock yapıları kullanılmalıdır.
 * **Gerçek Veri Kullanımının Yasaklanması:** Test ortamlarında gerçek hasta/kullanıcı verilerinin kullanılması kesinlikle yasaktır. `faker.js` ve benzeri kütüphaneler aracılığıyla algoritmik sahte veriler üretilmelidir.
 

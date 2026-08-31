@@ -1,5 +1,10 @@
 # P0-P4 Önceliklendirme Çerçevesi
 
+> **Bu dokümanın amacı nedir?**
+> Operasyonel olayların (incident) ve geliştirme görevlerinin aciliyet ve etki seviyelerine göre standart bir dille sınıflandırılmasını sağlamaktır. Tüm ekipler için bağlayıcıdır; [Triage](./triage.md), [Olay Müdahale](./incident-response.md) ve [Test Stratejisi](../process/test-qa-strategy.md) dokümanlarının ortak önceliklendirme dilini oluşturur.
+
+---
+
 P0-P4 Önceliklendirme Çerçevesi, yazılım geliştirme ve ürün yönetimi süreçlerinde karşılaşılan operasyonel olayların (incident) ve geliştirme görevlerinin (task) aciliyet ve etki seviyelerine göre standart bir yapıda sınıflandırılmasını sağlayan referans modelidir.
 
 Bu sınıflandırma metodolojisi, acil ve önemli görevlerin birbirinden ayrıştırılarak kaynakların doğru zamanda doğru önceliklere yönlendirilmesini güvence altına almaktadır.
@@ -25,3 +30,7 @@ P0 ve P1 seviyelerinin her ikisi de aciliyet arz etmekle birlikte, aralarındaki
 * **P2**, genellikle daha spesifik bir kullanıcı segmentini etkiler ve sistemde birden fazla P2 kaydı bulunabilir. ICE Skorlaması gibi analitik önceliklendirme teknikleriyle kendi içlerinde sıralanarak standart geliştirme döngüsüne (sprint) dahil edilirler.
 
 > **Kurumsal Prensip:** Her sistem hatasının "P0" veya "P1" olarak etiketlenmesi, ekiplerde alarm yorgunluğuna (alert fatigue) yol açar ve gerçek kriz durumlarındaki müdahale reflekslerini zayıflatır. Önceliklendirme yapılırken analitik veriler (impact) esas alınmalı ve objektif değerlendirme yapılmalıdır.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.0 — Doküman Sahibi: Ürün Yöneticisi (PM) / Tech Lead*

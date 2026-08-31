@@ -8,7 +8,7 @@
 * **Kolektif Katılım:** Bu doküman yalnızca ürün yöneticisi tarafından hazırlanıp ekibe deklare edilmemelidir. Teknik Lider (Tech Lead), Ürün Yöneticisi (PM) ve ilgili kilit paydaşların katılımıyla gerçekleştirilecek yapılandırılmış toplantılarla ortak kurumsal akıl çerçevesinde oluşturulmalıdır.
 * **Özlük ve Vurgu:** Pano maddeleri detaylı paragraflar yerine net ve ölçülebilir ifadelerden oluşmalıdır. Her kategori için en fazla 3-4 kritik madde belirlenmelidir. Pano incelendiğinde, ürün stratejimiz 30 saniye içerisinde tam olarak anlaşılabilmelidir.
 * **Dinamik Güncelleme:** Pazar dinamikleri değiştikçe ve analitik veriler elde edildikçe bu doküman periyodik olarak revize edilir; statik bir belge değildir.
-* **Kurumsal Görünürlük:** Bu belge, [Oryantasyon (Onboarding)](./onboarding-and-setup.md) sürecinin temel bir bileşeni olarak konumlandırılmalı ve operasyon yönetim sistemlerinin (Jira vb.) ana sayfasına sabitlenmelidir. Ekipler, [Müşteri Talebi (Triage)](./triage.md) değerlendirmelerinde veya [ADR](./decision-making-authority.md) (Mimari Karar Kayıtları) süreçlerinde bu panoda belirtilen "İş Hedefleri"ni temel referans noktası olarak alacaktır.
+* **Kurumsal Görünürlük:** Bu belge, [Oryantasyon (Onboarding)](../process/onboarding-and-setup.md) sürecinin temel bir bileşeni olarak konumlandırılmalı ve operasyon yönetim sistemlerinin (Jira vb.) ana sayfasına sabitlenmelidir. Ekipler, [Müşteri Talebi (Triage)](./triage.md) değerlendirmelerinde veya [ADR](../process/adr-template.md) (Mimari Karar Kayıtları) süreçlerinde bu panoda belirtilen "İş Hedefleri"ni temel referans noktası olarak alacaktır.
 
 ## 2. Ürün Vizyon Panosu Şablonu
 
@@ -21,4 +21,4 @@
 | **Stratejik İş Hedefleri (Business Goals)** | İşletme perspektifinden üründen beklenen başarı metrikleri (KPI) nelerdir? | <ul><li>Hekim başına düşen veri giriş sürelerinin %40 oranında optimize edilmesi.</li><li>Evrak işleme hatalarının ilk iki çeyrekte minimize edilmesi.</li><li>Cari mali yıl sonuna dek 3 farklı kurumsal hastanede aktif kullanıma geçilmesi.</li></ul> |
 
 ---
-*Son güncelleme: 2026-08-30 — Sahibi: Ürün Yöneticisi (Product Manager)*
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: Ürün Yöneticisi (Product Manager)*

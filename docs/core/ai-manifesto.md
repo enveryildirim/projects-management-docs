@@ -18,15 +18,15 @@ Yapay zeka araçları geliştirme süreçlerimizi hızlandıran değerli yardım
 Hassas verilerin işlendiği sistemlerde güvenlik, yalnızca bireysel dikkate bırakılamaz. Süreçlerimizi davranışsal kurallar yerine sistemsel kısıtlamalarla güvence altına alıyoruz.
 
 * **Lisanslama ve Telemetri (Sıfır Veri Tutma):** Projelerimizde yalnızca veri tutmama (Zero-Data Retention) garantisi sunan, Kurumsal (Enterprise/Business) lisanslı yapay zeka araçlarının kullanımına izin verilmektedir. Bireysel lisanslara ait olan ve modelleri eğiten (training opt-in) ile telemetri toplayan özelliklerin **kesinlikle devre dışı** bırakılması zorunludur.
-* **DLP (Veri Kaybını Önleme) Otomasyonu:** API anahtarlarının, `.env` dosyalarının veya canlı verilerin yapay zekaya sızmasını önlemek amacıyla yerel ortamlarda `TruffleHog` veya `git-secrets` tabanlı pre-commit hook'larının kullanımı zorunludur. Yanlışlıkla gerçek bir hassas verinin koda veya komuta (prompt) eklenmesi durumunda sistem ilgili commit işlemini reddedecektir.
+* **DLP (Veri Kaybını Önleme) Otomasyonu:** API anahtarlarının, ortam değişkeni dosyalarının veya canlı verilerin yapay zekaya sızmasını önlemek amacıyla yerel ortamlarda secret tarama tabanlı pre-commit hook'larının kullanımı zorunludur (araç seçimi için bkz: [Güvenlik ve Uyum](../process/security-and-compliance.md)). Yanlışlıkla gerçek bir hassas verinin koda veya komuta (prompt) eklenmesi durumunda sistem ilgili commit işlemini reddedecektir.
 * **Anonim Veri Kullanımı:** Test ve komut (prompt) süreçlerinde istisnasız olarak algoritmik olarak üretilmiş sahte (mock/faker) veriler kullanılmalıdır.
 
 ## 3. Bağlam Optimizasyonu ve Yapay Zeka Destekli Üretim
 
 Yapay zeka sistemleri, bağlamsız bırakıldığında veya aşırı bilgi yüklemesine maruz kaldığında hatalı çıktılar (halüsinasyon) üretebilmektedir.
 
-* **Sistematik Bağlam (Otomasyon):** Her yeni projenin kök dizininde bir `.cursorrules` (veya `.github/copilot-instructions.md`) dosyası bulundurulması zorunludur. Mimari yığın, isimlendirme standartları ve klasör yapısı bu dosyada tanımlanır. Bu sayede, sistem ilgili mimari bağlamı yapay zekaya otomatik olarak entegre eder (Hidden System Prompt).
-* **Bağlam Daraltma (Token Optimizasyonu):** Yapay zekaya bağlam sağlanırken implementasyon dosyaları (`.ts`, `.tsx`) yerine, **yalnızca arayüzler (Interface) ve veri tipleri (`.d.ts`, `schema.ts`)** sunulmalıdır. Yapay zeka, detaylara boğulmak yerine sözleşmelere (contracts) dayalı kod üretimine yönlendirilmelidir.
+* **Sistematik Bağlam (Otomasyon):** Her yeni projenin kök dizininde, kullanılan yapay zeka aracının okuduğu bir **bağlam dosyası** (araç bağımsız ifadeyle: proje kural dosyası) bulundurulması zorunludur. Mimari yığın, isimlendirme standartları ve klasör yapısı bu dosyada tanımlanır. Araç bazlı dosya adları ilgili [Stack dokümanında](../stacks/README.md) belirtilir. Bu sayede, sistem ilgili mimari bağlamı yapay zekaya otomatik olarak entegre eder (Hidden System Prompt).
+* **Bağlam Daraltma (Token Optimizasyonu):** Yapay zekaya bağlam sağlanırken implementasyon dosyaları yerine, **yalnızca arayüz (interface), tip ve şema tanımları** sunulmalıdır. Yapay zeka, detaylara boğulmak yerine sözleşmelere (contracts) dayalı kod üretimine yönlendirilmelidir.
 * **Yapay Zeka Destekli TDD (Test Odaklı Geliştirme):** Kodlama aşamasından önce testlerin oluşturulması esastır. Kabul Kriterleri (Definition of Done - DoD) girdi olarak sunulur ve yapay zekanın öncelikle başarısız (red) testleri yazması sağlanır. Testler onaylandıktan sonra, bu testleri başarıyla geçecek (green) implementasyonun üretilmesi talep edilir.
 
 ## 4. Kod İnceleme (Code Review) Standartları
@@ -44,20 +44,20 @@ Bu manifestoda belirtilen standartların projenizde aktif hale getirilmesi için
 
 ### A. Proje/Depo Kurulumu (Tek Seferlik - Teknik Lider / DevOps Sorumluluğunda)
 
-* [ ] **Sistem Komutunun Eklenmesi:** Proje kök dizininde `.cursorrules` veya `.github/copilot-instructions.md` dosyasını oluşturunuz. İlgili mimari yığını (Next.js, Tailwind vb.), klasör yapısı kurallarını ve isimlendirme standartlarını bu dosyada tanımlayınız.
+* [ ] **Sistem Komutunun Eklenmesi:** Proje kök dizininde, kullanılan yapay zeka aracının okuduğu bağlam dosyasını oluşturunuz. İlgili mimari yığını, klasör yapısı kurallarını ve isimlendirme standartlarını bu dosyada tanımlayınız.
 * [ ] **PR Şablonunun Güncellenmesi:** `.github/pull_request_template.md` dosyasını oluşturunuz veya güncelleyiniz. Şablona aşağıdaki iki maddenin eklenmesi zorunludur:
   * *"Bu PR'da karmaşık iş mantıkları yapay zeka ile üretildiyse kullanılan ana komut (prompt): [Buraya Yazınız]"*
   * *"Atıl kod ve halüsinasyon bağımlılık kontrolü gerçekleştirildi mi? [ ]"*
-* [ ] **DLP Güvenlik Kancası (Pre-commit):** Projeye `husky` ve (tercihen) `trufflehog` veya `git-secrets` entegre ediniz. Hassas verilerin commit edilmesini engelleyecek kancayı (hook) yapılandırınız.
-* [ ] **Sahte Veri (Mock) Altyapısı:** Yapay zeka komutlarında kullanılmak üzere projeye `faker.js` veya muadili bir sahte veri üretim kütüphanesi kurunuz ve örnek bir mock veri klasörü (`/mocks`) oluşturunuz.
+* [ ] **DLP Güvenlik Kancası (Pre-commit):** Projeye bir pre-commit kanca yöneticisi ve secret tarama aracı entegre ediniz. Hassas verilerin commit edilmesini engelleyecek kancayı yapılandırınız (araç seçimi için bkz: [Güvenlik ve Uyum](../process/security-and-compliance.md)).
+* [ ] **Sahte Veri (Mock) Altyapısı:** Yapay zeka komutlarında kullanılmak üzere projeye bir sahte veri üretim kütüphanesi kurunuz ve örnek bir mock veri klasörü oluşturunuz.
 
 ### B. Geliştirici Aksiyonları (Oryantasyon ve Günlük Kullanım)
 
 * [ ] **Lisans ve Telemetri Kontrolü:** Kullandığınız yapay zeka aracının (Cursor, Copilot, ChatGPT vb.) ayarlarından telemetri ve model eğitimi için veri paylaşımı (Telemetry / Use my data to train models) seçeneklerini **devre dışı bırakınız** veya şirketimizin sağladığı Kurumsal (Enterprise) hesap ile giriş yapınız.
-* [ ] **Bağlam Yönetimi Pratiği:** IDE üzerinde yapay zeka kullanırken tüm dosyaları bağlama dahil etme uygulamasından kaçınınız. Yalnızca `.d.ts`, `types.ts` veya `schema.ts` gibi sözleşme dosyalarını etiketleyerek komut oluşturmayı standart hale getiriniz.
+* [ ] **Bağlam Yönetimi Pratiği:** IDE üzerinde yapay zeka kullanırken tüm dosyaları bağlama dahil etme uygulamasından kaçınınız. Yalnızca tip ve şema (sözleşme) dosyalarını etiketleyerek komut oluşturmayı standart hale getiriniz.
 * [ ] **AI-TDD Uygulaması:** Bir sonraki geliştirme görevinizde, kod üretimine geçmeden önce yapay zekaya Bitti Kriterleri (DoD) listesini sunarak başarısız testlerin (red phase) oluşturulmasını sağlayınız.
 
-# Kaynaklar
+## 6. Kaynaklar
 
 * [AI Neyi Bilir? ∘ Akın Kaldıroğlu](https://www.youtube.com/watch?v=XIaytbzA0rU)
 

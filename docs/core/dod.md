@@ -8,13 +8,13 @@
 ## 1. 💻 Kod Kalitesi, Yapay Zeka Standartları ve Uyumluluk
 
 - [ ] **Kabul Kriterleri (Acceptance Criteria):** Görev kartında (ticket) tanımlanan tüm iş ve teknik kabul kriterleri eksiksiz olarak karşılanmıştır.
-- [ ] **Statik Kod Analizi ve Atıl Kod Temizliği:** ESLint, Prettier ve ilgili linter uyarıları tamamen giderilmiştir. Uygulama içerisindeki geçici denetim komutları (örn. `console.log`) kaldırılmıştır. Yapay zeka araçları tarafından üretilmiş ancak sistemde aktif olarak kullanılmayan atıl (dead) fonksiyonlar ve gereksiz bağımlılıklar (halüsinasyon kütüphaneler) reddedilerek sistemden arındırılmıştır.
+- [ ] **Statik Kod Analizi ve Atıl Kod Temizliği:** Projenin yığınında tanımlı linter ve biçimlendirici (formatter) uyarıları tamamen giderilmiştir (araç tanımları için bkz: ilgili [Stack dokümanı](../stacks/README.md)). Uygulama içerisinde bırakılmış geçici hata ayıklama çıktıları kaldırılmıştır. Yapay zeka araçları tarafından üretilmiş ancak sistemde aktif olarak kullanılmayan atıl (dead) fonksiyonlar ve gereksiz bağımlılıklar (halüsinasyon kütüphaneler) reddedilerek sistemden arındırılmıştır.
 - [ ] **Yapay Zeka Komut Şeffaflığı (Prompt-as-Code):** Kompleks iş mantıklarının veya kritik mimari bileşenlerin üretiminde yapay zeka araçları kullanılmış ise, süreci yönlendiren ana komut (prompt) PR açıklamasına zorunlu olarak eklenmiştir.
 
 ## 2. 🧪 Test Otomasyonu, Veri Güvenliği ve Sistem Dayanıklılığı
 
 - [ ] **AI-TDD ve İş Mantığı (Business Logic) Testleri:** Kodun sadece mevcut çalışmasını doğrulayan (totolojik) testler değil, yazılımın karşılaması gereken iş kurallarını (business logic) sınayan kapsamlı birim (unit) ve entegrasyon testleri yazılmış ve başarıyla sonuçlanmıştır.
-- [ ] **Veri Kaybı Önleme (DLP) ve Kriptografik Güvenlik:** API anahtarları, veritabanı erişim kimlik bilgileri veya gerçek müşteri/hasta verileri kod içerisine gömülmemiştir (hardcoded). Yerel ortamda çalışan güvenlik denetim (TruffleHog/Git-secrets) kancaları başarılı bir şekilde geçilmiştir.
+- [ ] **Veri Kaybı Önleme (DLP) ve Kriptografik Güvenlik:** API anahtarları, veritabanı erişim kimlik bilgileri veya gerçek müşteri/hasta verileri kod içerisine gömülmemiştir (hardcoded). Yerel ortamda çalışan secret tarama kancaları (pre-commit hooks) başarılı bir şekilde geçilmiştir (Bkz: [Güvenlik ve Uyum](../process/security-and-compliance.md)).
 - [ ] **Sistem Dayanıklılığı (Graceful Degradation):** Harici servis sağlayıcılar (API'ler) çöktüğünde veya veritabanı yanıt süreleri uzadığında, sistemin tamamen işlevsiz hale gelmesi (crash) engellenmiş; kullanıcıya anlaşılır, profesyonel bir hata mesajı sunularak kısıtlı deneyim sağlayacak önlemler kodlanmıştır.
 
 ## 3. 🔄 İnceleme (Code Review) ve Sürekli Entegrasyon (CI/CD)

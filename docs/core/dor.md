@@ -9,7 +9,8 @@
 
 - [ ] **Kök Neden ve İş Hipotezi Doğrulanmıştır:** "Kullanıcı bu fonksiyona neden ihtiyaç duymaktadır?" sorusu (5 Neden analizi ile) yanıtlanmıştır. İlgili görevin başarı metrikleri (Örneğin: "Dönüşüm oranında %2 artış sağlanması") açıkça tanımlanmış ve belgelenmiştir.
 - [ ] **Kabul Kriterleri (Acceptance Criteria) Belirlenmiştir:** Geliştirilecek modülün test senaryoları "Given-When-Then" (Koşul-Eylem-Sonuç) formatında net bir şekilde ifade edilmiştir.
-- [ ] **Görev Kapsamı (Scope) Optimize Edilmiştir:** Görev, bir yazılım mühendisinin en fazla 3 iş günü içerisinde tamamlayabileceği, sınırları net olarak çizilmiş (scope-bounded) alt parçalara ayrıştırılmıştır.
+- [ ] **Görev Kapsamı (Scope) Optimize Edilmiştir:** Görev, bir yazılım mühendisinin **azami 3 iş günü** içerisinde tamamlayabileceği, sınırları net olarak çizilmiş (scope-bounded) alt parçalara ayrıştırılmıştır.
+- [ ] **Teslim Edilebilir Dilimleme (Deployable Slicing):** Görev, 3 iş günü içerisinde tek seferde teslim edilemiyorsa; her biri bağımsız olarak üretime çıkabilecek (gerekiyorsa özellik bayrağı/feature flag arkasında) **günlük teslim edilebilir dilimlere** bölünmüştür. Bu kural, [DORA](../process/engineering-metrics.md) "Değişiklik Teslim Süresi < 1 gün" hedefinin görev tanımı seviyesindeki karşılığıdır: 3 gün *görevin* azami ömrü, 1 gün ise *tek bir PR'ın* azami ömrüdür.
 
 ## 2. 🎨 Arayüz Tasarımı ve Kullanıcı Deneyimi (Frontend Geliştirmeleri İçin)
 
@@ -22,3 +23,7 @@
 - [ ] **API ve Veritabanı Servisleri Hazırdır:** Frontend (Önyüz) geliştirme süreçleri başlayacaksa, gerekli API uç noktaları (endpoints) dokümante edilmiş veya geliştirme ortamı için mock (sahte) veriler sağlanmıştır.
 - [ ] **Sistem Mimarisi ve Dış Bağımlılıklar Netleştirilmiştir:** Geliştirmenin genel mimariye etkileri veya üçüncü parti API bağımlılıkları görev kartında detaylandırılmıştır. Geliştirme süreci, başka bir ekibin operasyonunu tamamlamasına bağlı değildir.
 - [ ] **Veri Güvenliği ve Regülasyon Uyumu (KVKK/HIPAA vb.):** Hassas kişisel veya sağlık verilerinin işlenmesi, aktarılması veya saklanması durumlarında veri anonimleştirme ve güvenlik kuralları katı bir şekilde tanımlanmıştır.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: Ürün Yöneticisi (PM) / Tech Lead*

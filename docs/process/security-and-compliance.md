@@ -36,3 +36,6 @@ Sistem erişimlerinde asgari gereklilik prensibi uygulanır.
 ---
 *İlgili politikalar, tüm ekiplerin güvenli kod geliştirme süreçlerine uyumunu garanti altına almak amacıyla düzenli olarak güncellenecektir.*
 
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: DevOps / Güvenlik Otoritesi*

@@ -1,0 +1,46 @@
+name: Playbook Tutarlılık Denetimi
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'CODEOWNERS'
+      - '.github/workflows/docs-check.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Doküman denetimleri
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Denetim betiğini çalıştır
+        run: |
+          chmod +x scripts/check-docs.sh
+          ./scripts/check-docs.sh all
+
+      - name: Commit mesajı hijyeni (PR başlığı)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          CHANGED_ONLY_BACKLOG: ${{ github.event.pull_request.changed_files }}
+        run: |
+          # "add documentation" beyanı yalnızca fiilen doküman yazan PR'lara aittir.
+          # Bkz: docs/process/documentation-standards.md §5
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          FILES=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD)
+          NON_BACKLOG=$(printf '%s\n' "$FILES" | grep -vE '^(TODO\.md|plans/)' || true)
+          if [ -z "$NON_BACKLOG" ]; then
+            if printf '%s' "$PR_TITLE" | grep -qiE 'add (the )?documentation|doküman eklen|documentation for'; then
+              echo "::error::Bu PR yalnızca birikim listesini (TODO.md / plans/) değiştiriyor ancak başlığı doküman eklendiğini beyan ediyor."
+              echo "Gerekçe: docs/process/documentation-standards.md §5 — Commit Mesajı Hijyeni"
+              echo "Öneri: başlığı 'chore: add <konu> to backlog' biçiminde güncelleyin."
+              exit 1
+            fi
+          fi
+          echo "✅ Commit mesajı hijyeni denetimi geçildi."

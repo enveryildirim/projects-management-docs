@@ -12,7 +12,7 @@ Süreç ve kurallar; standart dışı iletişim kanalları (örn. anlık mesajla
 Tüm değişiklik talepleri aynı risk ve etki seviyesine sahip değildir. Süreçlerdeki karmaşayı (entropi) önlemek ve operasyonel hızı korumak adına güncellemeler iki ana kategoriye ayrılmaktadır:
 
 * ⚡ **Hızlı İzlem (Fast-Track):** Yazım hatalarının giderilmesi, çalışmayan bağlantıların (linklerin) onarılması veya mevcut bir kuralı daha anlaşılır kılan minimal metin eklemeleri.
-* *Süreç:* Standart bir Pull Request (PR) oluşturulur. Herhangi bir Uzman (U) veya Otorite (O) tarafından (Bkz: `competency-and-raci.md`) Kod İncelemesi (Code Review) prensipleri doğrultusunda anında onaylanıp ana dala aktarılabilir (merge). Bekleme süresi (SLA) şartı aranmaz.
+* *Süreç:* Standart bir Pull Request (PR) oluşturulur. Herhangi bir Uzman (U) veya Otorite (O) tarafından (Bkz: `competency-matrix.md`) Kod İncelemesi (Code Review) prensipleri doğrultusunda anında onaylanıp ana dala aktarılabilir (merge). Bekleme süresi (SLA) şartı aranmaz.
 
 * 🏛️ **Çekirdek Değişiklik (Core RFC):** Teknoloji yığınında (Tech Stack) yapılacak değişiklikler (Örn: Tailwind'den PandaCSS'e geçiş), süreç güncellemeleri (Örn: Yeni bir Bitti Tanımı (DoD) veya Hazır Tanımı (DoR) maddesinin eklenmesi) veya yeni bir test aracının standartlaştırılması.
 * *Süreç:* Aşağıda detaylandırılan üç aşamalı asenkron RFC onay hattından geçmesi zorunludur.

@@ -29,8 +29,30 @@ PR sürecinin zorunlu bir parçası olarak, ilgili teknik alanın "Otoritesi (O)
 Geri dönüş maliyeti yüksek olan ve birden fazla ekibin çalışma pratiğini doğrudan etkileyen kararlar sözlü mutabakatla alınamaz; bu süreçler için resmi bir **ADR (Architecture Decision Record - Mimari Karar Kaydı)** oluşturulması zorunludur.
 * **Kapsam:** Yeni programlama dili veya framework benimsenmesi, monolitik yapıdan mikroservis mimarisine geçiş, 3. parti kritik altyapı servislerinin (ödeme geçidi, bulut veritabanı vb.) seçimi, süreç ve playbook güncellemeleri.
 
+## 3. Otorite Ataması, İtiraz ve Geri Alma
+
+Karar yetkisinin unvana değil yetkinliğe dayandığı iddiasının korunabilmesi, Otorite (O) rolünün şeffaf bir prosedürle atanmasına ve geri alınabilmesine bağlıdır.
+
+* **Atama:** Bir teknik alanın Otoritesi, Tech Lead önerisi ve ekip içi itirazsızlık esasına göre [Yetkinlik Matrisi](./competency-matrix.md) üzerinde kayda geçirilir. Atama gerekçesi (ilgili alandaki somut teslimat veya derinlik) matriste belirtilir.
+* **İtiraz:** Herhangi bir ekip üyesi, bir Otorite atamasına [RFC süreci](./rfc-update-protocol.md) üzerinden gerekçeli itiraz edebilir. İtiraz, kişiye değil yetkinlik eşleşmesine yönelik olmalıdır.
+* **Geri Alma:** Otorite rolü kalıcı değildir. İlgili alanda aktif çalışmanın sona ermesi veya karar SLA'sının (24 saat) sistematik olarak aşılması durumunda rol, Uzman (U) rolündeki kişiye devredilir.
+
+### 3.1 Unvan Baskısının Engellenmesi (HIPPO Kuralı)
+
+> 💡 **Kural:** Organizasyonel kıdem, teknik bir argümanın yerini alamaz. "Highest Paid Person's Opinion" (HIPPO) etkisinin kararları ezmesi, bu dokümanın temel felsefesinin ihlalidir.
+
+* Bir tartışmada kıdemli bir yönetici, ilgili alanın Otoritesi değilse, görüşü **teknik bir argüman** olarak değerlendirilir; **karar** olarak değerlendirilmez.
+* Eskalasyon sonucunda Tech Lead veya Engineering Manager kararı bağladığında, bunu iki gerekçeden hangisiyle yaptığını açıkça beyan etmekle yükümlüdür:
+  1. **Teknik gerekçe:** Argümanların değerlendirilmesi sonucunda X seçeneği üstün bulunmuştur.
+  2. **Karar hakkı gerekçesi:** Teknik üstünlük belirsizdir; süreci tıkamamak adına karar yetki kullanılarak bağlanmıştır.
+* İkinci gerekçenin kullanıldığı kararlar, PR veya ADR üzerine "*Karar hakkı kullanılarak bağlandı*" ifadesiyle etiketlenir. Bu etiketin sıklığı, [Mühendislik Metrikleri](./engineering-metrics.md) kapsamında izlenir; artması yetkinlik matrisinin gerçeği yansıtmadığına işaret eder.
+
 ## 4. Uyuşmazlık Çözümü (Escalation) ve Devir Kuralı (Fallback)
 
 * **Seviye 2 Uyuşmazlıkları:** Otorite ile geliştirici arasında teknik mutabakat sağlanamaması durumunda, konunun nihai çözümü Tech Lead veya Engineering Manager tarafından belirlenir ve gerekçeli karar PR üzerine kayıt olarak düşülür.
-* **Seviye 3 Uyuşmazlıkları:** Tartışma ve değerlendirme sürecinin 24 saati aşması halinde, karar mekanizması organizasyonun en üst düzey teknik yöneticisine (escalation) aktarılır. Uzlaşmazlık gerekçesiyle proje süreçlerinin süresiz olarak duraklatılmasına müsaade edilmez.
+* **Seviye 3 Uyuşmazlıkları:** Tartışma ve değerlendirme sürecinin 24 saati aşması halinde, karar mekanizması organizasyonun en üst düzey teknik yöneticisine (escalation) aktarılır. Uzlaşmazlık gerekçesiyle proje süreçlerinin süresiz olarak duraklatılmasına müsaade edilmez. Bu yolla bağlanan kararlarda §3.1 kapsamındaki gerekçe beyanı zorunludur.
 * **Otoriteye Ulaşılamaması (Fallback Kuralı):** İlgili kararı vermesi beklenen Otorite'nin (O) izinli olması veya 24 saat içerisinde geri dönüş yapamaması durumunda, karar alma yetkisi kurum içi politikalarımız gereği doğrudan o alanın "Uzmanlarına (U)" devredilir. Operasyonel sistem, onay bekleyişi nedeniyle kesinlikle duraklatılamaz.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: Engineering Manager / Tech Lead*

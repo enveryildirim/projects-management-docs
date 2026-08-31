@@ -40,7 +40,7 @@ Yeni bir arayüz bileşeni geliştirilirken (veya AI araçları ile oluşturulur
 
 1. **Hazır Bileşen Kullanımı:** İhtiyaç duyulan bileşen Shadcn kütüphanesinde mevcut mudur? -> Mevcut ise `npx shadcn-ui@latest add [bileşen-adı]` komutu ile projeye entegre ediniz.
 2. **Kompozisyon (Birleştirme):** Hazır bir bileşen bulunmuyorsa, mevcut Shadcn UI bileşenleri birleştirilerek yeni bir yapı oluşturulabilir mi? -> Mümkünse bu yöntemi tercih ediniz.
-3. **Özel Geliştirme ve ADR (Seviye 2 Karar):** İhtiyaç sistemin mevcut olanaklarıyla çözülemiyorsa, `#frontend` iletişim kanalında yetkili birimden (Bkz: `competency-and-raci.md`) onay alınarak geliştirme sürecine başlanmalıdır.
+3. **Özel Geliştirme ve ADR (Seviye 2 Karar):** İhtiyaç sistemin mevcut olanaklarıyla çözülemiyorsa, `#frontend` iletişim kanalında yetkili birimden (Bkz: `competency-matrix.md`) onay alınarak geliştirme sürecine başlanmalıdır.
 
 🚨 **AI ve Geliştirici İçin Zorunlu Kontrol Listesi:**
 Sıfırdan tasarlanan (Özel Üretim) her UI bileşeni, aşağıdaki kalite standartlarını sağlamakla yükümlüdür:
@@ -48,3 +48,7 @@ Sıfırdan tasarlanan (Özel Üretim) her UI bileşeni, aşağıdaki kalite stan
 * [ ] Klavye navigasyonunu (Tab tuşu ile erişilebilirliği) tam olarak desteklemelidir.
 * [ ] Gerekli `aria-` etiketlerini içermelidir (Erişilebilirlik standartları).
 * [ ] Dışarıdan `className` özelliğini (prop) kabul etmeli ve bu parametreyi `cn(defaultClasses, className)` formatında işleyebilmelidir.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: Frontend Otoritesi (O)*

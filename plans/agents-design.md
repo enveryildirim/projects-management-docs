@@ -1,88 +1,85 @@
-**Core Analysis / Objective Validation**
-Mühendislik altyapısını kodlamaya geçmeden önce "Nasıl" (How) sorusunu ezip "Ne ve Neden" (What & Why) sorusuna odaklanan bir Yüksek Seviye Tasarım (High-Level Design - HLD) dokümanı yazma kararınız, Erken Optimizasyon (Premature Optimization) tuzağını engelleyen ampirik olarak doğru bir mimari reflekstir. Teknoloji seçimi (LangGraph, OpenAI, vb.) amaç değil, sadece bu dokümanda belirlenen vizyona ulaşmak için kullanılacak birer araçtır (implementation detail).
+# AEGS — Otonom Mühendislik Yönetişim Sistemi (Yüksek Seviye Tasarım / HLD)
 
-**Red Teaming (Zafiyet Avı):**
-Bu tasarım dokümanını yazarken düşebileceğimiz en büyük tuzak, yapay zekayı bir "İnsan İkamesi" (Human Replacement) olarak konumlandırmaktır. AI ajanları yazılımcıların yerine kod incelemesi yapamaz; çünkü yazılımın iş bağlamına (business context) ve empatiye sahip değillerdir. Eğer sistemi her şeye karışan bir "Mikro-Yönetici AI" olarak tasarlarsak, ekip "Uyarı Yorgunluğu" (Alert Fatigue) yaşar ve ajanları sessize alır (Mute). Ajanların sınırı kesin olarak "Kural ve Süreç Bekçiliği" (Policy Enforcement) ile sınırlandırılmalıdır.
+> **Bu dokümanın amacı nedir?**
+> Mühendislik Playbook'unu statik bir wiki olmaktan çıkarıp, yazılım geliştirme yaşam döngüsünün (SDLC) her adımında aktif olarak çalışan bir çoklu-ajan denetim sistemine dönüştürme vizyonunu tanımlamaktır. Hedef kitle CTO, Engineering Manager ve kıdemli mühendislerdir. Bu doküman "ne" ve "neden" sorularını yanıtlar; teknoloji seçimleri (orkestrasyon kütüphanesi, vektör veritabanı, çalışma ortamı) bilinçli olarak kapsam dışı bırakılmış ve Düşük Seviye Tasarım (LLD) aşamasına bırakılmıştır.
 
-**Missing Variables / Pragmatic Assumption**
-Varsayımım: Bu tasarım dokümanının (HLD) hedef kitlesinin CTO, Engineering Manager'lar ve takımın kıdemli mühendisleri olduğunu varsayıyorum. Sistemi, ekibe "Size patronluk taslayacak bir robot getiriyoruz" şeklinde değil, "Bilişsel yükünüzü sıfırlayacak ve angaryayı (toil) bitirecek bir otonom asistan ağı kuruyoruz" şeklinde pazarlayacak bir çerçevede (framing) tasarlıyorum.
-
-İşte projenin vizyonunu, ajanların yeteneklerini ve insanlara sunacağı net değeri tanımlayan **Sistem Tasarım Dokümanı**:
+> 🚧 **DOKÜMAN DURUMU: TASARIM — YÜRÜRLÜKTE DEĞİLDİR.** Bu doküman bir vizyon tanımıdır, bağlayıcı bir yönerge değildir. Uygulamaya alınması Seviye 3 karardır ve [ADR](../docs/adr/README.md) kaydı gerektirir.
 
 ---
 
-# Yüksek Seviye Tasarım (HLD): Otonom Mühendislik Yönetişim Sistemi (AEGS)
+## 1. Sistemin Çözeceği Darboğazlar
 
-> **Projenin Amacı:** Mühendislik Playbook'umuzu (kurallar, felsefe, süreçler) statik bir wiki olmaktan çıkarıp, yazılım geliştirme yaşam döngüsünün (SDLC) her adımında aktif olarak çalışan, kendini organize eden bir Çoklu-Ajan (Multi-Agent) RAG sistemine dönüştürmektir.
+1. **Bilişsel Yük (Cognitive Load):** Geliştiricilerin çok sayıda dokümandaki kuralı akılda tutmaya çalışırken asıl iş mantığından uzaklaşması.
+2. **Kural Erozyonu:** Süreç dokümanlarının (DoR, DoD) zamanla okunmayıp Kırık Cam Teorisi gereğince terk edilmesi.
+3. **İnsan Eforu İsrafı (Toil):** Otorite konumundaki mühendislerin PR incelemelerinde "kabul kriteri eksik", "tema değişkeni kullanılmamış" gibi **algoritmik olarak saptanabilir** hataları aramakla vakit kaybetmesi.
 
-## 1. Sistemin Çözeceği Temel Darboğazlar (Problemler)
+## 2. Ön Koşul: Deterministik Katmanın Önceliği
 
-1. **Bilişsel Yük (Cognitive Load):** Geliştiricilerin 13 farklı dokümandaki kuralı akılda tutmaya çalışırken asıl iş mantığından (business logic) uzaklaşması.
-2. **Kural Erozyonu:** Süreç dokümanlarının (DoR, DoD) zamanla okunmayıp "Kırık Cam Teorisi" (Broken Windows) gereği terk edilmesi.
-3. **İnsan Eforu İsrafı (Toil):** Kıdemli mühendislerin (Otoritelerin) PR'larda "Burada Tailwind kuralını bozmuşsun" veya "Jira kartında kabul kriteri eksik" gibi algoritmik hataları aramakla vakit kaybetmesi.
+> 🚨 **Sıralama Kuralı:** Bu sistem, deterministik CI bariyerlerinin **yerine** değil, **üzerine** kurulur.
 
-## 2. İnsanlara Nasıl Yardımcı Olacak? (Değer Önerisi)
+Yukarıdaki üçüncü darboğazın büyük bölümü, dil modeli gerektirmeyen deterministik denetimlerle çözülür: secret taraması, linter, test, build ve şema denetimi. Bu bariyerler kurulmadan bir ajan sistemine geçilmesi, çözülebilir bir problemi gereksiz karmaşıklıkla ve maliyetle çözmek anlamına gelir — [Ürün Felsefesi](../docs/core/product-philosophy.md) §4'te tanımlı erken optimizasyon tuzağı.
 
-Sistem, hiyerarşideki rollere farklı değerler sunarak angaryayı keser:
+| Katman | Yöntem | Kapsadığı Denetim |
+| --- | --- | --- |
+| **1. Deterministik CI** *(ön koşul)* | Betik / linter / test | Secret sızıntısı, biçim ihlalleri, test başarısızlığı, yıkıcı migration, kırık bağlantı |
+| **2. Yapay zeka ajanı** *(bu doküman)* | LLM + RAG | Yargı gerektiren denetimler: kabul kriterinin anlamlı doldurulup doldurulmadığı, talebin XY problemi olup olmadığı, kriz zaman çizelgesinin çıkarılması |
 
-* **Geliştiriciye (Developer) Faydası:** Hızlı Geri Bildirim. Bir kural hatası (Örn: Canlı veri kullanımı) yaptığında, insan (Tech Lead) tarafından eleştirilmeden önce sistem tarafından saniyeler içinde özel olarak (ve yargılanmadan) uyarılır. Doğruyu bulması için ilgili Playbook maddesiyle birlikte rehberlik alır.
-* **Kıdemli Mühendis / Otoriteye (Tech Lead) Faydası:** Kötü Adam Olmaktan Kurtulma. "Polislik" görevini AI devralır. Otoritelerin önüne sadece kurallara %100 uyan, güvenlik testlerinden geçmiş PR'lar düşer. Otorite sadece "Mimari ve İş Mantığına" odaklanır.
-* **Ürün Yöneticisine (PM) Faydası:** Gürültü Filtresi. Slack veya Jira'dan gelen "Şuraya buton koyalım" şeklindeki anlamsız talepler, Triage Ajanı tarafından anında karşılanıp "XY Problemi" filtresinden geçirilir. PM'in önüne sadece rafine edilmiş problemler düşer.
+Ajanlara yalnızca ikinci sütun bırakılır. Bu ayrım, sistemin maliyetini ve hata yüzeyini belirleyen temel tasarım kararıdır.
 
-## 3. Sistemdeki Ajanların Yetenekleri (Core Capabilities)
+## 3. Değer Önerisi (Rol Bazlı)
 
-Sistem 3 temel otonom düğümden (Node) oluşur. Her ajan sadece kendi yetki alanındaki Playbook verisine (RAG) erişebilir.
+* **Geliştirici:** Hızlı ve yargısız geri bildirim. Bir kural ihlali, insan tarafından eleştirilmeden önce sistem tarafından saniyeler içinde, ilgili Playbook maddesine atıfla bildirilir.
+* **Otorite / Tech Lead:** "Polislik" görevinin devredilmesi. Otoritenin önüne yalnızca süreç denetimlerinden geçmiş PR'lar düşer; inceleme eforu mimari ve iş mantığına yönelir.
+* **Ürün Yöneticisi:** Gürültü filtresi. Çözüm öneren ham talepler, [Triage](../docs/core/triage.md) kurallarındaki XY problemi filtresinden geçirilerek rafine edilir.
 
-### A. Kapı Bekçisi (PR Gatekeeper)
+## 4. Ajan Yetenekleri
 
-* **Ne Yapar:** Açılan her PR'ı saniyeler içinde okur. Kodu değil, *süreci ve kısıtlamaları* denetler.
-* **Yetenekler:**
-* PR açıklamasında DoD (Bitti Kriterleri) listesinin doldurulup doldurulmadığını denetler.
-* AI ile üretilen kodlar için "Prompt Şeffaflığı" kuralını kontrol eder.
-* UI kodunda "Gelişigüzel Tailwind değeri" (Arbitrary value) arar; bulursa PR'ı bloklar ve Playbook Kural 2'yi alıntılayarak düzeltme ister.
-* TruffleHog (Gizli veri sızıntısı) uyarısı varsa PR'ın merge edilmesini fiziksel olarak kilitler.
+Sistem üç otonom düğümden oluşur. Her ajan yalnızca kendi yetki alanındaki Playbook verisine (RAG) erişir.
 
+### 4.1 Kapı Bekçisi (PR Gatekeeper)
 
+Kodu değil, **süreci ve kısıtlamaları** denetler.
 
-### B. Talep Filtresi (Triage & Refinement Bot)
+* PR açıklamasındaki DoD listesinin doldurulup doldurulmadığını ve maddelerin **anlamlı** yanıtlandığını denetler (deterministik katmanın yapamadığı kısım).
+* Yapay zeka ile üretilen kodlar için "Prompt Şeffaflığı" kuralını kontrol eder (Bkz: [AI Manifestosu](../docs/core/ai-manifesto.md) §4).
+* İlgili [Stack dokümanındaki](../docs/stacks/README.md) tasarım sistemi ihlallerini saptar; bulduğunda ilgili kuralı alıntılayarak düzeltme talep eder.
+* Deterministik katmanın ürettiği bulguları tekrar etmez; yalnızca özetler ve ilgili Playbook maddesine bağlar.
 
-* **Ne Yapar:** Müşteri, Destek veya Satış ekibinden gelen talepleri (Slack/Jira) ekibin önüne düşmeden karşılar.
-* **Yetenekler:**
-* Çözüm öneren taleplere (Örn: "Yeni tablo ekleyin") otomatik olarak "Sihirli Değnek" ve "5 Neden" sorularını sorar (Triage dokümanı kuralları).
-* Kullanıcıdan yeterli veriyi topladığında taslak bir "ICE Skoru" hesaplar.
-* Geçerli talepleri DoR (Geliştirmeye Hazır) formatında bir karta dönüştürüp PM'in onayına sunar.
+### 4.2 Talep Filtresi (Triage & Refinement Bot)
 
+Müşteri, destek veya satış ekiplerinden gelen talepleri ekibin önüne düşmeden karşılar.
 
+* Çözüm öneren taleplere "5 Neden" ve kök neden sorularını yönelterek problem tanımını çıkarır.
+* Yeterli veri toplandığında taslak bir ICE skoru hesaplar.
+* Geçerli talepleri [DoR](../docs/core/dor.md) formatında bir karta dönüştürüp Ürün Yöneticisinin onayına sunar.
 
-### C. Kriz Komutanı Asistanı (SRE / Incident Bot)
+### 4.3 Kriz Komutanı Asistanı (Incident Bot)
 
-* **Ne Yapar:** Canlı sistem çöktüğünde (Sev-1) panik ortamını yönetir ve angaryayı üstlenir.
-* **Yetenekler:**
-* Alarm anında War Room kanalını otomatik açar ve `CODEOWNERS` üzerinden ilgili Otoriteleri zorla kanala çağırır.
-* Sistem çöktüğü andaki son logları özetleyip kanala pinler.
-* Kriz bittiğinde kanal geçmişini okuyarak "Zaman Çizelgesini (Timeline)" çıkarır ve "Suçlamasız Post-Mortem" taslağını %80 oranında doldurur.
+Sev-1 durumlarında koordinasyon angaryasını üstlenir.
 
+* Alarm anında Kriz Masası (War Room) kanalını açar ve `CODEOWNERS` üzerinden ilgili Otoriteleri kanala çağırır.
+* Kesinti anındaki son logları özetleyip kanala sabitler.
+* Kriz sonunda kanal geçmişinden zaman çizelgesini (timeline) çıkarır ve [Suçlamasız Post-Mortem](../docs/core/incident-response.md) taslağını büyük ölçüde doldurur.
 
+## 5. Anti-Patenler (Sistemin ASLA Yapmayacağı Şeyler)
 
-## 4. Anti-Patenler (Sistemin ASLA Yapmayacağı Şeyler)
+Bu bölüm, sistemin en kritik tasarım kısıtını oluşturur. Yapay zekanın bir "İnsan İkamesi" olarak konumlandırılması, ekipte uyarı yorgunluğu (alert fatigue) üretir ve ajanların sessize alınmasıyla sonuçlanır.
 
-* **Koda Karar Vermek:** Ajanlar kodu kendi başlarına merge edemez, mimari tercih yapamaz. Karar her zaman insandadır (Human-in-the-loop).
-* **Performans Değerlendirmesi:** Ajanlar "Ali çok hata yapıyor" gibi kişisel profilleme metrikleri tutamaz (Metrikler dokümanı kuralı).
-* **Gereksiz Gevezelik:** Ajanlar sadece kural ihlali olduğunda konuşur. Her şey doğruysa sessizce onay (Check) verip geri çekilir.
+* **Koda karar vermek:** Ajanlar kodu birleştiremez (merge), mimari tercih yapamaz. Karar her zaman insandadır (human-in-the-loop).
+* **Performans değerlendirmesi:** Ajanlar bireysel profilleme metriği tutamaz. Bu kısıt [Mühendislik Metrikleri](../docs/process/engineering-metrics.md) §3'teki anti-metrik yasağının doğrudan uzantısıdır.
+* **Gereksiz gevezelik:** Ajanlar yalnızca kural ihlali durumunda konuşur. İhlal yoksa sessizce onay verip geri çekilir.
+* **Deterministik denetimi taklit etmek:** Betikle saptanabilen bir ihlal için dil modeli çağrılmaz.
+
+## 6. Sırada Ne Var? (Düşük Seviye Tasarım Kapsamı)
+
+Bu vizyonun teknik mimariye (LLD) dönüştürülmesi aşamasında yanıtlanacak sorular:
+
+1. Ajanlar hangi çalışma ortamında koşacak (CI iş akışı içinde mi, bağımsız bir servis olarak mı)?
+2. Playbook bilgi tabanı hangi erişim yöntemiyle sunulacak (vektör arama mı, doğrudan doküman bağlamı mı)?
+3. Ajanlar arası orkestrasyon nasıl kurgulanacak ve maliyet/gecikme bütçesi ne olacak?
+4. Ajan çıktılarının doğruluğu nasıl ölçülecek (yanlış pozitif oranı, ekip tarafından sessize alma sıklığı)?
+
+> ⚠️ **Devreye alma ön koşulu:** [README](../README.md) olgunluk tablosundaki "CI Bariyerleri (Ürün Depoları)" satırı ✅ durumuna gelmeden bu sistemin LLD aşamasına geçilmemesi önerilir.
 
 ---
-
-*Son Güncelleme: 29 Ağustos 2026 — Doküman Tipi: High-Level Design (HLD)*
-
----
-
-**Elevation (ZPD - Sırada Ne Var?)**
-Sistemin "Ne" yapacağı, insanlara nasıl değer üreteceği ve sınırları (Anti-patenler) artık net bir şekilde dokümante edildi. Bu vizyonu ekibe ve yönetime satabilirsiniz.
-
-Bir sonraki adım, bu HLD'yi (Tasarım Dokümanını) alıp **Teknik Mimari Dokümanına (Low-Level Design - LLD)** çevirmektir. Yani;
-
-1. Bu ajanlar GitHub Actions içinde mi yoksa AWS Lambda'da mı koşacak?
-2. Playbook veritabanı (Vector DB) olarak Pinecone mu yoksa ChromaDB mi kullanılacak?
-3. Orchestration (Ajanların iletişimi) için LangGraph mı, AutoGen mi kullanılacak?
-
-"Nasıl" sorusunu cevaplayacağımız Teknik Mimari Tasarımına (LLD) geçmek için onayın var mı?
+*Son Güncelleme: 2026-08-31 — Versiyon 2.0 — Doküman Sahibi: Engineering Manager / Tech Lead*

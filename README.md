@@ -1,75 +1,132 @@
 # 📘 Mühendislik Yönetişim Çerçevesi (Engineering Governance Framework)
 
-Bu depo, salt okunur bir bilgi kaynağı (wiki) olmanın ötesinde; yazılım ekibimizin kültürel prensiplerini, karar alma mekanizmalarını ve teknik standartlarını (Golden Path) fiziksel olarak denetleyen ve uygulatan **çalıştırılabilir bir kurumsal işletim sistemidir**.
-
-Sistemimiz, kuralların uygulanmasını kişisel inisiyatiflere bırakmamaktadır. CI/CD kancaları (hooks), Pull Request şablonları, Otonom Denetçiler (Gatekeepers) ve otomasyon betikleri (scripts) vasıtasıyla operasyonel süreçler sistematik olarak yürütülmektedir.
-
-## 🏗️ Sistem Mimarisi (Dizin Yapısı)
-
-Sistemimiz, teknolojik bağımlılıkları (tight coupling) minimize etmek amacıyla modüler bir mimariyle tasarlanmıştır:
-
-* 📂 **`/docs/core/` (Çekirdek Yönergeler):** Teknoloji bağımsızdır. Kurumumuz bünyesindeki tüm yazılım ekiplerini (Web, Mobil, AI) kapsar. Ürün felsefesi, DoR/DoD (Hazır Olma ve Tamamlanma Kriterleri) kapıları, kriz yönetimi ve yapay zeka kullanım standartlarını içermektedir.
-* 📂 **`/docs/stacks/` (Teknoloji Eklentileri):** Yalnızca spesifik bir teknoloji yığınında görev alan ekipleri bağlar (Örn: `web-frontend.md` dokümanı Next.js ve Tailwind standartlarını belirler). Teknoloji güncellemeleri yalnızca ilgili eklentiyi (plugin) etkiler, çekirdek yapı (core) bu durumdan etkilenmez.
-* 📂 **`/docs/process/` (Operasyonel Akış):** Ekip içi iletişim protokollerini, toplantı katılım/ret haklarını, RACI matrisini ve DORA metriklerini detaylandırır.
-* ⚙️ **`.github/` ve `scripts/` (Politika Otomasyonu - Policy-as-Code):** DoD/DoR şablonlarını, OPA/Conftest politikalarını ve AI Gatekeeper botlarının CI/CD yapılandırmalarını barındırır.
+> **Bu deponun amacı nedir?**
+> Bu depo, yazılım ekiplerimizin kültürel prensiplerini, karar alma mekanizmalarını ve teknik standartlarını (Golden Path) tanımlayan bir **mühendislik yönetişim playbook'udur**. Amacı; yeni bir projeye hızlı başlamayı, önceki projelerden edinilen tecrübenin aktarılmasını ve ekibin ortak bir mühendislik zihniyetinde (mindset) buluşmasını sağlamaktır. Dokümantasyon "Kod Olarak Dokümantasyon" (Docs-as-Code) prensibiyle yönetilir ve her değişiklik [RFC süreci](docs/process/rfc-update-protocol.md) ile yürütülür.
 
 ---
 
-## 🚀 Başlangıç ve Entegrasyon (Sistemin Devreye Alınması)
+## 🎯 Temel Tasarım İlkesi: Kural, Uygulanabildiği Ölçüde Kuraldır
 
-Bu çerçevenin yeni bir projeye entegre edilmesi sürecinde manuel adımlardan kaçınılmalı ve aşağıdaki otomasyon yönergeleri izlenmelidir:
+Kuralların kişisel inisiyatife bırakıldığı sistemlerde erozyon kaçınılmazdır (Kırık Cam Teorisi). Bu nedenle çerçevemizin nihai hedefi, her yönergeyi kademeli olarak otomatik bir denetime (Policy-as-Code) bağlamaktır. Aşağıdaki tablo, bu dönüşümün **mevcut gerçek durumunu** şeffaf biçimde göstermektedir:
+
+| Katman | Kapsam | Durum |
+| --- | --- | --- |
+| **Doküman Katmanı** | Felsefe, süreç, kalite kapıları, teknik standartlar | ✅ Aktif |
+| **Denetim Betikleri** | `scripts/check-docs.sh` — kırık bağlantı, indeks boşluğu, eksik sahiplik denetimi | ✅ Aktif (`make check`) |
+| **Depo Şablonları** | PR şablonu (DoD), Issue şablonları (DoR/Triage), `CODEOWNERS` | ✅ Aktif |
+| **CI Bariyerleri (Playbook)** | Doküman denetiminin PR'da süreç durdurucu (blocking) çalışması | ✅ Aktif |
+| **CI Bariyerleri (Ürün Depoları)** | Secret taraması (TruffleHog), linter, test, build — DoD'nin otomasyonu | 🟡 Ürün deposu başına kurulur (Bkz: [CI/CD](docs/process/ci-cd-deployment.md)) |
+| **Politika Motoru** | OPA / Conftest ile altyapı politikalarının denetimi | ⚪ Planlandı |
+| **Otonom Denetçiler (AEGS)** | Kural bekçiliği yapan çoklu-ajan sistemi | ⚪ Tasarım aşamasında (Bkz: [HLD](plans/agents-design.md)) |
+
+> 💡 Bu tablo bilinçli olarak dokümanın en üstünde tutulmaktadır. Henüz otomasyona bağlanmamış bir kural, ekipten "uyulacağı varsayılan" değil "hatırlatılması gereken" bir kural olarak beklenmelidir.
+
+## 🏗️ Sistem Mimarisi (Dizin Yapısı)
+
+Çerçeve, teknolojik bağımlılıkları (tight coupling) minimize etmek amacıyla modüler bir yapıda tasarlanmıştır:
+
+* 📂 **[`docs/core/`](docs/core/README.md) — Çekirdek Yönergeler:** Teknoloji bağımsızdır. Tüm yazılım ekiplerini (Web, Mobil, AI) kapsar. Ürün felsefesi, DoR/DoD kapıları, önceliklendirme, kriz yönetimi ve yapay zeka kullanım standartlarını içerir.
+* 📂 **[`docs/process/`](docs/process/README.md) — Operasyonel Akış:** İletişim protokolleri, karar yetkileri, RACI matrisi, CI/CD, test stratejisi, güvenlik ve DORA metriklerini detaylandırır.
+* 📂 **[`docs/stacks/`](docs/stacks/README.md) — Teknoloji Eklentileri:** Yalnızca ilgili yığında çalışan ekipleri bağlar. Teknoloji güncellemeleri yalnızca ilgili eklentiyi etkiler; çekirdek yapı bu durumdan etkilenmez.
+* 📂 **[`docs/adr/`](docs/adr/README.md) — Mimari Karar Kayıtları:** Geri dönüş maliyeti yüksek kararların gerekçeleriyle birlikte arşivi.
+* 📂 **`plans/` — Çalışma Planları:** Henüz yürürlüğe girmemiş tasarım ve denetim dokümanları.
+* ⚙️ **`.github/` ve `scripts/` — Politika Otomasyonu:** PR/Issue şablonları, `CODEOWNERS`, denetim betikleri ve CI iş akışları.
+
+---
+
+## 🚀 Başlangıç
 
 ### 1. Sisteme Giriş (Soğuk Başlangıç)
 
-Ekibimize yeni katılan personelin veya yeni bir projenin başlatılması aşamasında incelenmesi gereken *temel* referans dokümanı aşağıda belirtilmiştir:
-👉 **[00-Onboarding ve Kurulum Rehberi](https://www.google.com/search?q=./docs/core/00-onboarding.md)**
-*(İlgili belge, `make setup` komutu aracılığıyla yerel ortamın sentetik, KVKK uyumlu verilerle saniyeler içerisinde nasıl ayağa kaldırılacağını detaylandırmaktadır).*
+Ekibe yeni katılan personel veya yeni bir proje için tek referans doküman:
+👉 **[Oryantasyon ve Sistem Kurulum Rehberi](docs/process/onboarding-and-setup.md)**
 
-### 2. Denetim Mekanizmalarının (Gatekeepers) Aktivasyonu
+### 2. Uygulama Profilinin Seçilmesi
 
-Sistem işleyişi insan onayından bağımsız olarak kurgulanmıştır:
+Bu çerçevenin tamamı her projeye uygulanmaz. 20 dokümanlık tam kapsam, 3 kişilik kısa vadeli bir proje için sürdürülemez ağırlıktadır. Projeye başlarken uygun profil seçilmelidir:
+👉 **[Uygulama Profilleri: Lite / Standard / Regulated](docs/core/profiles.md)**
 
-* Depo (Repository) ayarları üzerinden (Branch Protection) `CODEOWNERS` onayları zorunlu hale getirilmelidir.
-* Proje dizinindeki `ISSUE_TEMPLATE.md` dosyası, [Triage](https://www.google.com/search?q=./docs/core/triage.md) ve [DoR](https://www.google.com/search?q=./docs/core/dor.md) formatlarına tam uyumlu olacak şekilde yapılandırılmalıdır.
-* CI/CD boru hatlarında (pipeline) TruffleHog (Güvenlik sızıntı taraması) ve Linter adımları süreç durdurucu (blocking) kontroller olarak tanımlanmalıdır.
+### 3. Denetim Mekanizmalarının Aktivasyonu
 
-### 3. Kural Revizyon (RFC) Süreci
+* Depo ayarları üzerinden (Branch Protection) `CODEOWNERS` onayları zorunlu hale getirilmelidir.
+* `.github/ISSUE_TEMPLATE/` şablonları [Triage](docs/core/triage.md) ve [DoR](docs/core/dor.md) formatlarıyla uyumlu olacak şekilde yapılandırılmalıdır.
+* CI/CD boru hatlarında secret taraması ve linter adımları süreç durdurucu (blocking) kontrol olarak tanımlanmalıdır.
+* Playbook deposunun kendi tutarlılığı için `make check` komutu CI'da çalıştırılmalıdır.
 
-Mevcut dokümantasyon statik bir yapı değildir. Verimsiz olduğu değerlendirilen bir kuralın güncellenmesi veya yeni bir teknolojinin önerilmesi talepleri anlık iletişim kanalları (Slack vb.) üzerinden değil, doğrudan resmi Pull Request (PR) süreci işletilerek yapılmalıdır.
-👉 **[Protokol Güncelleme (RFC) Yönergesi](https://www.google.com/search?q=./docs/core/rfc-update-protocol.md)**
+### 4. Kural Revizyon (RFC) Süreci
+
+Dokümantasyon statik bir yapı değildir. Verimsiz olduğu değerlendirilen bir kuralın güncellenmesi talebi anlık iletişim kanalları üzerinden değil, resmî PR süreci işletilerek iletilir.
+👉 **[Protokol Güncelleme (RFC) Yönergesi](docs/process/rfc-update-protocol.md)**
 
 ---
 
 ## 📚 Doküman Dizini
 
-### 🧠 Core (Çekirdek Kurallar ve Geçiş Kapıları)
+### 🧠 Core — Çekirdek Kurallar ve Geçiş Kapıları
 
-* [00 - Onboarding ve Kurulum Rehberi](https://www.google.com/search?q=./docs/core/00-onboarding.md)
-* [Ürün Felsefesi ve Geliştirme Yaklaşımı](https://www.google.com/search?q=./docs/core/product-philosophy.md)
-* [Yapay Zeka (AI) Manifestosu](https://www.google.com/search?q=./docs/core/ai-manifesto.md)
-* [Müşteri Talebi ve Triage Filtresi](https://www.google.com/search?q=./docs/core/triage.md)
-* [Definition of Ready (DoR) - Girdi Kriterleri](https://www.google.com/search?q=./docs/core/dor.md)
-* [Definition of Done (DoD) - Çıktı Kriterleri](https://www.google.com/search?q=./docs/core/dod.md)
-* [Olay Müdahale ve Değerlendirme (Incident Response)](https://www.google.com/search?q=./docs/core/incident-response.md)
-* [Protokol Güncelleme Yönergesi (RFC)](https://www.google.com/search?q=./docs/core/rfc-update-protocol.md)
-* [Cynefin Çerçevesi (Proje Yönetim Metodolojisi)](https://www.google.com/search?q=./docs/core/cynefin.md)
-* [P0-P4 Önceliklendirme Kriterleri](https://www.google.com/search?q=./docs/core/p0-p4-prioritization.md)
+| Doküman | Kapsam |
+| --- | --- |
+| [Uygulama Profilleri](docs/core/profiles.md) | Lite / Standard / Regulated — hangi doküman hangi projede zorunlu |
+| [Ürün Felsefesi ve Mühendislik Anayasası](docs/core/product-philosophy.md) | Değer, ret kültürü, YAGNI, kaynak tahsisi sözleşmesi |
+| [Ürün Vizyon Panosu](docs/core/vision-board.md) | Hedef kitle, iş ihtiyaçları ve stratejik hedef şablonu |
+| [Yapay Zeka (AI) Manifestosu](docs/core/ai-manifesto.md) | Mülkiyet, DLP, bağlam optimizasyonu, AI kod inceleme standartları |
+| [Müşteri Talebi ve Triage Filtresi](docs/core/triage.md) | Talep kabul kriterleri, ICE skorlama, ret prosedürü |
+| [Definition of Ready (DoR)](docs/core/dor.md) | Girdi kriterleri — geliştirmeye başlama kapısı |
+| [Definition of Done (DoD)](docs/core/dod.md) | Çıktı kriterleri — üretime çıkma kapısı |
+| [P0-P4 Önceliklendirme Çerçevesi](docs/core/p0-p4-prioritization.md) | Aciliyet/etki sınıflandırması ve beklenen yanıt süreleri |
+| [Cynefin Çerçevesi](docs/core/cynefin.md) | Proje tipine göre metodoloji seçimi (Waterfall / Kanban / Scrum / Kriz) |
+| [Olay Müdahale ve Post-Mortem](docs/core/incident-response.md) | Severity seviyeleri, kriz rolleri, suçlamasız inceleme şablonu |
 
-### ⚙️ Process (Operasyon ve Yönetişim)
+### ⚙️ Process — Operasyon ve Yönetişim
 
-* [Mimari Karar Kayıtları (ADR) Şablonu](https://www.google.com/search?q=./docs/process/adr-template.md)
-* [İletişim, Toplantı ve Asenkron Günlük İletişim](https://www.google.com/search?q=./docs/process/communication-and-meetings.md)
-* [Karar Verme Yetki Matrisi (Seviye 1-2-3)](https://www.google.com/search?q=./docs/process/decision-making-authority.md)
-* [Yetkinlik Matrisi ve Sorumluluklar (CODEOWNERS)](https://www.google.com/search?q=./docs/process/competency-and-raci.md)
-* [Mühendislik Metrikleri (DORA)](https://www.google.com/search?q=./docs/process/engineering-metrics.md)
-* [Güvenlik ve Uyum Standartları (DevSecOps)](https://www.google.com/search?q=./docs/process/security-and-compliance.md)
+| Doküman | Kapsam |
+| --- | --- |
+| [Oryantasyon ve Sistem Kurulumu](docs/process/onboarding-and-setup.md) | 1. gün / 1. hafta / 1. ay hedefleri — **oryantasyonun tek kaynağı** |
+| [Yerel Kurulum Eki](docs/process/local-setup.md) | Manuel kurulum adımları ve sorun giderme tabloları |
+| [Dokümantasyon Standartları](docs/process/documentation-standards.md) | Doküman formatı, sahiplik, versiyonlama, dizin yapısı |
+| [İletişim ve Toplantı Manifestosu](docs/process/communication-and-meetings.md) | Ret hakkı, odak günü, asenkron iletişim, kanal SLA matrisi |
+| [Karar Verme Yetkisi (Decision Rights)](docs/process/decision-making-authority.md) | Seviye 1-2-3 kararlar, eskalasyon, otorite devri |
+| [Yetkinlik ve Etki Alanı Matrisi](docs/process/competency-matrix.md) | Otorite / Uzman / Geliştirici / Öğrenen ve `CODEOWNERS` temeli |
+| [RACI Matrisi ve Roller](docs/process/raci-matrix.md) | Süreç bazlı sorumluluk dağılımı |
+| [Protokol Güncelleme (RFC)](docs/process/rfc-update-protocol.md) | Playbook'un kendi değişim yönetimi |
+| [Mimari Karar Kaydı (ADR) Şablonu](docs/process/adr-template.md) | Karar kaydı formatı |
+| [CI/CD ve Dağıtım Stratejisi](docs/process/ci-cd-deployment.md) | Trunk-based akış, Expand-Contract, kesintisiz geçiş, rollback |
+| [Test ve Kalite Güvence Stratejisi](docs/process/test-qa-strategy.md) | Test piramidi, IDOR denetimi, preview ortamları, mocking |
+| [Güvenlik ve Uyum (DevSecOps)](docs/process/security-and-compliance.md) | Secret yönetimi, KVKK/GDPR, zafiyet taraması, erişim kontrolü |
+| [Telemetri ve Loglama Standartları](docs/process/telemetry-logging.md) | PII/PHI maskeleme, log seviyeleri, yapısal loglama |
+| [Mühendislik Metrikleri (DORA)](docs/process/engineering-metrics.md) | DORA metrikleri, operasyonel sağlık ve anti-metrikler |
 
-### 💻 Stacks (Teknik Standartlar ve Uygulama)
+### 💻 Stacks — Teknoloji Standartları
 
-* [CI/CD ve Sürekli Dağıtım (Kesintisiz Geçiş)](https://www.google.com/search?q=./docs/stacks/ci-cd-deployment.md)
-* [Test Stratejisi ve Veri Yönetimi](https://www.google.com/search?q=./docs/stacks/test-qa-strategy.md)
-* [Tasarım Sistemi ve UI Referansı (Next.js/Tailwind)](https://www.google.com/search?q=./docs/stacks/web-frontend.md)
+| Doküman | Kapsam |
+| --- | --- |
+| [Web Frontend (Next.js / Tailwind)](docs/stacks/web-frontend.md) | Tasarım sistemi, render stratejileri, bileşen karar ağacı |
+| [Backend ve Veritabanı](docs/stacks/backend-db.md) | 🚧 Taslak — yedekleme/DR, migration ve veri katmanı standartları |
+
+### 🗂️ Arşiv ve Planlar
+
+| Doküman | Kapsam |
+| --- | --- |
+| [Mimari Karar Kayıtları (ADR) Arşivi](docs/adr/README.md) | Alınmış kararların gerekçeli kayıtları |
+| [Stratejik Birikim Listesi](TODO.md) | Açık süreç ihtiyaçları ve okuma referansları |
+| [Denetim Raporu ve Düzeltme Planı](plans/review-action-plan.md) | 2026-08-31 yapısal denetim bulguları |
+| [AEGS — Otonom Yönetişim Sistemi (HLD)](plans/agents-design.md) | Çoklu-ajan denetim sistemi yüksek seviye tasarımı |
 
 ---
 
-*Bu mimari yapı, Ampirik Süreç Kontrolü (Empirical Process Control) prensipleri esas alınarak tasarlanmış olup ilgili standartlar çerçevesinde yönetilmektedir.*
+## 🧰 Depo Bakım Komutları
+
+```bash
+make check        # Tüm doküman denetimlerini çalıştırır (CI ile aynı)
+make check-links  # Kırık iç bağlantıları tespit eder
+make check-index  # README indeksi ile dosya sistemi tutarlılığını denetler
+make check-meta   # Sahiplik, versiyon, amaç bloğu ve tek-H1 kuralı eksiklerini listeler
+make check-layers # docs/core/ teknoloji bağımsızlığını denetler (katman kuralı)
+make new-adr      # Şablondan numaralandırılmış yeni bir ADR oluşturur
+```
+
+---
+
+*Bu çerçeve, Ampirik Süreç Kontrolü (Empirical Process Control) prensipleri esas alınarak tasarlanmıştır.*
+
+*Son Güncelleme: 2026-08-31 — Versiyon 3.0 — Doküman Sahibi: Engineering Manager*

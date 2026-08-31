@@ -1,12 +1,16 @@
-# 📋 Proje Yönetimi & Süreç İyileştirme - TODO Listesi
+# 📋 Proje Yönetimi & Süreç İyileştirme — Stratejik Birikim Listesi
 
-Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanlarını kategorize etmektedir. İşaretlenebilir yapı sayesinde ilerlemeyi buradan takip edebilirsiniz.
+> **Bu dokümanın amacı nedir?**
+> Playbook'un açık kalan süreç ihtiyaçlarını, gelişim alanlarını ve dayanak okuma referanslarını kategorize etmektir. Kalıcı bir birikim listesidir; yürütülmekte olan yapısal düzeltmeler için bkz: [Denetim Raporu ve Düzeltme Planı](plans/review-action-plan.md).
+
+> ⚠️ **Commit Hijyeni:** Bu listeye madde eklemek bir dokümanın yazılması değildir. Yalnızca bu dosyayı değiştiren commit'ler `chore:` öneki ile etiketlenir ve "doküman eklendi" beyanı içeremez. Bkz: [Dokümantasyon Standartları](docs/process/documentation-standards.md) §5.
 
 ## 1. Dokümantasyon, Kültür ve Sahiplik
-- [ ] **Çapraz Referanslar:** Her bir dokümandaki kuralları, diğer dokümanlara (ADR, Triage, DoD) atıflar/linkler vererek güçlendirmek.
-- [ ] **Sahiplik (Ownership):** Bu dokümanların güncelliğini kimin sağlayacağını belirlemek (Örn: `CODEOWNERS` dosyasının aktif kullanımı).
-- [ ] **Uyum (Compliance):** Ekibin belirlenen bu kurallara uyup uymadığını ampirik olarak nasıl ölçeceğimizin mekanizmasını kurmak.
-- [ ] **Önyargı Yönetimi (HIPPO):** En yüksek maaşlı kişinin fikrinin (Highest Paid Person's Opinion) teknik kararları ezmesini engelleyecek kültür prensiplerini netleştirmek.
+- [x] **Çapraz Referanslar:** Dokümanlar arası atıflar tıklanabilir göreli bağlantılara çevrildi; kırık bağlantılar `make check-links` ile CI'da denetleniyor.
+- [x] **Sahiplik (Ownership):** Her doküman `Doküman Sahibi` footer'ı taşıyor (`make check-meta` denetler); `CODEOWNERS` rol tabanlı olarak dolduruldu. *Kalan adım: yer tutucu rollerin gerçek kullanıcı adlarıyla değiştirilmesi ve Branch Protection aktivasyonu.*
+- [x] **Uyum — Playbook Katmanı:** `scripts/check-docs.sh` ile kırık bağlantı, indeks boşluğu, eksik sahiplik, amaç bloğu ve katman kuralı (core teknoloji bağımsızlığı) ihlalleri her PR'da süreç durdurucu olarak denetleniyor.
+- [ ] **Uyum — Ürün Depoları Katmanı:** DoD/DoR maddelerinin ürün depolarında otomatik denetlenmesi (secret taraması, linter, test, SCA/SAST) her depoda ayrıca kurulmalıdır. Bkz: [CI/CD](docs/process/ci-cd-deployment.md) §2.
+- [x] **Önyargı Yönetimi (HIPPO):** [Karar Verme Yetkisi](docs/process/decision-making-authority.md) §3 ve §3.1 altında otorite atama/itiraz/geri alma prosedürü ile "karar hakkı gerekçe beyanı" zorunluluğu tanımlandı; kullanım sıklığı [metrik](docs/process/engineering-metrics.md) olarak izleniyor.
 
 ## 2. Eksik Süreçler ve Yeni Doküman İhtiyaçları
 - [x] **Güvenlik ve Uyum (DevSecOps):** Veri gizliliği, sızma testi pratikleri ve güvenlik standartları (Örn: [TruffleHog](https://github.com/trufflesecurity/trufflehog) ile secret sızıntılarını engelleme).
@@ -26,12 +30,25 @@ Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanl
   - **Fırsat ve Özellik ROI Analizi:** Yeni bir özelliğin getireceği operasyonel/finansal fayda ile geliştirme + sürekli bakım maliyetinin karşılaştırılması.
   - **Atıl Kaynak Temizliği (Waste Reduction):** Kullanılmayan test ortamları, sahipsiz disk/snapshot ve fazla provizyonlanmış (over-provisioned) kaynakların periyodik temizlik rutini.
 
+- [ ] **Nöbet Rotasyonu ve Alarm Politikası (On-Call & Paging):** [Olay Müdahale](docs/core/incident-response.md) dokümanı kriz rollerini tanımlamakta, ancak nöbet çizelgesini, alarm eşiklerini, eskalasyon zincirini ve telafi/izin kurallarını tanımlamamaktadır. Sev-1 durumunda mesai dışında kimin sorumlu olduğu belirsizdir.
+- [ ] **SLO ve Hata Bütçesi (Error Budget):** P0/P1 sınıflandırmasının objektif dayanağını oluşturacak servis seviyesi hedefleri tanımlanmalıdır. Halihazırda severity ataması sezgiseldir.
+- [ ] **Tahminleme, Kapasite ve Sprint Kadansı:** Sprint uzunluğu, kapasite hesaplama yöntemi ve taahhüt politikası tanımsızdır. DoR'daki "3 iş günü" kuralının bağlamı bu dokümanla oluşur.
+- [ ] **API Sözleşme ve Versiyonlama Standardı:** API sözleşmesi değişikliği Seviye 2 karar olarak tanımlıdır; ancak versiyonlama yöntemi, geriye dönük uyumluluk kuralları ve kullanımdan kaldırma (deprecation) süreci belgelenmemiştir.
+- [ ] **Terminoloji Sözlüğü (Glossary):** [Dokümantasyon Standartları](docs/process/documentation-standards.md) terminolojik tutarlılığı zorunlu kılmaktadır, ancak referans sözlük bulunmamaktadır.
+- [ ] **Veri Saklama ve İmha Politikası:** KVKK uyumunda maskeleme ve izolasyon tanımlıdır; saklama süreleri, arşivleme ve imha prosedürleri eksiktir. [Özellik sonlandırma akışının](docs/core/product-philosophy.md) 4. aşaması bu politikaya bağımlıdır.
+- [ ] **Offboarding ve Bilgi Devri:** "Anti-Kahramanlık" ilkesinin operasyonel karşılığı olan rotasyon, devir ve erişim iptali mekanizması tanımsızdır.
+
 ## 3. Geliştirici Deneyimi (DX) ve Otomasyon
-- [ ] **Bariyer Yorgunluğu (Tick-box Fatigue) Çözümü:** DoD ve DoR maddelerini PR şablonlarında manuel "checkbox" olmaktan çıkarıp, otomatikleştirilmiş CI/CD kontrollerine bağlamak.
+- [x] **Bariyer Yorgunluğu — Şablon Katmanı:** PR şablonu, otomasyonla saptanabilen maddeleri listeden çıkardı; yalnızca **yargı gerektiren** maddeler manuel kaldı (`.github/pull_request_template.md`).
+- [ ] **Bariyer Yorgunluğu — Ürün Deposu Katmanı:** Kalan DoD maddelerinin ürün depolarında gerçek CI kontrollerine bağlanması.
 - [ ] **Performans Ölçümü (DORA):** Kurulan bu sistemi ölçmek için `engineering-metrics.md` altyapısını tasarlamak (Lead Time, Deploy Freq, CFR, MTTR gibi DORA metrikleri).
 
 ## 4. Stratejik Karar Noktası
-- [ ] Metrik altyapısını (Otomasyon ve DORA) kurmaya devam mı edeceğiz, yoksa mevcut playbook yapısını takıma sunma (roll-out) aşamasına mı geçeceğiz? Ekiple beraber karar verilmeli.
+- [ ] Metrik altyapısını (DORA) kurmaya devam mı edeceğiz, yoksa mevcut playbook yapısını takıma sunma (roll-out) aşamasına mı geçeceğiz? Ekiple beraber karar verilmeli.
+
+  **Mevcut değerlendirme (2026-08-31 denetimi):** DORA metriklerinin anlamlı olabilmesi süreçlerin fiilen işlemesine bağlıdır; henüz kimsenin uymadığı bir sürecin verisini toplamak ampirik kontrol sağlamaz. Bu nedenle önerilen sıra: **(1)** [Uygulama Profilleri](docs/core/profiles.md) ile kapsamın projeye göre daraltılması, **(2)** takıma roll-out, **(3)** nöbet rotasyonu ve SLO dokümanları, **(4)** DORA ölçüm altyapısı. Nihai karar ekibe aittir.
+
+- [ ] **Bootstrap Mekanizması:** Deponun GitHub Template Repository olarak yapılandırılması ve profil seçimine göre gereksiz dokümanları kaldıran `scripts/init.sh` betiğinin yazılması. Bu adım tamamlanmadığı sürece her yeni proje manuel kopyalama ile başlar ve tecrübe geri akışı (feedback loop) kurulamaz.
 
 ---
 
@@ -73,3 +90,7 @@ Aşağıdaki liste, sistemin mevcut eksikliklerini ve gelecekteki gelişim alanl
 
 * **Makale/Blog:** *Martin Fowler - "YAGNI" (You Aren't Gonna Need It) ve "Technical Debt"*.
 * **Neden Okunmalı?** Erken optimizasyon (over-engineering) hastalığını ve teknik borcun ne zaman stratejik bir araç, ne zaman bir zehir olduğunu tanımlar.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Doküman Sahibi: Engineering Manager*

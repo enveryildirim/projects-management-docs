@@ -21,7 +21,9 @@ DORA metriklerini destekleyen ve iç süreçlerimizin operasyonel verimliliğini
 * **Triage İptal Oranı (Drop Rate):** Triage toplantıları neticesinde reddedilen veya bekleme listesine (Icebox) alınan taleplerin oranı. Bu oranın çok düşük olması, organizasyonun odaklanma ve önceliklendirme stratejilerinde zafiyet olduğuna işaret eder.
 * **PR İnceleme Süresi (Review Cycle Time):** Bir PR'ın oluşturulması ile nihai onay alması arasında geçen süre. SLA hedefimiz: **Maksimum 24 Saat**. Bu sürenin aşılması, yetki ve karar alma mekanizmalarında tanımlanan eskalasyon kurallarının ihlal edildiğini gösterir.
 * **Yapay Zeka Kaynaklı Hata Oranı (AI Defect Rate):** Üretim ortamında tespit edilen hataların ne kadarının AI asistanları (Prompt-as-Code vs.) tarafından üretilen karmaşık mantıklardan kaynaklandığının oranı. Bu metrik, yapay zeka entegrasyon kurallarımızın (AI Manifesto) etkinliğini ölçer.
-* **Teknik Borç Yönetim Kapasitesi:** Her sprint döngüsünün %20'lik diliminin kod iyileştirmelerine (refactoring) ve teknik borç ödemelerine ayrılıp ayrılmadığının proje yönetim araçları (Jira/Linear vb.) üzerinden takibi.
+* **Teknik Borç Yönetim Kapasitesi:** Her sprint döngüsünün %20'lik diliminin kod iyileştirmelerine (refactoring) ve teknik borç ödemelerine ayrılıp ayrılmadığının proje yönetim araçları (Jira/Linear vb.) üzerinden takibi. Hedef: **≥ %20**.
+* **AR-GE ve İnovasyon Kapasitesi:** [Ürün Felsefesi](../core/product-philosophy.md) §6.1'de tanımlı %10'luk AR-GE tahsisinin fiilen kullanılıp kullanılmadığının takibi (`type: research` / `spike` etiketli kartların sprint kapasitesine oranı). Hedef: **≥ %10**. Bu metriğin ölçülmemesi, altyapı koruma bütçesinin ilk teslimat baskısında erimesine yol açar.
+* **Karar Hakkı Kullanım Sıklığı:** [Karar Verme Yetkisi](./decision-making-authority.md) §3.1 uyarınca "karar hakkı kullanılarak bağlandı" etiketiyle sonuçlanan eskalasyon oranı. Artış eğilimi, Yetkinlik Matrisinin gerçek uzmanlık dağılımını yansıtmadığına işaret eder.
 
 ## 3. İzlenmemesi Gereken Metrikler (Anti-Metrikler)
 

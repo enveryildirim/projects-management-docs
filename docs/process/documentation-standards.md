@@ -68,10 +68,26 @@ Kaynak kod "ne" yapıldığını, dokümantasyon ise "neden" yapıldığını a�
 - İçerik, mevcut bir belgenin **alt başlığı** olarak anlamlıysa → İlgili mevcut belge güncellenmelidir.
 - İçerik, bağımsız bir referans birimi teşkil ediyorsa (örn: "Dağıtım Süreçleri") → Yeni bir doküman oluşturulmalıdır.
 - Hacmi 300-400 satırı aşan dokümanların, okunabilirliği artırmak amacıyla alt bölümlere ayrılması değerlendirilmelidir.
+- Bir doküman **yalnızca bir adet H1 (`#`) başlık** içerebilir. İki bağımsız konunun tek dosyada birleştirilmesi, çapraz atıf (link) yerine kopyala-yapıştır kullanımına ve sahiplik belirsizliğine yol açar.
 
 ---
 
-## 5. Versiyon Kontrolü ve Güncellik
+## 5. Commit Mesajı Hijyeni
+
+Dokümantasyon deposundaki commit geçmişi kurumsal hafızanın bir parçasıdır ve `git log` üzerinden aranır. Bu nedenle commit mesajının beyanı ile değişikliğin fiili içeriği örtüşmek zorundadır.
+
+| Değişiklik Türü | Önek | Örnek |
+| --- | --- | --- |
+| Yeni doküman eklenmesi | `docs:` | `docs: add on-call rotation policy` |
+| Mevcut dokümanın içerik güncellemesi | `docs:` | `docs: clarify rollback limits in ci-cd` |
+| Yalnızca birikim listesine (backlog) madde eklenmesi | `chore:` | `chore: add Backup&DR scope to backlog` |
+| Yapısal/otomasyon değişikliği | `chore:` / `ci:` | `ci: block PR on broken doc links` |
+
+> 🚨 **Kural:** Yalnızca `TODO.md` veya bir plan dosyasına madde ekleyen bir commit, mesajında **"add documentation" / "doküman eklendi"** ifadesini kullanamaz. Bu ifade, ilgili dokümanın fiilen yazıldığı commit'e ayrılmıştır. Aksi durumda geçmiş üzerinden yapılan aramalar var olmayan dokümanları mevcut gösterir.
+
+---
+
+## 6. Versiyon Kontrolü ve Güncellik
 
 - Tüm dokümanların alt kısmında `Son Güncelleme` tarihi ve versiyon numarası (`1.0`, `1.1` vb.) yer almalıdır.
 - **Kapsamlı Değişiklikler** (süreç ve kuralların yeniden tanımlanması) → Majör versiyon artışı gerektirir (`1.x` → `2.0`).
@@ -80,18 +96,28 @@ Kaynak kod "ne" yapıldığını, dokümantasyon ise "neden" yapıldığını a�
 
 ---
 
-## 6. Dizin Yapısı ve Doküman Sınıflandırması
+## 7. Dizin Yapısı ve Doküman Sınıflandırması
 
 Playbook kapsamındaki tüm belgeler, erişilebilirliği artırmak amacıyla kategorik klasörler altında organize edilmelidir. Her klasörün dizin kökünde, içerdiği dokümanların özetini sunan bir `README.md` dosyası bulunmalıdır.
 
 ```text
-/playbook
-  /01-kultur-ve-zihniyet
-  /02-surec-ve-akis
-  /03-teknik-standartlar
-  /04-kalite-guvenlik
-  README.md   ← Tüm belgelere ait indeks bağlantıları
+/
+├── README.md              ← Ana indeks: tüm dokümanlara bağlantılar ve olgunluk tablosu
+├── docs/
+│   ├── core/              ← Teknoloji BAĞIMSIZ çekirdek: felsefe, DoR/DoD, önceliklendirme, kriz
+│   │   └── README.md
+│   ├── process/           ← Operasyonel akış: iletişim, karar yetkileri, CI/CD, test, güvenlik, metrik
+│   │   └── README.md
+│   ├── stacks/            ← Teknoloji eklentileri: yığın bazlı standartlar
+│   │   └── README.md
+│   └── adr/               ← Mimari Karar Kayıtları arşivi
+│       └── README.md
+├── plans/                 ← Henüz yürürlükte olmayan tasarım ve denetim dokümanları
+├── scripts/               ← Denetim betikleri (Policy-as-Code)
+└── .github/               ← PR/Issue şablonları, CODEOWNERS, CI iş akışları
 ```
+
+> 🚨 **Katman Kuralı (Sızıntı Yasağı):** `docs/core/` altındaki hiçbir doküman somut araç veya kütüphane adı içeremez (örn. linter, framework, ORM isimleri). Somut araç tercihleri yalnızca `docs/stacks/` altında belirtilir. Bu kural, teknoloji değişikliklerinin çekirdek yönergeleri geçersiz kılmamasını güvence altına alır ve `make check` ile denetlenir.
 
 Belge türlerine göre depolama lokasyonları aşağıdaki matriste belirtilmiştir:
 
@@ -99,12 +125,12 @@ Belge türlerine göre depolama lokasyonları aşağıdaki matriste belirtilmiş
 | --- | --- | --- |
 | **Bileşen & Tasarım Sistemi** | Storybook / Kaynak Kod İçi | UI bileşenlerinin (buton, form vb.) kullanım standartlarını belirler. |
 | **Lokal Ortam Kurulumu** | Proje Kök Dizini (`README.md`) | Projenin geliştirme ortamında başlatılması için gereken yönergeleri içerir. |
-| **Mimari Kararlar (ADR)** | `/docs/adr` Dizini | Projenin mimarisini etkileyen stratejik teknik kararların gerekçelerini belgeler. |
+| **Mimari Kararlar (ADR)** | [`docs/adr/`](../adr/README.md) Dizini | Projenin mimarisini etkileyen stratejik teknik kararların gerekçelerini belgeler. |
 | **Süreç & Kültür (Playbook)** | `docs/` Dizini veya Merkezi Wiki | Kurumsal politikaları, kod gözden geçirme standartlarını ve ekip işleyiş kurallarını tanımlar. |
 
 ---
 
-## 7. Yayın Öncesi Onay Listesi
+## 8. Yayın Öncesi Onay Listesi
 
 Bir dokümanın resmi olarak yayınlanabilmesi için aşağıdaki kriterleri karşılaması gerekmektedir:
 
@@ -113,7 +139,8 @@ Bir dokümanın resmi olarak yayınlanabilmesi için aşağıdaki kriterleri kar
 - [ ] İlgili ekip lideri veya yetkili bir paydaş tarafından gözden geçirilmiş mi?
 - [ ] İlgili somut örnekler, kod blokları veya tablolar içeriyor mu?
 - [ ] Versiyon numarası ve son güncelleme tarihi eklenmiş mi?
-- [ ] Ana Playbook indeksine (README) gerekli bağlantı sağlanmış mı?
+- [ ] Ana Playbook indeksine (README) ve ilgili klasör indeksine gerekli bağlantı sağlanmış mı?
+- [ ] `make check` denetimi hatasız tamamlanıyor mu? (kırık bağlantı / eksik sahiplik / indeks boşluğu)
 
 ---
-*Son Güncelleme: 2026-08-30 — Versiyon 1.1 — Doküman Sahibi: Tech Lead / Engineering Manager*
+*Son Güncelleme: 2026-08-31 — Versiyon 2.0 — Doküman Sahibi: Tech Lead / Engineering Manager*

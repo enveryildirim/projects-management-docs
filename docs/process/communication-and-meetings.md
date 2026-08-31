@@ -59,3 +59,7 @@ Bu prensiplerin günlük operasyonlarımıza entegre edilmesi için aşağıdaki
 * [ ] **Toplantı Varsayılanlarının Güncellenmesi:** Google Workspace veya Outlook takvim ayarlarında varsayılan toplantı süresi "30 Dakika" olarak belirlenmeli ve "Hızlı Toplantılar (Speedy Meetings - 5 dakika erken bitirme)" özelliği aktif hale getirilmelidir.
 * [ ] **CI/CD - İletişim Entegrasyonu:** GitHub/GitLab PR botları, kullanılan Slack/Teams çalışma alanlarına entegre edilmelidir. Yeni bir PR oluşturulduğunda, geliştiricinin manuel bildirim yapmasına gerek kalmadan ilgili kanal (veya CODEOWNERS) sistem tarafından otomatik olarak etiketlenmelidir.
 * [ ] **Jira/Linear Veri Hijyeni:** Asenkron "Walk the Board" pratiğinin sağlıklı işleyebilmesi adına, her geliştiricinin mesai bitiminde üzerinde çalıştığı kartın güncel durumunu (In Progress, Review vb.) panoda eksiksiz olarak güncellemesi standart bir alışkanlık haline getirilmelidir.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: Engineering Manager*

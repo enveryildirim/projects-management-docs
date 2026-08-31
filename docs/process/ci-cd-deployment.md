@@ -22,9 +22,9 @@ Projelerimizde süreç darboğazlarına ve karmaşık GitFlow yapılarına mahal
 
 Bir PR oluşturulduğunda, GitHub Actions otomasyonu derhal tetiklenir. Aşağıda belirtilen adımlardan herhangi birinin başarısız olması durumunda PR süreci bloke edilir:
 
-* [ ] **Veri Sızıntısı Önleme (DLP) ve Sır Taraması (Shift-Left Security):** TruffleHog/GitGuardian entegrasyonu çalıştırılır. Koda kazara eklenmiş API anahtarları, maskelenmemiş gerçek hasta/kullanıcı verileri veya kimlik numaraları tespit edilirse PR reddedilir (Bkz: `ai-manifesto.md`).
+* [ ] **Veri Sızıntısı Önleme (DLP) ve Sır Taraması (Shift-Left Security):** TruffleHog/GitGuardian entegrasyonu çalıştırılır. Koda kazara eklenmiş API anahtarları, maskelenmemiş gerçek hasta/kullanıcı verileri veya kimlik numaraları tespit edilirse PR reddedilir (Bkz: [AI Manifestosu](../core/ai-manifesto.md)).
 * [ ] **Linter ve Atıl Kod Analizi:** Yapay zeka araçları tarafından üretilmiş olabilecek kullanılmayan fonksiyonlar ile ESLint ve Prettier standart uyumsuzlukları taranır.
-* [ ] **Birim (Unit) ve Entegrasyon Testleri:** İş mantığını ve Yatay Yetki Yükseltme (IDOR) gibi kritik güvenlik zafiyetlerini doğrulayan otomatik testler icra edilir (Bkz: `test-qa-strategy.md`).
+* [ ] **Birim (Unit) ve Entegrasyon Testleri:** İş mantığını ve Yatay Yetki Yükseltme (IDOR) gibi kritik güvenlik zafiyetlerini doğrulayan otomatik testler icra edilir (Bkz: [Test ve QA Stratejisi](./test-qa-strategy.md)).
 * [ ] **Derleme (Build) Doğrulaması:** `pnpm build` komutu aracılığıyla TypeScript derleme süreçleri ve tip güvenliği denetlenir.
 
 ## 3. Veritabanı Göçleri (Migrations) ve "Expand-Contract" Örüntüsü
@@ -48,7 +48,7 @@ Kod inceleme süreçleri tamamlanıp PR onaylandıktan ve "Preview" ortamında Q
 
 1. **Manuel Müdahale Yasağı:** Kriz anlarında üretim sunucularına doğrudan bağlanarak (SSH üzerinden vs.) kod düzenlemesi yapmak kesinlikle yasaktır (No hotfixing in production).
 2. **Otomatik Sürüm Geri Alma (Rollback):** CI/CD ardışık düzeni üzerinden tek bir komut ile onaylanmış en son stabil sürüme (Örn: `v1.1.9`) dönülür. Veritabanı yönetiminde *Expand-Contract* örüntüsü uygulandığı için sistem herhangi bir veri tutarsızlığı yaşamadan operasyonlarına devam eder.
-3. **Kök Neden Analizi (Root Cause Analysis):** Sistem hızlıca stabil duruma getirildikten sonra, hatanın kök nedeni yerel geliştirme ortamında tespit edilir. Gerekli Olay Sonrası İnceleme (Post-Mortem) toplantısı gerçekleştirilerek (Bkz: `communication-and-meetings.md`), çözüm yeni bir PR süreci ile sisteme dâhil edilir.
+3. **Kök Neden Analizi (Root Cause Analysis):** Sistem hızlıca stabil duruma getirildikten sonra, hatanın kök nedeni yerel geliştirme ortamında tespit edilir. Gerekli Olay Sonrası İnceleme (Post-Mortem) toplantısı gerçekleştirilerek (Bkz: [Olay Müdahale ve Post-Mortem](../core/incident-response.md)), çözüm yeni bir PR süreci ile sisteme dâhil edilir.
 
 ---
 

@@ -1,4 +1,9 @@
-# Cynefin Çerçevesi
+# Cynefin Çerçevesi (Metodoloji Seçim Modeli)
+
+> **Bu dokümanın amacı nedir?**
+> Bir görevin veya projenin hangi yönetim metodolojisiyle (Waterfall, Kanban, Scrum, kriz müdahalesi) yürütülmesi gerektiğini, iş gereksinimlerinin netliği ve teknolojinin öngörülebilirliği ölçütlerine göre belirlemektir. Tech Lead ve Ürün Yöneticisi için [Triage](./triage.md) kararlarının ardından başvurulan referans modeldir.
+
+---
 
 Cynefin Çerçevesi, yazılım mühendisliği ve proje yönetimi süreçlerinde, karşılaşılan operasyonel gereksinimlerin ve projelerin hangi yönetim metodolojisi (Agile/Scrum, Waterfall, R&D vb.) ile yürütülmesi gerektiğini tayin eden kurumsal bir karar destek modelidir.
 
@@ -32,3 +37,7 @@ Organizasyonumuzdaki projeler, iş gereksinimlerinin netliği ve kullanılacak t
 
 * **Sistemdeki Karşılığı:** Sisteme yeni bir proje talebi iletilmiştir ancak iş gereksinimleri, kullanılacak teknoloji yığını veya potansiyel riskler hakkında hiçbir net bilgi bulunmamaktadır.
 * **Uygulanacak Metodoloji:** Proje derhal detaylı bir analize tabi tutularak yönetilebilir alt parçalara ayrıştırılmalıdır. Örneğin; sistemin kullanıcı giriş modülü Belirgin alana, temel veri işleme algoritması Karışık alana, kullanıcı davranışı analizi ise Karmaşık alana tahsis edilerek izole şekilde yönetilmelidir.
+
+---
+
+*Son Güncelleme: 2026-08-31 — Versiyon 1.0 — Doküman Sahibi: Engineering Manager / Tech Lead*
