@@ -26,6 +26,7 @@
 /docs/process/                  @engineering-manager @tech-lead
 /docs/process/ci-cd-deployment.md        @devops-authority @tech-lead
 /docs/process/security-and-compliance.md @security-authority @devops-authority
+/docs/process/web-api-security-threat-matrix.md @security-authority @tech-lead
 /docs/process/telemetry-logging.md       @devops-authority
 /docs/process/test-qa-strategy.md        @qa-lead @tech-lead
 /docs/process/engineering-metrics.md     @engineering-manager

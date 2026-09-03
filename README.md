@@ -93,6 +93,7 @@ Dokümantasyon statik bir yapı değildir. Verimsiz olduğu değerlendirilen bir
 | [CI/CD ve Dağıtım Stratejisi](docs/process/ci-cd-deployment.md) | Trunk-based akış, Expand-Contract, kesintisiz geçiş, rollback |
 | [Test ve Kalite Güvence Stratejisi](docs/process/test-qa-strategy.md) | Test piramidi, IDOR denetimi, preview ortamları, mocking |
 | [Güvenlik ve Uyum (DevSecOps)](docs/process/security-and-compliance.md) | Secret yönetimi, KVKK/GDPR, zafiyet taraması, erişim kontrolü |
+| [Web ve API Güvenliği Tehdit Matrisi](docs/process/web-api-security-threat-matrix.md) | 8 kritik web/API tehdidi, saldırı mekanizmaları ve savunma kılavuzu |
 | [Telemetri ve Loglama Standartları](docs/process/telemetry-logging.md) | PII/PHI maskeleme, log seviyeleri, yapısal loglama |
 | [Mühendislik Metrikleri (DORA)](docs/process/engineering-metrics.md) | DORA metrikleri, operasyonel sağlık ve anti-metrikler |
 

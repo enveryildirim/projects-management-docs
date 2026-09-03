@@ -17,8 +17,9 @@
 | [CI/CD ve Dağıtım Stratejisi](./ci-cd-deployment.md) | Trunk-based, Expand-Contract, kesintisiz geçiş, rollback | Tümü |
 | [Test ve Kalite Güvence Stratejisi](./test-qa-strategy.md) | Test piramidi, IDOR denetimi, preview ortamları | Standard+ |
 | [Güvenlik ve Uyum (DevSecOps)](./security-and-compliance.md) | Secret yönetimi, KVKK/GDPR, SCA/SAST, erişim kontrolü | Tümü |
+| [Web ve API Güvenliği Tehdit Matrisi](./web-api-security-threat-matrix.md) | 8 kritik web/API tehdidi, saldırı mekanizmaları ve savunma kılavuzu | Standard+ |
 | [Telemetri ve Loglama Standartları](./telemetry-logging.md) | PII/PHI maskeleme, log seviyeleri, yapısal loglama | Standard+ |
 | [Mühendislik Metrikleri (DORA)](./engineering-metrics.md) | DORA, operasyonel sağlık metrikleri, anti-metrikler | Standard+ |
 
 ---
-*Son Güncelleme: 2026-08-31 — Versiyon 1.0 — Doküman Sahibi: Engineering Manager*
+*Son Güncelleme: 2026-09-03 — Versiyon 1.1 — Doküman Sahibi: Engineering Manager*

@@ -46,6 +46,7 @@ Proje başlangıcında aşağıdaki tablo esas alınarak profil belirlenir ve pr
 | [Oryantasyon ve Kurulum](../process/onboarding-and-setup.md) | ✅ *(sadece kurulum)* | ✅ | ✅ |
 | [CI/CD ve Dağıtım](../process/ci-cd-deployment.md) | ✅ *(trunk + rollback)* | ✅ | ✅ |
 | [Güvenlik ve Uyum](../process/security-and-compliance.md) | ✅ *(§1 secret yönetimi)* | ✅ | ✅ |
+| [Web ve API Güvenliği Tehdit Matrisi](../process/web-api-security-threat-matrix.md) | 🟡 *(§1, §2 zorunlu)* | ✅ | ✅ |
 | [Test ve QA Stratejisi](../process/test-qa-strategy.md) | 🟡 | ✅ | ✅ |
 | [Telemetri ve Loglama](../process/telemetry-logging.md) | 🟡 | ✅ | ✅ |
 | [Karar Verme Yetkisi](../process/decision-making-authority.md) | ⚪ *(tek karar mercii)* | ✅ | ✅ |

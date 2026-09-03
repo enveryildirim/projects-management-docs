@@ -24,7 +24,7 @@ Müşteri ve kullanıcılarımıza ait gerçek verilerin korunması en üst düz
 Yazılım tedarik zinciri (supply chain) ve kendi geliştirdiğimiz kodlar, sürekli olarak zafiyetlere karşı denetlenir.
 
 * **Bağımlılık Taraması (SCA):** Kullanılan üçüncü parti kütüphaneler, açık kaynaklı paketler (npm, pip vb.) ve Docker imajları, bilinen zafiyetlere karşı (Örn: Dependabot veya Snyk aracılığıyla) sürekli olarak taranır. Kritik veya yüksek (Critical/High) seviye zafiyet barındıran kütüphanelerin projeye dahil edilmesi CI/CD tarafından engellenir.
-* **Statik Kod Analizi (SAST):** Geliştirilen kodlar, birleştirilmeden (merge) önce statik güvenlik analizinden (Örn: SonarQube) geçirilir. SQL Injection, XSS ve benzeri yaygın web zafiyetlerini (OWASP Top 10) barındıran kodların canlı ortama geçişine izin verilmez.
+* **Statik Kod Analizi (SAST):** Geliştirilen kodlar, birleştirilmeden (merge) önce statik güvenlik analizinden (Örn: SonarQube) geçirilir. SQL Injection, XSS ve benzeri yaygın web zafiyetlerini (OWASP Top 10) barındıran kodların canlı ortama geçişine izin verilmez. Tehdit mekanizmaları ve kod düzeyinde savunma stratejileri için bkz: [Web ve API Güvenliği Tehdit Matrisi](./web-api-security-threat-matrix.md).
 
 ## 4. Erişim ve Yetkilendirme Standartları (Access Control)
 
@@ -38,4 +38,4 @@ Sistem erişimlerinde asgari gereklilik prensibi uygulanır.
 
 ---
 
-*Son Güncelleme: 2026-08-31 — Versiyon 1.1 — Doküman Sahibi: DevOps / Güvenlik Otoritesi*
+*Son Güncelleme: 2026-09-03 — Versiyon 1.2 — Doküman Sahibi: DevOps / Güvenlik Otoritesi*
