@@ -42,6 +42,12 @@
 - [x] **Bariyer Yorgunluğu — Şablon Katmanı:** PR şablonu, otomasyonla saptanabilen maddeleri listeden çıkardı; yalnızca **yargı gerektiren** maddeler manuel kaldı (`.github/pull_request_template.md`).
 - [ ] **Bariyer Yorgunluğu — Ürün Deposu Katmanı:** Kalan DoD maddelerinin ürün depolarında gerçek CI kontrollerine bağlanması.
 - [ ] **Performans Ölçümü (DORA):** Kurulan bu sistemi ölçmek için `engineering-metrics.md` altyapısını tasarlamak (Lead Time, Deploy Freq, CFR, MTTR gibi DORA metrikleri).
+- [ ] **AI Kodlama Ajan Becerileri & Definition of Done (DoD) İncelemesi:**
+  - **Kaynak:** [Addy Osmani - Definition of Done Reference](https://github.com/addyosmani/agent-skills/blob/main/references/definition-of-done.md)
+  - **Kapsam:** AI kodlama ajanları için "Acceptance Criteria vs. Definition of Done" ayrımı, çalışma zamanı doğrulaması (runtime verification), test kapsamı, regresyon önleme ve ölü kod/debug çıktısı temizliği kriterlerinin incelenmesi; `docs/core/dod.md` ve AEGS Kapı Bekçisi ([`plans/agents-design.md`](plans/agents-design.md) §4.1) gereksinimlerine uyarlanması.
+- [ ] **Ajan Kalite ve Güvenlik Referans Kontrol Listeleri (Agent Reference Checklists) İncelemesi:**
+  - **Kaynak:** [Addy Osmani - Agent Skills Reference Checklists](https://github.com/addyosmani/agent-skills#reference-checklists)
+  - **Kapsam:** Güvenlik (`security-checklist.md`), gözlemlenebilirlik (`observability-checklist.md`), erişilebilirlik (`accessibility-checklist.md`), test örüntüleri (`testing-patterns.md`) ve orkestrasyon örüntüleri (`orchestration-patterns.md`) referans kontrol listelerinin incelenmesi; kurumumuzun süreç standartları ([`docs/process/test-qa-strategy.md`](docs/process/test-qa-strategy.md), [`docs/process/telemetry-logging.md`](docs/process/telemetry-logging.md), [`docs/process/web-api-security-threat-matrix.md`](docs/process/web-api-security-threat-matrix.md)) ile karşılaştırılarak AI odaklı kural setlerine dönüştürülmesi.
 
 ## 4. Stratejik Karar Noktası
 - [ ] Metrik altyapısını (DORA) kurmaya devam mı edeceğiz, yoksa mevcut playbook yapısını takıma sunma (roll-out) aşamasına mı geçeceğiz? Ekiple beraber karar verilmeli.
@@ -91,6 +97,13 @@
 * **Makale/Blog:** *Martin Fowler - "YAGNI" (You Aren't Gonna Need It) ve "Technical Debt"*.
 * **Neden Okunmalı?** Erken optimizasyon (over-engineering) hastalığını ve teknik borcun ne zaman stratejik bir araç, ne zaman bir zehir olduğunu tanımlar.
 
+### 6. Yapay Zeka Ajanları ve Otonom Mühendislik Becerileri (Agentic Coding & Quality Gates)
+*(Playbook'taki `docs/core/ai-manifesto.md`, `docs/core/dod.md` ve `plans/agents-design.md` mimarisinin dayanağı.)*
+* **Doküman & Depo:** *Agent Skills: Production-grade engineering skills for AI coding agents* (Addy Osmani).
+  * [Definition of Done Reference](https://github.com/addyosmani/agent-skills/blob/main/references/definition-of-done.md)
+  * [Reference Checklists](https://github.com/addyosmani/agent-skills#reference-checklists)
+* **Neden Okunmalı?** AI kodlama ajanlarının en kısa yoldan kod üretip kalite, güvenlik ve doğrulama adımlarını atlamasını ("vibe coding") önlemek için geliştirilmiş kıdemli mühendislik iş akışlarını, test ve çalışma zamanı doğrulama kriterlerini ve paylaşılan kalite kontrol listelerini (güvenlik, gözlemlenebilirlik, erişilebilirlik vb.) inceler. AEGS otonom denetçi ajanlarının kurallarını ve Playbook kontrol kapılarını zenginleştirmek için doğrudan referans alınacaktır.
+
 ---
 
-*Son Güncelleme: 2026-08-31 — Doküman Sahibi: Engineering Manager*
+*Son Güncelleme: 2026-09-03 — Doküman Sahibi: Engineering Manager*
